@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
+
+[ext_resource type="Texture2D" uid="uid://dij4e72doxwqf" path="res://rock_tiles.png" id="2_noi8f"]
+[ext_resource type="Script" path="res://wall_tiles.gd" id="3_qoec6"]
+[ext_resource type="Script" path="res://cracks.gd" id="4_6n2a2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_88y2b"]
+texture = ExtResource("2_noi8f")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+0:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_7t0gw"]
+tile_size = Vector2i(8, 8)
+sources/0 = SubResource("TileSetAtlasSource_88y2b")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="wall_tiles" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_7t0gw")
+format = 2
+script = ExtResource("3_qoec6")
+
+[node name="cracks" type="Node2D" parent="."]
+script = ExtResource("4_6n2a2")
