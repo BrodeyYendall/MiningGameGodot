@@ -13,8 +13,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_key_pressed(KEY_SPACE):
-		generate_wall()
-
+		get_tree().reload_current_scene()
+	
 func generate_wall():
 	var noise = FastNoiseLite.new()
 	noise.set_seed(randi())
