@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
+[gd_scene load_steps=7 format=3 uid="uid://dkkjnrvv1puwq"]
 
 [ext_resource type="Texture2D" uid="uid://dij4e72doxwqf" path="res://rock_tiles.png" id="2_noi8f"]
+[ext_resource type="Script" path="res://cutouts_creator.gd" id="3_405qy"]
 [ext_resource type="Script" path="res://wall_tiles.gd" id="3_qoec6"]
 [ext_resource type="Script" path="res://cracks.gd" id="4_6n2a2"]
 
@@ -24,5 +25,10 @@ tile_set = SubResource("TileSet_7t0gw")
 format = 2
 script = ExtResource("3_qoec6")
 
+[node name="cutout_creator" type="Node2D" parent="."]
+script = ExtResource("3_405qy")
+
 [node name="cracks" type="Node2D" parent="."]
 script = ExtResource("4_6n2a2")
+
+[connection signal="cycle_created" from="cracks" to="cutout_creator" method="_on_cracks_cycle_created"]

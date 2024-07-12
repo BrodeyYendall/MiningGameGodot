@@ -1,37 +1,42 @@
 extends Node2D
 
-@export var circle_radius = 15
 @export var crack_distance = 500
 @export var crack_width = 15
+@export var new_crack_hitbox = 60
 
-var circles = PackedVector2Array()
+signal cycle_created(cycle_points: PackedVector2Array)
+
+var hole_scene = preload("res://hole.tscn")
+var holes = []
 var cracks: Array[Array] = []
-var cutouts: Array[PackedVector2Array] = []
 var pathfinder: AStar2D = AStar2D.new()
 var should_redraw = false
 
 func _input(event):
-	if event is InputEventMouseButton && event.is_pressed():
-		pathfinder.add_point(circles.size(), event.position)
+	if event is InputEventMouseButton && event.is_pressed() && circle_raycast(event.position).is_empty():
+		pathfinder.add_point(holes.size(), event.position)
 		
-		var new_connections = []
-		for i in range(circles.size()):
-			if circles[i].distance_to(event.position) < crack_distance:
-				cracks.append([circles[i], event.position])
-				new_connections.append(i)
+		var new_connections = check_for_new_connections(event.position)
 		
 		if new_connections.size() >= 2:
-			check_for_cutout(new_connections, event.position)
+			check_for_cycle(new_connections, event.position)
 			
 		for new_connection in new_connections:
-			pathfinder.connect_points(circles.size(), new_connection)
+			pathfinder.connect_points(holes.size(), new_connection)
 		
-		circles.append(event.position)
+		create_circle(event.position)
 		should_redraw = true
 		
+func check_for_new_connections(new_point_position: Vector2) -> Array[int]:
+	var new_connections: Array[int] = []
+	for i in range(holes.size()):
+		if holes[i].position.distance_to(new_point_position) < crack_distance:
+			cracks.append([holes[i].position, new_point_position])
+			new_connections.append(i)
+	return new_connections
 		
 			
-func check_for_cutout(new_connections, new_point):
+func check_for_cycle(new_connections, new_point):
 	var cycles = []
 	for i in range(new_connections.size()):
 		for j in range(i + 1, new_connections.size()):
@@ -39,10 +44,9 @@ func check_for_cutout(new_connections, new_point):
 			if not path.is_empty():
 				cycles.append(path)
 				
-	cycles.sort_custom(sort_by_array_size)
+	cycles.sort_custom(func(a, b): return a.size() < b.size())
 	
 	var points_used = {}
-	var new_cutout_count = 0
 	for cycle in cycles:
 		var contains_unqiue_points = false
 		var pathVectors = PackedVector2Array()
@@ -50,19 +54,29 @@ func check_for_cutout(new_connections, new_point):
 			if not points_used.has(point):
 				contains_unqiue_points = true
 				points_used[point] = true
-			pathVectors.append(circles[point])
+			pathVectors.append(holes[point].position)
 				
 		if contains_unqiue_points:
 			pathVectors.append(new_point)
-			cutouts.append(pathVectors)
-			new_cutout_count += 1
-	print("Created " + str(new_cutout_count) + " new cutouts")
-		
-		
-func sort_by_array_size(a: Array, b: Array):
-	return a.size() < b.size()
-	
+			cycle_created.emit(pathVectors)
+			
 
+			
+func circle_raycast(position: Vector2, max_results = 1) -> Array:
+	var query = PhysicsShapeQueryParameters2D.new()
+	var circleShape = CircleShape2D.new()
+	circleShape.set_radius(new_crack_hitbox)
+	query.set_shape(circleShape)
+	query.transform.origin = position
+	
+	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
+	
+func create_circle(hole_position: Vector2):
+	var hole = hole_scene.instantiate()
+	print("Circle created at " + str(hole_position))
+	hole.position = hole_position
+	add_child(hole)
+	holes.append(hole)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -70,12 +84,5 @@ func _process(delta):
 		queue_redraw()
 	
 func _draw():
-	for cutout in cutouts:
-		draw_colored_polygon(PackedVector2Array(cutout), Color.LIGHT_SLATE_GRAY)
 	for line in cracks:
 		draw_line(line[0], line[1], Color.BLACK, crack_width)
-	
-	for i in range(circles.size()):
-		draw_circle(circles[i], circle_radius, Color.BLACK)
-		var half_size = circle_radius / 2
-		draw_string(ThemeDB.fallback_font, Vector2(circles[i].x - half_size, circles[i].y + half_size), str(i), HORIZONTAL_ALIGNMENT_CENTER, circle_radius, 20, Color.WHITE)
