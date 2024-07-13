@@ -3,17 +3,37 @@ extends Node2D
 @export var crack_distance = 300
 @export var new_crack_hitbox = 40
 
+signal generate_background(seed: int)
+
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
+var falling_cutout_scene = preload("res://falling_cutout.tscn")
 var cutout_scene = preload("res://cutout.tscn")
+var generated_wall_image: Image
 
 var cracks = {}
 var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
 var pathfinder: AStar2D = AStar2D.new()
 
+func _ready():
+	generate_background.emit(randi())
+	
+	await RenderingServer.frame_post_draw
+	generated_wall_image = get_viewport().get_texture().get_image()
+	
+
 func _input(event):
 	if event is InputEventMouseButton && event.is_pressed() && circle_raycast(event.position).is_empty():
 		create_point(event.position)
+	elif event is InputEventKey and event.is_pressed() && not event.is_echo():
+		if event.keycode == KEY_SPACE:
+			get_tree().reload_current_scene()
+		elif event.keycode == KEY_ENTER:
+			await RenderingServer.frame_post_draw
+			var viewport = get_viewport()
+			var texture = viewport.get_texture()
+			texture.get_image().save_png('screenshot.png')
+		
 
 func create_point(position: Vector2):
 	pathfinder.add_point(holes.size(), position)
@@ -49,6 +69,7 @@ func can_crack_generate(start: Vector2, end):
 	var query = PhysicsRayQueryParameters2D.new()
 	query.set_from(start)
 	query.set_to(end.position)
+	query.set_collide_with_areas(true)
 	var result = get_world_2d().direct_space_state.intersect_ray(query)
 	
 	# Return true if the object hit is the target circle. This means that nothing else was in the way.
@@ -96,6 +117,7 @@ func circle_raycast(position: Vector2, max_results = 1) -> Array:
 	var circle_shape = CircleShape2D.new()
 	circle_shape.set_radius(new_crack_hitbox)
 	query.set_shape(circle_shape)
+	query.set_collide_with_areas(true)
 	query.transform.origin = position
 	
 	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
@@ -118,5 +140,8 @@ func create_crack_scene(start: Vector2, end: Vector2) -> PackedVector2Array:
 	return crack_vertices
 	
 func create_cutout_scene(path_vectors: PackedVector2Array):
+	var falling_cutout = falling_cutout_scene.instantiate().with_data(path_vectors, generated_wall_image)
 	var cutout = cutout_scene.instantiate().with_data(path_vectors)
 	add_child(cutout)
+	add_child(falling_cutout)
+	

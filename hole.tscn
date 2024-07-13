@@ -5,7 +5,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_my65i"]
 radius = 15.0
 
-[node name="hole" type="StaticBody2D"]
+[node name="hole" type="Area2D"]
 script = ExtResource("1_tsqsp")
 
 [node name="hole_hitbox" type="CollisionShape2D" parent="."]

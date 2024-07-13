@@ -31,7 +31,6 @@ func generate_vertices(start: Vector2, end: Vector2) -> PackedVector2Array:
 	
 	var offset = 0 
 	var centre_position = start
-	var current_position = start
 	
 	#randomize()
 	points.append(self.start)
@@ -45,7 +44,6 @@ func generate_vertices(start: Vector2, end: Vector2) -> PackedVector2Array:
 		
 		points.append(next_position)
 		
-		current_position = next_position
 		distance -= segment_size
 	
 	points.append(end)	
@@ -55,9 +53,7 @@ func generate_vertices(start: Vector2, end: Vector2) -> PackedVector2Array:
 	
 func _draw():
 	var shorterened_points = points.slice(0, iteration)
-	draw_polyline(shorterened_points, Color8(45, 26, 11), 8)
-	draw_polyline(shorterened_points, Color8(25, 15, 6), 6)
-	draw_polyline(shorterened_points, Color8(17, 10, 4), 4)
+	draw_polyline(shorterened_points, Color.BLACK, 8)
 	
 
 func _process(delta):

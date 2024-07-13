@@ -4,21 +4,10 @@ extends TileMap
 @export var rock_level = 0.10
 @export var rock_trim_level = 0.05
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	generate_wall()
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Input.is_key_pressed(KEY_SPACE):
-		get_tree().reload_current_scene()
-	
-func generate_wall():
+func _on_wall_generate_background(seed: int):
 	var noise = FastNoiseLite.new()
-	noise.set_seed(randi())
-	noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX)
+	noise.set_seed(seed)
+	noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX_SMOOTH)
 	
 	var window_size = get_viewport().size / 8
 
@@ -36,11 +25,10 @@ func generate_wall():
 				if noiseAtPixel > rock_trim_level:
 					atlasTarget = Vector2(0, 0)
 				else:
-					if randi_range(0, 0) == 0:
+					if randi_range(0, 1) == 0:
 						atlasTarget = Vector2(0, 2)
 					else:
 						atlasTarget = Vector2(0, 1)
 					
 				
 			set_cell(0, Vector2(x, y), 0, atlasTarget)
-	

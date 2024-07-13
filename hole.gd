@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends Area2D
 
 func _ready():
 	$hole_hitbox.shape.set_radius(Constants.HOLE_SIZE)

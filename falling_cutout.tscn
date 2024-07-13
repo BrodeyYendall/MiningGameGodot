@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://djfulbsxvku3o"]
+
+[ext_resource type="Script" path="res://falling_cutout.gd" id="1_75cqb"]
+
+[node name="falling_cutout" type="Sprite2D"]
+script = ExtResource("1_75cqb")

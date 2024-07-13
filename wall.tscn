@@ -24,3 +24,5 @@ script = ExtResource("1_bc856")
 tile_set = SubResource("TileSet_7t0gw")
 format = 2
 script = ExtResource("3_hyv85")
+
+[connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]
