@@ -14,16 +14,7 @@ var delta_progress = 0
 
 var perpendicular_direction
 
-func with_data(start: Vector2, end: Vector2) -> Node2D:
-	self.start = start
-	self.end = end
-	constructor_called = true
-	return self
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	assert(constructor_called, "with_data() must be called when creating a Crack scene")
-	
+func generate_vertices(start: Vector2, end: Vector2) -> PackedVector2Array:
 	randomize()
 	points.append(start)
 
@@ -46,8 +37,8 @@ func _ready():
 		current_position = next_position
 		distance -= segment_size
 	
-	points.append(end)
-	
+	points.append(end)	
+	return points
 	
 func _draw():
 	var shorterened_points = points.slice(0, iteration)

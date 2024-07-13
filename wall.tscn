@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkkjnrvv1puwq"]
+[gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
 
+[ext_resource type="Script" path="res://wall.gd" id="1_bc856"]
 [ext_resource type="Texture2D" uid="uid://dij4e72doxwqf" path="res://rock_tiles.png" id="2_noi8f"]
-[ext_resource type="Script" path="res://cutouts_creator.gd" id="3_405qy"]
-[ext_resource type="Script" path="res://wall_tiles.gd" id="3_qoec6"]
-[ext_resource type="Script" path="res://cracks.gd" id="4_6n2a2"]
+[ext_resource type="Script" path="res://background.gd" id="3_hyv85"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_88y2b"]
 texture = ExtResource("2_noi8f")
@@ -18,17 +17,10 @@ texture_region_size = Vector2i(32, 32)
 tile_size = Vector2i(8, 8)
 sources/0 = SubResource("TileSetAtlasSource_88y2b")
 
-[node name="Node2D" type="Node2D"]
+[node name="wall" type="Node2D"]
+script = ExtResource("1_bc856")
 
-[node name="wall_tiles" type="TileMap" parent="."]
+[node name="background" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_7t0gw")
 format = 2
-script = ExtResource("3_qoec6")
-
-[node name="cutout_creator" type="Node2D" parent="."]
-script = ExtResource("3_405qy")
-
-[node name="cracks" type="Node2D" parent="."]
-script = ExtResource("4_6n2a2")
-
-[connection signal="cycle_created" from="cracks" to="cutout_creator" method="_on_cracks_cycle_created"]
+script = ExtResource("3_hyv85")
