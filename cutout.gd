@@ -11,4 +11,5 @@ func _ready():
 	$cutout_shape.set_polygon(cutout_vertices)
 
 func _draw():
-	draw_colored_polygon(PackedVector2Array(cutout_vertices), Color.LIGHT_SLATE_GRAY)
+	pass
+	#draw_colored_polygon(PackedVector2Array(cutout_vertices), Color.LIGHT_SLATE_GRAY)
