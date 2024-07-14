@@ -2,6 +2,7 @@ extends Sprite2D
 
 @export var fall_speed = 500
 @export var rotate_speed = 0.5
+@export var drop_shadow_offset = Vector2(20, 20)
 
 var cutout_vertices: PackedVector2Array
 var viewport_image: Image
@@ -44,7 +45,13 @@ func _ready():
 				image.set_pixel(x, y, Color(0, 0, 0, 0)) # Set transparency outside the polygon
 				
 	texture = ImageTexture.create_from_image(image)
-	position = Vector2(min_x + (width / 2), min_y + (height / 2))
+	
+	var half_width = width / 2
+	var half_height = height / 2
+	
+	position = Vector2(min_x + half_width, min_y + half_height)
+	$drop_shadow.prepare_shadow(cutout_vertices, Vector2(min_x, min_y))
+	$drop_shadow.position = Vector2(-half_width + drop_shadow_offset.x, -half_height + drop_shadow_offset.y)
 	
 	
 func _process(delta):	
