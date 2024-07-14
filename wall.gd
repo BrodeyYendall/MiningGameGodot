@@ -130,18 +130,18 @@ func add_to_crack_map(first_id: int, second_id: int, vertices: PackedVector2Arra
 func create_hole_scene(hole_position: Vector2):
 	var hole = hole_scene.instantiate()
 	hole.position = hole_position
-	add_child(hole)
+	$hole_holder.add_child(hole)
 	holes.append(hole)
 	
 func create_crack_scene(start: Vector2, end: Vector2) -> PackedVector2Array:
 	var crack = crack_scene.instantiate()
 	var crack_vertices = crack.generate_vertices(start, end)
-	add_child(crack)
+	$crack_holder.add_child(crack)
 	return crack_vertices
 	
 func create_cutout_scene(path_vectors: PackedVector2Array):
 	var falling_cutout = falling_cutout_scene.instantiate().with_data(path_vectors, generated_wall_image)
 	var cutout = cutout_scene.instantiate().with_data(path_vectors)
-	add_child(cutout)
-	add_child(falling_cutout)
+	$cutout_holder.add_child(cutout)
+	$falling_cutout_holder.add_child(falling_cutout)
 	

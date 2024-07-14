@@ -25,4 +25,15 @@ tile_set = SubResource("TileSet_7t0gw")
 format = 2
 script = ExtResource("3_hyv85")
 
+[node name="crack_holder" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0.97)
+
+[node name="hole_holder" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0.97)
+
+[node name="cutout_holder" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0.968627)
+
+[node name="falling_cutout_holder" type="Node2D" parent="."]
+
 [connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]
