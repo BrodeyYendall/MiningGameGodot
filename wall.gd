@@ -21,6 +21,10 @@ func _ready():
 	await RenderingServer.frame_post_draw
 	generated_wall_image = get_viewport().get_texture().get_image()
 	
+	create_point(Vector2(600, 600))
+	create_point(Vector2(900, 600))
+	create_point(Vector2(750, 700))
+	
 
 func _input(event):
 	if event is InputEventMouseButton && event.is_pressed() && circle_raycast(event.position).is_empty():
@@ -52,13 +56,10 @@ func create_new_cracks(new_point_position: Vector2) -> Array[int]:
 	var new_connections: Array[int] = []
 	for i in range(holes.size()):
 		if can_crack_generate(new_point_position, holes[i]):
-			var crack_vertices = create_crack_scene(holes[i].position, new_point_position)
+			var crack = create_crack_scene(holes[i].position, new_point_position)
 			new_connections.append(i)
 			
-			add_to_crack_map(i, holes.size(), crack_vertices)
-			var reversed = crack_vertices.duplicate()
-			reversed.reverse()
-			add_to_crack_map(holes.size(), i, reversed)
+			add_to_crack_map(i, holes.size(), crack)
 			
 	return new_connections
 	
@@ -92,6 +93,7 @@ func check_for_cycle(new_connections: Array[int], new_point: Vector2):
 		cycle.insert(0, holes.size())
 		cycle.append(holes.size())
 		
+		var cycle_centre = calculate_circuit_centre(cycle)
 		var contains_unqiue_points = false
 		var path_vectors = PackedVector2Array()
 		
@@ -102,15 +104,22 @@ func check_for_cycle(new_connections: Array[int], new_point: Vector2):
 				points_used[current_point] = true
 				
 			var prev_point = cycle[i - 1]
-			var array_to_append = cracks[prev_point][current_point]
+			var array_to_append = get_from_crack_map(prev_point, current_point, cycle_centre)
 			if i != cycle.size():
 				array_to_append = array_to_append.slice(0, -1)
 			path_vectors.append_array(array_to_append)
-				
-				
+					
 		if contains_unqiue_points:		
-			#print(path_vectors)
 			create_cutout_scene(path_vectors)
+			
+func calculate_circuit_centre(cycle: Array[int]) -> Vector2:
+	var total = Vector2(0, 0)
+	var positions = PackedVector2Array()
+	for point in cycle:
+		var point_position = pathfinder.get_point_position(point)
+		positions.append(point_position)
+		total += point_position
+	return total / cycle.size()
 			
 func circle_raycast(position: Vector2, max_results = 1) -> Array:
 	var query = PhysicsShapeQueryParameters2D.new()
@@ -122,10 +131,19 @@ func circle_raycast(position: Vector2, max_results = 1) -> Array:
 	
 	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
 	
-func add_to_crack_map(first_id: int, second_id: int, vertices: PackedVector2Array):
+func add_to_crack_map(first_id: int, second_id: int, crack: Node2D):
 	var submap = cracks.get(first_id, {})
-	submap[second_id] = vertices
+	submap[second_id] = crack
 	cracks[first_id] = submap
+	
+func get_from_crack_map(first_id: int, second_id: int, cutout_centre: Vector2) -> PackedVector2Array:
+	var forward = cracks.get(first_id, {}).get(second_id, null)
+	if forward == null:
+		var backwards = cracks[second_id][first_id].get_nearest_crack_line(cutout_centre)
+		backwards.reverse()
+		
+		return backwards
+	return forward.get_nearest_crack_line(cutout_centre)
 	
 func create_hole_scene(hole_position: Vector2):
 	var hole = hole_scene.instantiate()
@@ -133,11 +151,11 @@ func create_hole_scene(hole_position: Vector2):
 	$hole_holder.add_child(hole)
 	holes.append(hole)
 	
-func create_crack_scene(start: Vector2, end: Vector2) -> PackedVector2Array:
+func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
 	var crack = crack_scene.instantiate()
 	var crack_vertices = crack.generate_vertices(start, end)
 	$crack_holder.add_child(crack)
-	return crack_vertices
+	return crack
 	
 func create_cutout_scene(path_vectors: PackedVector2Array):
 	var falling_cutout = falling_cutout_scene.instantiate().with_data(path_vectors, generated_wall_image)
