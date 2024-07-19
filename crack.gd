@@ -1,62 +1,64 @@
 extends Node2D
 
-@export var segment_size = 15
-@export var half_crack_width = 7 # Must be odd 
-@export var min_width = 3
-@export var animation_delay = 0.04
+var config: Constants.CrackConfig
 
 var start: Vector2
-var end: Vector2
+var end = Vector2(-1, -1)
+var direction: Vector2
 var iteration = 2
 var delta_progress = 0
 
-var crack_variance = (half_crack_width - 1) / 2
-var half_of_min_band = (min_width - 1) / 2
-
 var top_line: PackedVector2Array
 var bottom_line: PackedVector2Array
-
-func _ready():
-	assert(half_crack_width % 2 == 1, "half_crack_width must be odd")
-	assert(min_width % 2 == 1, "min_width must be odd")
-
-func generate_vertices(start: Vector2, end: Vector2) -> void:
-	self.start = start
-	self.end = end
 	
-	var crack_lines = generate_crack_line(start, end)
+func generate_vertices_for_dir(start: Vector2, direction: Vector2, distance: float, config: Constants.CrackConfig) -> void:
+	self.start = start
+	self.direction = direction
+	self.config = config
+	
+	var crack_lines = generate_crack_line(start, direction, distance)
 	top_line = crack_lines[0]
 	bottom_line = crack_lines[1]
 	
+	if end == Vector2(-1, -1): # If not previously assigned a value
+		end = Vector2((top_line[-1].x + bottom_line[-1].x) / 2, (top_line[-1].y + bottom_line[-1].y) / 2)
 	
-func generate_crack_line(start: Vector2, end: Vector2) -> Array[PackedVector2Array]:
-	var distance = start.distance_to(end)
-	var direction = start.direction_to(end)
+	# If we dont want an animation for this crack
+	if config.animation_delay == 0:
+		iteration = bottom_line.size()
+
+func generate_vertices(start: Vector2, end: Vector2, config: Constants.CrackConfig) -> void:
+	self.end = end
+	
+	generate_vertices_for_dir(start, start.direction_to(end), start.distance_to(end), config)
+	
+	
+func generate_crack_line(start: Vector2, direction: Vector2, distance: float) -> Array[PackedVector2Array]:
 	var perpendicular_direction = Vector2(-direction.y, direction.x).normalized()
 	
-	var offset = 0 
-	var opposite_offset = 0
+	var offset = randi_range(-config.crack_variance, config.crack_variance)
+	var crack_width = randi_range(-config.width_variance, config.width_variance)
 	var centre_position = start
 
 	var main_points = PackedVector2Array()
-	var opposite_points = PackedVector2Array()
+	var width_points = PackedVector2Array()
 	
-	var crack_line_buffer = perpendicular_direction * (crack_variance + half_of_min_band + 1)
-	
-	while(distance > segment_size * 2):
-		centre_position = centre_position + (direction * segment_size)
-		offset = randi_range(max(-crack_variance, offset - crack_variance), min(crack_variance, offset + crack_variance))
-		opposite_offset = randi_range(max(-crack_variance, opposite_offset - crack_variance), min(crack_variance, opposite_offset + crack_variance))
+	while(distance > config.segment_size * 2):
+		centre_position = centre_position + (direction * config.segment_size)
 		
-		var next_position = round_vector2((centre_position - crack_line_buffer) - (perpendicular_direction * offset))
-		var opposite_line_next_position =  round_vector2((centre_position + crack_line_buffer) + (perpendicular_direction * opposite_offset))
+		offset = randi_range(max(-config.max_variance, offset - config.crack_variance), min(config.max_variance, offset + config.crack_variance))
+		crack_width = randi_range(max(config.min_width, crack_width - config.width_variance), min(config.max_width, crack_width + config.width_variance))
+		
+		
+		var next_position = round_vector2(centre_position + (perpendicular_direction * offset))
+		var width_position =  round_vector2(next_position + (perpendicular_direction * crack_width))
 		
 		main_points.append(next_position)
-		opposite_points.append(opposite_line_next_position)
+		width_points.append(width_position)
 		
-		distance -= segment_size
+		distance -= config.segment_size
 	
-	return [main_points, opposite_points]
+	return [main_points, width_points]
 	
 func get_nearest_crack_line(vector: Vector2):
 	var crack_line: PackedVector2Array
@@ -88,7 +90,14 @@ func _draw():
 	bottom_short.reverse()
 	
 	shortened_vertices.append_array(top_short)
-	shortened_vertices.append(end)
+	if iteration >= bottom_line.size():
+		shortened_vertices.append(end)
+	else:
+		# Give the crack a "point" at the end, making the animation more realistic.
+		var middle = Vector2((top_short[-1].x + bottom_short[0].x) / 2, (top_short[-1].y + bottom_short[0].y) / 2)
+		middle += direction * config.segment_size
+		shortened_vertices.append(middle)
+		
 	shortened_vertices.append_array(bottom_short)
 	
 	draw_colored_polygon(shortened_vertices, Color.BLACK)
@@ -96,8 +105,8 @@ func _draw():
 
 func _process(delta):
 	delta_progress += delta
-	if(delta_progress > animation_delay):
-		delta_progress - animation_delay
+	if(delta_progress > config.animation_delay):
+		delta_progress -= config.animation_delay
 		iteration += 1
 		queue_redraw()
 	
@@ -106,3 +115,4 @@ func _process(delta):
 		
 func round_vector2(vector: Vector2):
 	return Vector2(roundi(vector.x), roundi(vector.y))
+		

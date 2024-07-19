@@ -152,8 +152,8 @@ func create_hole_scene(hole_position: Vector2):
 	holes.append(hole)
 	
 func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
-	var crack = crack_scene.instantiate()
-	var crack_vertices = crack.generate_vertices(start, end)
+	var crack = crack_scene.instantiate()  
+	var crack_vertices = crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
 	$crack_holder.add_child(crack)
 	return crack
 	
