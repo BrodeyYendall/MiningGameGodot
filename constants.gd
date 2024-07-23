@@ -1,5 +1,8 @@
 extends Node
 
+const SCREEN_WIDTH = 1920
+const SCREEN_HEIGHT = 1080
+
 const HOLE_SIZE = 15
 var CUTOUT_CRACK_CONFIG = CrackConfig.new(6, 12, 5, 3, 10, 0.04)
 var LARGE_CRACK_CONFIG = CrackConfig.new(10, 40, 15, 5, 1000)

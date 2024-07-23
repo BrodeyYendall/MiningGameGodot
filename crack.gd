@@ -5,11 +5,13 @@ var config: Constants.CrackConfig
 var start: Vector2
 var end = Vector2(-1, -1)
 var direction: Vector2
+var perpendicular_direction: Vector2
 var iteration = 2
 var delta_progress = 0
 
 var top_line: PackedVector2Array
 var bottom_line: PackedVector2Array
+var hitbox_vertices: PackedVector2Array
 	
 func generate_vertices_for_dir(start: Vector2, direction: Vector2, distance: float, config: Constants.CrackConfig) -> void:
 	self.start = start
@@ -26,6 +28,8 @@ func generate_vertices_for_dir(start: Vector2, direction: Vector2, distance: flo
 	# If we dont want an animation for this crack
 	if config.animation_delay == 0:
 		iteration = bottom_line.size()
+		
+	generate_hitbox()
 
 func generate_vertices(start: Vector2, end: Vector2, config: Constants.CrackConfig) -> void:
 	self.end = end
@@ -34,7 +38,7 @@ func generate_vertices(start: Vector2, end: Vector2, config: Constants.CrackConf
 	
 	
 func generate_crack_line(start: Vector2, direction: Vector2, distance: float) -> Array[PackedVector2Array]:
-	var perpendicular_direction = Vector2(-direction.y, direction.x).normalized()
+	perpendicular_direction = Vector2(-direction.y, direction.x).normalized()
 	
 	var offset = randi_range(-config.crack_variance, config.crack_variance)
 	var crack_width = randi_range(-config.width_variance, config.width_variance)
@@ -48,7 +52,6 @@ func generate_crack_line(start: Vector2, direction: Vector2, distance: float) ->
 		
 		offset = randi_range(max(-config.max_variance, offset - config.crack_variance), min(config.max_variance, offset + config.crack_variance))
 		crack_width = randi_range(max(config.min_width, crack_width - config.width_variance), min(config.max_width, crack_width + config.width_variance))
-		
 		
 		var next_position = round_vector2(centre_position + (perpendicular_direction * offset))
 		var width_position =  round_vector2(next_position + (perpendicular_direction * crack_width))
@@ -79,6 +82,14 @@ func get_nearest_crack_line(vector: Vector2):
 	
 	return crack_line
 	
+func generate_hitbox():	
+	var hitbox_vertices = PackedVector2Array()
+	hitbox_vertices.append_array(top_line)
+	
+	var bottom_copy = bottom_line.duplicate()
+	bottom_copy.reverse()
+	hitbox_vertices.append_array(bottom_copy)
+	$hitbox.set_polygon(hitbox_vertices)
 	
 	
 func _draw():	

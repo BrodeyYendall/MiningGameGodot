@@ -8,5 +8,5 @@ radius = 15.0
 [node name="hole" type="Area2D"]
 script = ExtResource("1_tsqsp")
 
-[node name="hole_hitbox" type="CollisionShape2D" parent="."]
+[node name="hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_my65i")

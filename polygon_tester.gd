@@ -1,7 +1,7 @@
 extends Node2D
 
 var iteration = 0
-var vertices = [Vector2(600, 600), Vector2(615, 601), Vector2(630, 601), Vector2(645, 605), Vector2(660, 604), Vector2(675, 607), Vector2(660, 606.5)]
+var vertices = [Vector2(1002, 403), Vector2(1004.103, 382.1056), Vector2(1151, 418), Vector2(1153.104, 397.1056)]
 var alt_vertices = []
 
 func _draw():

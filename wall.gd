@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var crack_distance = 300
-@export var new_crack_hitbox = 40
+@export var new_hole_hitbox = 40
 
 signal generate_background(seed: int)
 
@@ -21,9 +21,13 @@ func _ready():
 	await RenderingServer.frame_post_draw
 	generated_wall_image = get_viewport().get_texture().get_image()
 	
-	create_point(Vector2(600, 600))
-	create_point(Vector2(900, 600))
-	create_point(Vector2(750, 700))
+	#create_point(Vector2(600, 600))
+	#create_point(Vector2(900, 600))
+	#create_point(Vector2(750, 700))
+	
+	#create_point(Vector2(789, 488))
+	#create_point(Vector2(794, 664))
+	#create_point(Vector2(846, 483))
 	
 
 func _input(event):
@@ -40,7 +44,10 @@ func _input(event):
 		
 
 func create_point(position: Vector2):
+	print(position)
+	
 	pathfinder.add_point(holes.size(), position)
+	#raycast_around_point(position)
 		
 	var new_connections = create_new_cracks(position)
 	
@@ -51,6 +58,7 @@ func create_point(position: Vector2):
 		pathfinder.connect_points(holes.size(), new_connection)
 	
 	create_hole_scene(position)
+	queue_redraw()
 		
 func create_new_cracks(new_point_position: Vector2) -> Array[int]:
 	var new_connections: Array[int] = []
@@ -121,10 +129,10 @@ func calculate_circuit_centre(cycle: Array[int]) -> Vector2:
 		total += point_position
 	return total / cycle.size()
 			
-func circle_raycast(position: Vector2, max_results = 1) -> Array:
+func circle_raycast(position: Vector2, radius = new_hole_hitbox, max_results = 1) -> Array:
 	var query = PhysicsShapeQueryParameters2D.new()
 	var circle_shape = CircleShape2D.new()
-	circle_shape.set_radius(new_crack_hitbox)
+	circle_shape.set_radius(radius)
 	query.set_shape(circle_shape)
 	query.set_collide_with_areas(true)
 	query.transform.origin = position
@@ -162,4 +170,3 @@ func create_cutout_scene(path_vectors: PackedVector2Array):
 	var cutout = cutout_scene.instantiate().with_data(path_vectors)
 	$cutout_holder.add_child(cutout)
 	$falling_cutout_holder.add_child(falling_cutout)
-	
