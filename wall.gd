@@ -4,12 +4,10 @@ extends Node2D
 @export var new_hole_hitbox = 40
 
 signal generate_background(seed: int)
+signal cycle_formed(vertices: PackedVector2Array)
 
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
-var falling_cutout_scene = preload("res://falling_cutout.tscn")
-var cutout_scene = preload("res://cutout.tscn")
-var generated_wall_image: Image
 
 var cracks = {}
 var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
@@ -17,10 +15,6 @@ var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
 	generate_background.emit(randi())
-	
-	await RenderingServer.frame_post_draw
-	generated_wall_image = get_viewport().get_texture().get_image()
-	
 	#create_point(Vector2(600, 600))
 	#create_point(Vector2(900, 600))
 	#create_point(Vector2(750, 700))
@@ -52,24 +46,27 @@ func create_point(position: Vector2):
 	var new_connections = create_new_cracks(position)
 	
 	if new_connections.size() >= 2:
-		check_for_cycle(new_connections, position)
+		check_for_cycle(new_connections[0], new_connections[1], position)
 		
-	for new_connection in new_connections:
+	for new_connection in new_connections[0]:
 		pathfinder.connect_points(holes.size(), new_connection)
 	
 	create_hole_scene(position)
 	queue_redraw()
 		
-func create_new_cracks(new_point_position: Vector2) -> Array[int]:
+func create_new_cracks(new_point_position: Vector2) -> Array:
 	var new_connections: Array[int] = []
+	var new_cracks: Array[SignalingCrack] = []
+	
 	for i in range(holes.size()):
 		if can_crack_generate(new_point_position, holes[i]):
 			var crack = create_crack_scene(holes[i].position, new_point_position)
 			new_connections.append(i)
+			new_cracks.append(crack)
 			
 			add_to_crack_map(i, holes.size(), crack)
 			
-	return new_connections
+	return [new_connections, new_cracks]
 	
 func can_crack_generate(start: Vector2, end):
 	if end.position.distance_to(start) > crack_distance:
@@ -86,7 +83,7 @@ func can_crack_generate(start: Vector2, end):
 	return result.rid == end.get_rid()
 		
 			
-func check_for_cycle(new_connections: Array[int], new_point: Vector2):
+func check_for_cycle(new_connections: Array[int], new_cracks: Array[SignalingCrack], new_point: Vector2):
 	var cycles: Array[PackedInt64Array] = []
 	for i in range(new_connections.size()):
 		for j in range(i + 1, new_connections.size()):
@@ -118,7 +115,7 @@ func check_for_cycle(new_connections: Array[int], new_point: Vector2):
 			path_vectors.append_array(array_to_append)
 					
 		if contains_unqiue_points:		
-			create_cutout_scene(path_vectors)
+			cycle_formed.emit(path_vectors, new_cracks)
 			
 func calculate_circuit_centre(cycle: Array[int]) -> Vector2:
 	var total = Vector2(0, 0)
@@ -164,9 +161,3 @@ func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
 	var crack_vertices = crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
 	$crack_holder.add_child(crack)
 	return crack
-	
-func create_cutout_scene(path_vectors: PackedVector2Array):
-	var falling_cutout = falling_cutout_scene.instantiate().with_data(path_vectors, generated_wall_image)
-	var cutout = cutout_scene.instantiate().with_data(path_vectors)
-	$cutout_holder.add_child(cutout)
-	$falling_cutout_holder.add_child(falling_cutout)

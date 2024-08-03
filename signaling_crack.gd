@@ -2,25 +2,17 @@ class_name SignalingCrack
 extends "res://crack.gd"
 
 
-signal crack_complete
+signal crack_complete(parent: int)
 
-var signalData: SignalData
+var parent_cutouts: Array[int]
 
-func with_signal_data(data: SignalData):
-	self.signalData = data
+func add_parent(parent: int):
+	parent_cutouts.append(parent)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	super(delta)
 	if not is_processing():
-		crack_complete.emit(signalData)
-
-
-class SignalData:
-	var starting_point: int
-	var position: Vector2
-	
-	func _init(starting_point: int, position: Vector2):
-		self.starting_point = starting_point
-		self.position = position
+		for parent in parent_cutouts:
+			crack_complete.emit(parent)

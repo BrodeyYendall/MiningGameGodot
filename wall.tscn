@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
+[gd_scene load_steps=7 format=3 uid="uid://dkkjnrvv1puwq"]
 
 [ext_resource type="Script" path="res://wall.gd" id="1_bc856"]
 [ext_resource type="Texture2D" uid="uid://dij4e72doxwqf" path="res://rock_tiles.png" id="2_noi8f"]
 [ext_resource type="Script" path="res://background.gd" id="3_hyv85"]
+[ext_resource type="Script" path="res://cutout_queue.gd" id="4_4b11k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_88y2b"]
 texture = ExtResource("2_noi8f")
@@ -32,9 +33,13 @@ modulate = Color(1, 1, 1, 0.97)
 [node name="crack_holder" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0.97)
 
-[node name="cutout_holder" type="Node2D" parent="."]
+[node name="cutout_queue" type="Node2D" parent="."]
+script = ExtResource("4_4b11k")
+
+[node name="cutout_holder" type="Node2D" parent="cutout_queue"]
 modulate = Color(1, 1, 1, 0.968627)
 
-[node name="falling_cutout_holder" type="Node2D" parent="."]
+[node name="falling_cutout_holder" type="Node2D" parent="cutout_queue"]
 
+[connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
 [connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]
