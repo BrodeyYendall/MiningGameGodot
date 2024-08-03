@@ -37,7 +37,6 @@ modulate = Color(1, 1, 1, 0.97)
 script = ExtResource("4_4b11k")
 
 [node name="cutout_holder" type="Node2D" parent="cutout_queue"]
-modulate = Color(1, 1, 1, 0.968627)
 
 [node name="falling_cutout_holder" type="Node2D" parent="cutout_queue"]
 

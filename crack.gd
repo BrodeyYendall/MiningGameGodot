@@ -42,7 +42,7 @@ func generate_crack_line(start: Vector2, direction: Vector2, distance: float) ->
 	perpendicular_direction = Vector2(-direction.y, direction.x).normalized()
 	
 	var offset = randi_range(-config.crack_variance, config.crack_variance)
-	var crack_width = randi_range(-config.width_variance, config.width_variance)
+	var crack_width = randi_range(config.min_width, config.max_width)
 	var centre_position = start
 
 	var main_points = PackedVector2Array()
@@ -90,6 +90,7 @@ func generate_hitbox():
 	var bottom_copy = bottom_line.duplicate()
 	bottom_copy.reverse()
 	hitbox_vertices.append_array(bottom_copy)
+	
 	$hitbox.set_polygon(hitbox_vertices)
 	
 	

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://djtdx07gk00uo"]
+
+[ext_resource type="Script" path="res://band_ore.gd" id="1_nwaqo"]
+
+[node name="band_ore" type="Area2D"]
+script = ExtResource("1_nwaqo")
+
+[node name="hitbox" type="CollisionPolygon2D" parent="."]

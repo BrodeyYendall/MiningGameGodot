@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bprmhfnjuybe6"]
+
+[ext_resource type="Script" path="res://ball_ore.gd" id="1_354ia"]
+
+[node name="ball_ore" type="Area2D"]
+script = ExtResource("1_354ia")
+
+[node name="hitbox" type="CollisionPolygon2D" parent="."]
