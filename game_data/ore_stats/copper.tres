@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://cjwvcwqo15gjo"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_k0gng"]
+
+[resource]
+script = ExtResource("1_k0gng")
+name = "copper"
+base_sharpness = 20
+base_durability = 120
+base_weight = 90
+base_power = 30
+multiplier_sharpness = 1.0
+multiplier_durability = 1.0
+multiplier_weight = 1.0
+multiplier_power = 1.0
+critical_mass = 50

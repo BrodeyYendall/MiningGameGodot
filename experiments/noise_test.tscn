@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://bnmb1d2g7r4at"]
 
-[ext_resource type="Script" path="res://noise_test.gd" id="1_p0ey4"]
+[ext_resource type="Script" path="res://experiments/noise_test.gd" id="1_xxafn"]
 
 [node name="noise_test" type="Sprite2D"]
 scale = Vector2(2, 2)
-script = ExtResource("1_p0ey4")
+script = ExtResource("1_xxafn")

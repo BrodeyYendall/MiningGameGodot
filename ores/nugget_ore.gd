@@ -1,6 +1,9 @@
 extends Crack
 class_name NuggetOre
 
+var size = 0
+signal ore_cutout(area: int)
+
 var SMOOTH_SEGMENTS = 5
 var SMOOTH_INCREMENTS = 5
 var MIN_WIDTH = (SMOOTH_INCREMENTS * 2) + 1  # The min distance between the two lines before we end smoothing
@@ -48,11 +51,19 @@ func smooth_tip(top: Vector2, bottom: Vector2, direction: Vector2):
 		
 	return [new_top_line, new_bottom_line]
 
+func calculate_size():
+	for i in range(top_line.size()):
+		size += bottom_line[i].y - top_line[i].y
 
+func _on_area_entered(area):
+	if area is Cutout:
+		if size == 0:
+			calculate_size()
+		ore_cutout.emit(size)
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process(false)
-
 
 func _draw():	
 	var shortened_vertices = PackedVector2Array()

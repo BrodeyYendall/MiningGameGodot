@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://cajc2r7bwidnh"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_6j2ct"]
+
+[resource]
+script = ExtResource("1_6j2ct")
+name = "stone"
+base_sharpness = 10
+base_durability = 100
+base_weight = 120
+base_power = 20
+multiplier_sharpness = 1.0
+multiplier_durability = 1.0
+multiplier_weight = 1.0
+multiplier_power = 1.0
+critical_mass = 5

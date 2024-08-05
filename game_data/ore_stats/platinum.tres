@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://vv0k6wt8i6vg"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_roxph"]
+
+[resource]
+script = ExtResource("1_roxph")
+name = "platinum"
+base_sharpness = 20
+base_durability = 160
+base_weight = 60
+base_power = 15
+multiplier_sharpness = 10.0
+multiplier_durability = 5.0
+multiplier_weight = 5.0
+multiplier_power = 1.0
+critical_mass = 100

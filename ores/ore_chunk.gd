@@ -3,7 +3,7 @@ class_name OreChunk
 
 var ores = []
 
-func generate_with_config(config: Constants.OreChunkConfig):
+func generate_with_config(config: Constants.OreChunkConfig, ore_cutout_callback):
 	var fail_count = 0
 	while ores.size() <= config.max_ore and fail_count <= config.max_fails:
 		var rand_position = Vector2(randi_range(0, config.width), randi_range(0, config.width))
@@ -22,3 +22,5 @@ func generate_with_config(config: Constants.OreChunkConfig):
 			ore.position = rand_position
 			ores.append(ore)
 			add_child(ore)
+			
+			ore.ore_cutout.connect(ore_cutout_callback)

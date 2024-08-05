@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3epwpphghnsg"]
+
+[ext_resource type="Script" path="res://experiments/alloy_result_row.gd" id="1_pnjps"]
+
+[node name="alloy_result_row" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 7
+script = ExtResource("1_pnjps")
+
+[node name="Tier" type="Label" parent="."]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="Name" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "Alloy"
+
+[node name="Swing" type="Label" parent="."]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Swing"
+horizontal_alignment = 1
+
+[node name="Power" type="Label" parent="."]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Power"
+horizontal_alignment = 1
+
+[node name="Durability" type="Label" parent="."]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Durability
+"
+horizontal_alignment = 1
+
+[node name="Weight" type="Label" parent="."]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Weight"
+horizontal_alignment = 1
+
+[node name="Sharp" type="Label" parent="."]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+text = "Sharp"
+horizontal_alignment = 1

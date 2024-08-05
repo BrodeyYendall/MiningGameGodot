@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://cx08i1nj6nfg6"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_ryp3a"]
+
+[resource]
+script = ExtResource("1_ryp3a")
+name = "osmium"
+base_sharpness = 20
+base_durability = 160
+base_weight = 60
+base_power = 15
+multiplier_sharpness = 5.0
+multiplier_durability = 10.0
+multiplier_weight = 8.0
+multiplier_power = 10.0
+critical_mass = 100

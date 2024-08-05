@@ -1,0 +1,222 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdgxecssjluqf"]
+
+[ext_resource type="PackedScene" uid="uid://hfxiu0yebdb4" path="res://experiments/alloy_stat_input.tscn" id="1_oadlg"]
+[ext_resource type="Script" path="res://experiments/Alloy_Stats_Results.gd" id="2_80iy2"]
+
+[node name="alloy_stat_test" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="ore_inputs" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 44.0
+offset_right = 1071.0
+offset_bottom = 105.0
+
+[node name="Headers" type="GridContainer" parent="ore_inputs"]
+layout_mode = 2
+columns = 12
+
+[node name="Ore" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Ore"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sharpness" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Sharpness"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Durabilty" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Durability
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Weight" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Weight"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Power" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Power
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Multipler_Break" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Sharpness_Multipler" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Sharpness"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Durabilty_Multiplier" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Durability
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Weight_Multiplier" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Weight"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Power_Multiplier" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Power
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Crit_Mass_Break" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Critical_Mass" type="Label" parent="ore_inputs/Headers"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Crit Mass"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stone" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/stone.tres"
+
+[node name="Copper" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/copper.tres"
+
+[node name="Zinc" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/zinc.tres"
+
+[node name="Iron" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/iron.tres"
+
+[node name="Coal" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+
+[node name="Nickel" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/nickel.tres"
+
+[node name="Aluminium" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/aluminium.tres"
+
+[node name="Manganese" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/manganese.tres"
+
+[node name="Osmium" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/osmium.tres"
+
+[node name="Platinum" parent="ore_inputs" instance=ExtResource("1_oadlg")]
+layout_mode = 2
+resource_file = "res://game_data/ore_stats/platinum.tres"
+
+[node name="Results" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sort_Selection" type="TabBar" parent="Results"]
+layout_mode = 0
+offset_left = 1515.0
+offset_top = 67.0
+offset_right = 1888.0
+offset_bottom = 107.0
+tab_alignment = 1
+clip_tabs = false
+tab_count = 5
+tab_0/title = "Swing"
+tab_1/title = "Power"
+tab_2/title = "Durability"
+tab_3/title = "Weight"
+tab_4/title = "Sharp"
+
+[node name="Results" type="GridContainer" parent="Results"]
+layout_mode = 0
+offset_left = 1217.0
+offset_top = 120.0
+offset_right = 1877.0
+offset_bottom = 160.0
+script = ExtResource("2_80iy2")
+
+[node name="Button" type="Button" parent="Results"]
+layout_mode = 0
+offset_left = 1324.0
+offset_top = 71.0
+offset_right = 1469.0
+offset_bottom = 102.0
+text = "Calculate"
+
+[node name="Single" type="CheckButton" parent="Results"]
+layout_mode = 0
+offset_left = 1381.0
+offset_top = 16.0
+offset_right = 1476.0
+offset_bottom = 47.0
+button_pressed = true
+text = "Single"
+
+[node name="Double" type="CheckButton" parent="Results"]
+layout_mode = 0
+offset_left = 1527.0
+offset_top = 16.0
+offset_right = 1631.0
+offset_bottom = 47.0
+button_pressed = true
+text = "Double"
+
+[node name="Triple" type="CheckButton" parent="Results"]
+layout_mode = 0
+offset_left = 1664.0
+offset_top = 16.0
+offset_right = 1757.0
+offset_bottom = 47.0
+button_pressed = true
+text = "Triple"
+
+[node name="Any" type="CheckButton" parent="Results"]
+layout_mode = 0
+offset_left = 1783.0
+offset_top = 17.0
+offset_right = 1876.0
+offset_bottom = 48.0
+button_pressed = true
+text = "Any"
+
+[node name="Tiered_Results" type="GridContainer" parent="Results"]
+layout_mode = 0
+offset_left = 62.0
+offset_top = 822.0
+offset_right = 102.0
+offset_bottom = 862.0
+
+[connection signal="tab_changed" from="Results/Sort_Selection" to="Results/Results" method="_display_results"]
+[connection signal="pressed" from="Results/Button" to="Results/Results" method="_calculate_event"]

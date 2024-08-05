@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://cptr2uihwi7qb"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_x6o24"]
+
+[resource]
+script = ExtResource("1_x6o24")
+name = "zinc"
+base_sharpness = 10
+base_durability = 60
+base_weight = 120
+base_power = 20
+multiplier_sharpness = 1.6
+multiplier_durability = 1.0
+multiplier_weight = 0.9
+multiplier_power = 1.0
+critical_mass = 15

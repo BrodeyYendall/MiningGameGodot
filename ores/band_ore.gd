@@ -14,4 +14,3 @@ func _draw():
 	shortened_vertices.append_array(bottom_copy)
 	
 	draw_colored_polygon(shortened_vertices, Color.CORAL)
-

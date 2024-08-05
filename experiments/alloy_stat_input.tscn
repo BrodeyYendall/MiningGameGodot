@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://hfxiu0yebdb4"]
+
+[ext_resource type="Script" path="res://experiments/alloy_stat_input.gd" id="1_xmyu7"]
+
+[node name="alloy_stat_input" type="GridContainer"]
+columns = 12
+script = ExtResource("1_xmyu7")
+
+[node name="Name" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "
+"
+
+[node name="Sharpness" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 500.0
+alignment = 1
+
+[node name="Durabilty" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 500.0
+alignment = 1
+
+[node name="Weight" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 500.0
+alignment = 1
+
+[node name="Power" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 500.0
+alignment = 1
+
+[node name="Multipler_Break" type="Label" parent="."]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Sharpness_Multipler" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 10.0
+step = 0.01
+alignment = 1
+
+[node name="Durabilty_Multiplier" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 10.0
+step = 0.01
+alignment = 1
+
+[node name="Weight_Multiplier" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 10.0
+step = 0.01
+alignment = 1
+
+[node name="Power_Multiplier" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+max_value = 10.0
+step = 0.01
+alignment = 1
+
+[node name="Crit_Mass_Break" type="Label" parent="."]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Critical_Mass" type="SpinBox" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+step = 5.0
+alignment = 1

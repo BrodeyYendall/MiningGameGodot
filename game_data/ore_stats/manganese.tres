@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://dadbeqio71w0r"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_p1suy"]
+
+[resource]
+script = ExtResource("1_p1suy")
+name = "manganese"
+base_sharpness = 15
+base_durability = 160
+base_weight = 70
+base_power = 10
+multiplier_sharpness = 0.8
+multiplier_durability = 2.0
+multiplier_weight = 0.8
+multiplier_power = 1.2
+critical_mass = 10

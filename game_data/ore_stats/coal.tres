@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="OreStats" load_steps=2 format=3 uid="uid://hdmv0mwpkkdf"]
+
+[ext_resource type="Script" path="res://game_data/ore_stats/ore_stats.gd" id="1_axqoc"]
+
+[resource]
+script = ExtResource("1_axqoc")
+name = "coal"
+base_sharpness = 5
+base_durability = 60
+base_weight = 80
+base_power = 10
+multiplier_sharpness = 1.8
+multiplier_durability = 1.4
+multiplier_weight = 1.0
+multiplier_power = 1.5
+critical_mass = 10

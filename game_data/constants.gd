@@ -10,9 +10,9 @@ var LARGE_CRACK_CONFIG = CrackConfig.new(10, 40, 15, 5, 1000)
 var CHUNK_ORE_CONFIG = CrackConfig.new(40, 50, 5, 5, 10, 0.0, 10)
 var BAND_ORE_CONFIG = CrackConfig.new(20, 24, 2, 2, 4, 0.0, 10)
 
-var NUGGET_CONFIG = OreChunkConfig.new(400, [30, 70], 80, 6, 4, preload("res://nugget_ore.tscn"))
-var BAND_CONFIG = OreChunkConfig.new(400, [100, 200], 80, 6, 4, preload("res://band_ore.tscn"))
-var BALL_CONFIG = OreChunkConfig.new(400, [30, 50], 100, 6, 4, preload("res://ball_ore.tscn"))
+var NUGGET_CONFIG = OreChunkConfig.new(400, [30, 70], 80, 6, 4, preload("res://ores/nugget_ore.tscn"))
+var BAND_CONFIG = OreChunkConfig.new(400, [100, 200], 80, 6, 4, preload("res://ores/band_ore.tscn"))
+var BALL_CONFIG = OreChunkConfig.new(400, [30, 50], 100, 6, 4, preload("res://ores/ball_ore.tscn"))
 
 
 class CrackConfig:
