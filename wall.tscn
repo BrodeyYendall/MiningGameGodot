@@ -1,31 +1,31 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkkjnrvv1puwq"]
+[gd_scene load_steps=8 format=3 uid="uid://dkkjnrvv1puwq"]
 
 [ext_resource type="Script" path="res://wall.gd" id="1_bc856"]
-[ext_resource type="Texture2D" uid="uid://dij4e72doxwqf" path="res://rock_tiles.png" id="2_noi8f"]
+[ext_resource type="Texture2D" uid="uid://wlxpbk2fl55k" path="res://gray_rock_tiles.png" id="2_gfq23"]
 [ext_resource type="Script" path="res://background.gd" id="3_hyv85"]
-[ext_resource type="Script" path="res://cutout_queue.gd" id="4_4b11k"]
+[ext_resource type="Script" path="res://cutout/cutout_queue.gd" id="4_agkfe"]
+[ext_resource type="Script" path="res://ores/ore_generator.gd" id="5_ce6x1"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_88y2b"]
-texture = ExtResource("2_noi8f")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bhxh1"]
+texture = ExtResource("2_gfq23")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
 0:2/0 = 0
+1:2/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_7t0gw"]
-tile_size = Vector2i(8, 8)
-sources/0 = SubResource("TileSetAtlasSource_88y2b")
+[sub_resource type="TileSet" id="TileSet_b2j44"]
+sources/0 = SubResource("TileSetAtlasSource_bhxh1")
 
 [node name="wall" type="Node2D"]
 script = ExtResource("1_bc856")
 
 [node name="background" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_7t0gw")
+tile_set = SubResource("TileSet_b2j44")
 format = 2
 script = ExtResource("3_hyv85")
-rock_level = 0.2
 
 [node name="hole_holder" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0.97)
@@ -34,11 +34,14 @@ modulate = Color(1, 1, 1, 0.97)
 modulate = Color(1, 1, 1, 0.97)
 
 [node name="cutout_queue" type="Node2D" parent="."]
-script = ExtResource("4_4b11k")
+script = ExtResource("4_agkfe")
 
 [node name="cutout_holder" type="Node2D" parent="cutout_queue"]
 
 [node name="falling_cutout_holder" type="Node2D" parent="cutout_queue"]
+
+[node name="ore_generator" type="Node2D" parent="."]
+script = ExtResource("5_ce6x1")
 
 [connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
 [connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]

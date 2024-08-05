@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://djfulbsxvku3o"]
 
-[ext_resource type="Script" path="res://falling_cutout.gd" id="1_75cqb"]
-[ext_resource type="Script" path="res://falling_cutout_shadow.gd" id="2_td1ow"]
+[ext_resource type="Script" path="res://cutout/falling_cutout.gd" id="1_6hwiy"]
+[ext_resource type="Script" path="res://cutout/falling_cutout_shadow.gd" id="2_0xf8m"]
 
 [node name="falling_cutout" type="Sprite2D"]
-script = ExtResource("1_75cqb")
+script = ExtResource("1_6hwiy")
 
 [node name="drop_shadow" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0.5)
 show_behind_parent = true
 position = Vector2(-40, -20)
-script = ExtResource("2_td1ow")
+script = ExtResource("2_0xf8m")

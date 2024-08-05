@@ -5,10 +5,11 @@ extends Node2D
 
 signal generate_background(seed: int)
 signal cycle_formed(vertices: PackedVector2Array)
+signal ore_cutout(size: int)
 
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
-var ore_chunk_scene = preload("res://ore_chunk.tscn")
+var ore_chunk_scene = preload("res://ores/ore_chunk.tscn")
 
 var cracks = {}
 var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
@@ -18,17 +19,17 @@ func _ready():
 	generate_background.emit(randi())
 	
 	var ore = ore_chunk_scene.instantiate()  
-	ore.generate_with_config(Constants.BALL_CONFIG)
+	ore.generate_with_config(Constants.BALL_CONFIG, _ore_cutout)
 	ore.position = Vector2(600, 600)
 	$crack_holder.add_child(ore)
 	
 	ore = ore_chunk_scene.instantiate()  
-	ore.generate_with_config(Constants.NUGGET_CONFIG)
+	ore.generate_with_config(Constants.NUGGET_CONFIG, _ore_cutout)
 	ore.position = Vector2(100, 100)
 	$crack_holder.add_child(ore)
 	
 	ore = ore_chunk_scene.instantiate()  
-	ore.generate_with_config(Constants.BAND_CONFIG)
+	ore.generate_with_config(Constants.BAND_CONFIG, _ore_cutout)
 	ore.position = Vector2(1100, 100)
 	$crack_holder.add_child(ore)
 	
@@ -36,15 +37,6 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton && event.is_pressed() && circle_raycast(event.position).is_empty():
 		create_point(event.position)
-	elif event is InputEventKey and event.is_pressed() && not event.is_echo():
-		if event.keycode == KEY_SPACE:
-			get_tree().reload_current_scene()
-		elif event.keycode == KEY_ENTER:
-			await RenderingServer.frame_post_draw
-			var viewport = get_viewport()
-			var texture = viewport.get_texture()
-			texture.get_image().save_png('screenshot.png')
-		
 
 func create_point(position: Vector2):
 	pathfinder.add_point(holes.size(), position)
@@ -168,3 +160,6 @@ func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
 	var crack_vertices = crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
 	$crack_holder.add_child(crack)
 	return crack
+	
+func _ore_cutout(size: int):
+	ore_cutout.emit(size)

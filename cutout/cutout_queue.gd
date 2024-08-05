@@ -1,7 +1,7 @@
 extends Node2D
 
-var falling_cutout_scene = preload("res://falling_cutout.tscn")
-var cutout_scene = preload("res://cutout.tscn")
+var falling_cutout_scene = preload("res://cutout/falling_cutout.tscn")
+var cutout_scene = preload("res://cutout/cutout.tscn")
 var generated_wall_image: Image
 
 var queue = {}

@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://h5ydrs5ls1q2"]
+
+[ext_resource type="PackedScene" uid="uid://dkkjnrvv1puwq" path="res://wall.tscn" id="1_getul"]
+[ext_resource type="Script" path="res://game.gd" id="1_m6pba"]
+
+[node name="game" type="Node2D"]
+script = ExtResource("1_m6pba")
+
+[node name="wall_container" type="Node2D" parent="."]
+
+[node name="wall" parent="wall_container" instance=ExtResource("1_getul")]
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="wall_label" type="Label" parent="ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.825
+anchor_top = -0.65
+anchor_right = -0.825
+anchor_bottom = -0.575
+offset_left = 63.0
+offset_top = 47.0
+offset_right = 103.0
+offset_bottom = 70.0
+text = "Wall:"
+metadata/_edit_use_anchors_ = true
+
+[node name="wall_count" type="Label" parent="ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.825
+anchor_top = -0.65
+anchor_right = -0.825
+anchor_bottom = -0.65
+offset_left = 108.0
+offset_top = 48.0
+offset_right = 148.0
+offset_bottom = 74.0
+text = "1"
+metadata/_edit_use_anchors_ = true
+
+[node name="score_label" type="Label" parent="ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.825
+anchor_top = -0.65
+anchor_right = -0.625
+anchor_bottom = -0.65
+offset_left = 62.0
+offset_top = 77.0
+offset_right = 102.0
+offset_bottom = 103.0
+text = "Score:"
+metadata/_edit_use_anchors_ = true
+
+[node name="score_count" type="Label" parent="ui"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.825
+anchor_top = -0.65
+anchor_right = -0.825
+anchor_bottom = -0.65
+offset_left = 115.0
+offset_top = 78.0
+offset_right = 155.0
+offset_bottom = 104.0
+text = "0"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="ore_cutout" from="wall_container/wall" to="." method="_on_wall_ore_cutout"]

@@ -1,4 +1,5 @@
 extends Area2D
+class_name Cutout
 
 var cutout_vertices: PackedVector2Array
 

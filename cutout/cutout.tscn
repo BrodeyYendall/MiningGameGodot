@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://b36uw2ry80p7a"]
 
-[ext_resource type="Script" path="res://cutout.gd" id="1_6oxks"]
+[ext_resource type="Script" path="res://cutout/cutout.gd" id="1_gaxga"]
 
 [node name="cutout" type="Area2D"]
-script = ExtResource("1_6oxks")
+script = ExtResource("1_gaxga")
 
 [node name="hitbox" type="CollisionPolygon2D" parent="."]
