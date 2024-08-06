@@ -33,6 +33,9 @@ modulate = Color(1, 1, 1, 0.97)
 [node name="crack_holder" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0.97)
 
+[node name="ore_generator" type="Node2D" parent="."]
+script = ExtResource("5_ce6x1")
+
 [node name="cutout_queue" type="Node2D" parent="."]
 script = ExtResource("4_agkfe")
 
@@ -40,8 +43,6 @@ script = ExtResource("4_agkfe")
 
 [node name="falling_cutout_holder" type="Node2D" parent="cutout_queue"]
 
-[node name="ore_generator" type="Node2D" parent="."]
-script = ExtResource("5_ce6x1")
-
 [connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
 [connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]
+[connection signal="generate_background" from="." to="ore_generator" method="_generate_ores"]

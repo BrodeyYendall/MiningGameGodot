@@ -1,9 +1,13 @@
 extends Node2D
 class_name OreChunk
 
+var oreType: OreTypes.OreType
 var ores = []
 
-func generate_with_config(config: Constants.OreChunkConfig, ore_cutout_callback):
+func generate_with_config(oreType: OreTypes.OreType, ore_cutout_callback):
+	self.oreType = oreType
+	var config = OreTypes.get_ore_config(oreType)
+	
 	var fail_count = 0
 	while ores.size() <= config.max_ore and fail_count <= config.max_fails:
 		var rand_position = Vector2(randi_range(0, config.width), randi_range(0, config.width))
@@ -18,7 +22,7 @@ func generate_with_config(config: Constants.OreChunkConfig, ore_cutout_callback)
 			fail_count += 1
 		else:
 			var ore = config.ore_type.instantiate()
-			ore.generate_ore(randi_range(config.ore_width[0], config.ore_width[1]))
+			ore.generate_ore(oreType, randi_range(config.ore_width[0], config.ore_width[1]))
 			ore.position = rand_position
 			ores.append(ore)
 			add_child(ore)

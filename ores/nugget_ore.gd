@@ -2,13 +2,15 @@ extends Crack
 class_name NuggetOre
 
 var size = 0
-signal ore_cutout(area: int)
+var oreType: OreTypes.OreType
+signal ore_cutout(ore: OreTypes.OreType, size: int)
 
 var SMOOTH_SEGMENTS = 5
 var SMOOTH_INCREMENTS = 5
 var MIN_WIDTH = (SMOOTH_INCREMENTS * 2) + 1  # The min distance between the two lines before we end smoothing
 	
-func generate_ore(size: float):
+func generate_ore(oreType: OreTypes.OreType, size: float):
+	self.oreType = oreType
 	generate_vertices_for_dir(Vector2(0, 0), Vector2(1, 0), size, Constants.CHUNK_ORE_CONFIG)
 	
 func generate_crack_line(start: Vector2, direction: Vector2, distance: float) -> Array[PackedVector2Array]:
@@ -59,7 +61,7 @@ func _on_area_entered(area):
 	if area is Cutout:
 		if size == 0:
 			calculate_size()
-		ore_cutout.emit(size)
+		ore_cutout.emit(oreType, size)
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -74,4 +76,4 @@ func _draw():
 	shortened_vertices.append_array(top_line)
 	shortened_vertices.append_array(bottom_copy)
 	
-	draw_colored_polygon(shortened_vertices, Color.CADET_BLUE)
+	draw_colored_polygon(shortened_vertices, OreTypes.get_ore_color(oreType))

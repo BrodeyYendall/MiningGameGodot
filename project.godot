@@ -28,6 +28,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Constants="*res://game_data/constants.gd"
+OreTypes="*res://game_data/ore_types.gd"
 
 [display]
 
@@ -39,4 +40,4 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg")
+enabled=PackedStringArray()

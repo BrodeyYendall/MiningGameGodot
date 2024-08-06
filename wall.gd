@@ -9,7 +9,6 @@ signal ore_cutout(size: int)
 
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
-var ore_chunk_scene = preload("res://ores/ore_chunk.tscn")
 
 var cracks = {}
 var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
@@ -17,21 +16,6 @@ var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
 	generate_background.emit(randi())
-	
-	var ore = ore_chunk_scene.instantiate()  
-	ore.generate_with_config(Constants.BALL_CONFIG, _ore_cutout)
-	ore.position = Vector2(600, 600)
-	$crack_holder.add_child(ore)
-	
-	ore = ore_chunk_scene.instantiate()  
-	ore.generate_with_config(Constants.NUGGET_CONFIG, _ore_cutout)
-	ore.position = Vector2(100, 100)
-	$crack_holder.add_child(ore)
-	
-	ore = ore_chunk_scene.instantiate()  
-	ore.generate_with_config(Constants.BAND_CONFIG, _ore_cutout)
-	ore.position = Vector2(1100, 100)
-	$crack_holder.add_child(ore)
 	
 
 func _input(event):
@@ -161,5 +145,5 @@ func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
 	$crack_holder.add_child(crack)
 	return crack
 	
-func _ore_cutout(size: int):
-	ore_cutout.emit(size)
+func _ore_cutout(ore: OreTypes.OreType, size: int):
+	ore_cutout.emit(ore, size)

@@ -1,16 +1,18 @@
 extends Area2D
 
 var ore_vertices: PackedVector2Array
+var oreType: OreTypes.OreType
 var size = 0
 
-signal ore_cutout(area: int)
+signal ore_cutout(ore: OreTypes.OreType, size: int)
 
 var VARIANCE = 4
 var MAX_VARIANCE = 8
 var SEGMENT_SIZE = 32
 var TOTAL_RADIUS = 64
 
-func generate_ore(size: int):
+func generate_ore(oreType: OreTypes.OreType, size: int):
+	self.oreType = oreType
 	self.size = size
 	ore_vertices = PackedVector2Array()
 	var offset = 0
@@ -28,9 +30,9 @@ func generate_ore(size: int):
 	$hitbox.polygon = ore_vertices
 
 func _draw():
-	draw_colored_polygon(ore_vertices, Color.GOLDENROD)
+	draw_colored_polygon(ore_vertices, OreTypes.get_ore_color(oreType))
 
 
 func _on_area_entered(area):
 	if area is Cutout:
-		ore_cutout.emit(size)
+		ore_cutout.emit(oreType, size)
