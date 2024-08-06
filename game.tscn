@@ -1,14 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://h5ydrs5ls1q2"]
+[gd_scene load_steps=2 format=3 uid="uid://h5ydrs5ls1q2"]
 
-[ext_resource type="PackedScene" uid="uid://dkkjnrvv1puwq" path="res://wall.tscn" id="1_getul"]
 [ext_resource type="Script" path="res://game.gd" id="1_m6pba"]
 
 [node name="game" type="Node2D"]
 script = ExtResource("1_m6pba")
 
 [node name="wall_container" type="Node2D" parent="."]
-
-[node name="wall" parent="wall_container" instance=ExtResource("1_getul")]
 
 [node name="ui" type="Control" parent="."]
 layout_mode = 3
@@ -51,5 +48,3 @@ offset_left = 1.0
 offset_top = 50.0
 offset_right = 115.0
 offset_bottom = 106.0
-
-[connection signal="ore_cutout" from="wall_container/wall" to="." method="_on_wall_ore_cutout"]

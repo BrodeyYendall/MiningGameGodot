@@ -9,13 +9,16 @@ var ore_score_scene = preload("res://ore_score_row.tscn")
 var current_wall: Node2D
 
 func _ready():
-	current_wall = $wall_container/wall
+	create_new_wall()
 
 func _input(event):
 	if event is InputEventKey and event.is_pressed() && not event.is_echo():
 		if event.keycode == KEY_SPACE:
-			create_new_wall()
 			wall_count += 1
+			
+			current_wall.free()
+			create_new_wall()
+			
 			$ui/wall_count.text = str(wall_count)
 		elif event.keycode == KEY_ENTER:
 			await RenderingServer.frame_post_draw
@@ -24,8 +27,8 @@ func _input(event):
 			texture.get_image().save_png('screenshot.png')
 			
 func create_new_wall():
-	current_wall.queue_free()
 	current_wall = wall_scene.instantiate()
+	current_wall.with_data(wall_count)
 	$wall_container.add_child(current_wall)
 	current_wall.ore_cutout.connect(_on_wall_ore_cutout)
 
@@ -41,7 +44,7 @@ func _on_wall_ore_cutout(ore: OreTypes.OreType, size: int):
 		scores[ore] = new_ore_score_row
 		
 func adjust_score(ore: OreTypes.OreType, size: int) -> float:
-	return round_num(size / 300.0, 2)
+	return 1
 
 func round_num(num: float, places: int):
 	return (round(num*pow(10.0,places))/pow(10.0,places))

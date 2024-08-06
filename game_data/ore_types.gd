@@ -1,5 +1,5 @@
 extends Node
-enum OreType {COPPER, ZINC, IRON, COAL, ALUMINIUM, NICKEL, MANGANESE, OSMIUM, PLATINUM}
+enum OreType {COPPER, ZINC, IRON, COAL, ALUMINIUM, NICKEL, MANGANESE, OSMIUM, PLATINUM, UNKNOWN}
 
 func get_ore_name(oreType: OreType) -> String:
 	match oreType:
@@ -21,6 +21,7 @@ func get_ore_name(oreType: OreType) -> String:
 			return "Osmium"
 		OreType.PLATINUM:
 			return "Platinum"
+	assert(false, "Failed to get ore name")
 	return "Unkown"
 	
 func get_ore_config(oreType: OreType) -> Constants.OreChunkConfig:
@@ -31,6 +32,7 @@ func get_ore_config(oreType: OreType) -> Constants.OreChunkConfig:
 			return Constants.BALL_CONFIG
 		OreType.IRON:
 			return Constants.BAND_CONFIG
+	assert(false, "Failed to get ore config")
 	return null
 	
 func get_ore_color(oreType: OreType) -> Color:
@@ -41,5 +43,6 @@ func get_ore_color(oreType: OreType) -> Color:
 			return Color.LIGHT_GRAY
 		OreType.IRON:
 			return Color.CADET_BLUE
+	assert(false, "Failed to get ore color")
 	return Color.BLACK
 	

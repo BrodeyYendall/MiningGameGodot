@@ -1,8 +1,18 @@
 extends TileMap
 
-func _on_wall_generate_background(seed: int):
+var ROCK_TYPE_THRESHOLDS = {
+	1: 0,
+	30: 1,
+	60: 2
+}
+var current_rock_type = 0
+
+func _on_wall_generate_background(wall_count: int):
+	if wall_count in ROCK_TYPE_THRESHOLDS:
+		current_rock_type = ROCK_TYPE_THRESHOLDS[wall_count]
+	
 	var noise = FastNoiseLite.new()
-	noise.set_seed(seed)
+	noise.set_seed(randi())
 	noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX_SMOOTH)
 	
 	var window_size = get_viewport().size / 8
@@ -33,9 +43,9 @@ func _on_wall_generate_background(seed: int):
 		for y in range(window_size.y):
 			var atlasTarget: Vector2
 			if map[y][x] == 0:
-				atlasTarget = Vector2(1, 0)
+				atlasTarget = Vector2(1, current_rock_type)
 			else:
-				atlasTarget = Vector2(0, 0)
+				atlasTarget = Vector2(0, current_rock_type)
 			set_cell(0, Vector2(x, y), 0, atlasTarget)
 	
 func get_tile_sum(map:Array, x: int, y:int, width: int, height: int):

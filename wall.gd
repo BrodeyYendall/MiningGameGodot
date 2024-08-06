@@ -3,20 +3,23 @@ extends Node2D
 @export var crack_distance = 300
 @export var new_hole_hitbox = 40
 
-signal generate_background(seed: int)
+signal generate_background(wall_count: int)
 signal cycle_formed(vertices: PackedVector2Array)
 signal ore_cutout(size: int)
 
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
 
+var wall_count = 1
 var cracks = {}
 var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
 var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
-	generate_background.emit(randi())
-	
+	generate_background.emit(wall_count)
+
+func with_data(wall_count: int):
+	self.wall_count = wall_count
 
 func _input(event):
 	if event is InputEventMouseButton && event.is_pressed() && circle_raycast(event.position).is_empty():
@@ -24,7 +27,6 @@ func _input(event):
 
 func create_point(position: Vector2):
 	pathfinder.add_point(holes.size(), position)
-	#raycast_around_point(position)
 		
 	var new_connections = create_new_cracks(position)
 	
