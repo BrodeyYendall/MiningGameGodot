@@ -32,19 +32,11 @@ func create_new_wall():
 	$wall_container.add_child(current_wall)
 	current_wall.ore_cutout.connect(_on_wall_ore_cutout)
 
-func _on_wall_ore_cutout(ore: OreTypes.OreType, size: int):
-	var score_for_size = adjust_score(ore, size)
-	
+func _on_wall_ore_cutout(ore: OreTypes.OreType, _size: int):
 	if ore in scores:
-		scores[ore].increment_count(score_for_size)
+		scores[ore].increment_count()
 	else:
 		var new_ore_score_row = ore_score_scene.instantiate()
-		new_ore_score_row.with_data(ore, score_for_size)
+		new_ore_score_row.with_data(ore)
 		$ui/scores.add_child(new_ore_score_row)
 		scores[ore] = new_ore_score_row
-		
-func adjust_score(ore: OreTypes.OreType, size: int) -> float:
-	return 1
-
-func round_num(num: float, places: int):
-	return (round(num*pow(10.0,places))/pow(10.0,places))
