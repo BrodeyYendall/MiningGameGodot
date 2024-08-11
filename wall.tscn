@@ -1,30 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkkjnrvv1puwq"]
+[gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
 
 [ext_resource type="Script" path="res://wall.gd" id="1_bc856"]
-[ext_resource type="Texture2D" uid="uid://wlxpbk2fl55k" path="res://gray_rock_tiles.png" id="2_gfq23"]
 [ext_resource type="Script" path="res://background.gd" id="3_hyv85"]
 [ext_resource type="Script" path="res://cutout/cutout_queue.gd" id="4_agkfe"]
+[ext_resource type="Resource" uid="uid://by2xncyvekmvm" path="res://game_data/ore_spawn_levels.tres" id="5_bqbj5"]
 [ext_resource type="Script" path="res://ores/ore_generator.gd" id="5_ce6x1"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bhxh1"]
-texture = ExtResource("2_gfq23")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-1:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-0:2/0 = 0
-1:2/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_b2j44"]
-sources/0 = SubResource("TileSetAtlasSource_bhxh1")
 
 [node name="wall" type="Node2D"]
 script = ExtResource("1_bc856")
 
-[node name="background" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_b2j44")
-format = 2
+[node name="background" type="Sprite2D" parent="."]
+scale = Vector2(6, 6)
 script = ExtResource("3_hyv85")
 
 [node name="hole_holder" type="Node2D" parent="."]
@@ -35,6 +21,7 @@ modulate = Color(1, 1, 1, 0.97)
 
 [node name="ore_generator" type="Node2D" parent="."]
 script = ExtResource("5_ce6x1")
+levels = ExtResource("5_bqbj5")
 
 [node name="cutout_queue" type="Node2D" parent="."]
 script = ExtResource("4_agkfe")

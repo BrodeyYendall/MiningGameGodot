@@ -1,19 +1,13 @@
-extends TileMap
+extends Sprite2D
 
-var ROCK_TYPE_THRESHOLDS = {
-	1: 0,
-	30: 1,
-	60: 2
+@export var ROCK_COLORS = {
+	1: [Color(0.557, 0.557, 0.557), Color(0.498, 0.498, 0.498), Color(0.466, 0.466, 0.466)]
 }
-var current_rock_type = 0
+
+var current_rock_colors = 0
 
 func _on_wall_generate_background(wall_count: int):
-	if wall_count in ROCK_TYPE_THRESHOLDS:
-		current_rock_type = ROCK_TYPE_THRESHOLDS[wall_count]
-	
-	var noise = FastNoiseLite.new()
-	noise.set_seed(randi())
-	noise.set_noise_type(FastNoiseLite.TYPE_SIMPLEX_SMOOTH)
+	current_rock_colors = ROCK_COLORS[1] # TODO Do this properly by handling this object being reset
 	
 	var window_size = get_viewport().size / 8
 	var map: Array = create_background_matrix(window_size.x, window_size.y)
@@ -21,32 +15,41 @@ func _on_wall_generate_background(wall_count: int):
 	for x in range(window_size.x):
 		for y in range(window_size.y):
 			var rand = randf()
-			if rand >= 0.60:
+			if rand >= 0.55:
 				map[y][x] = 1
 			else:
 				map[y][x] = 0
 			
-	for iteration in range(3):
+	for iteration in range(2):
 		var updated_map = create_background_matrix(window_size.x, window_size.y)
 		for x in range(window_size.x):
 			for y in range(window_size.y):
 				var sum = get_tile_sum(map, x, y, window_size.x, window_size.y)
 				
-				var atlasTarget: Vector2
 				if sum <= 4:
 					updated_map[y][x] = 0
 				else:
 					updated_map[y][x] = 1
 		map = updated_map
 	
+	
+	var image = Image.create(window_size.x, window_size.y, false, Image.FORMAT_RGBA8)
 	for x in range(window_size.x):
 		for y in range(window_size.y):
-			var atlasTarget: Vector2
-			if map[y][x] == 0:
-				atlasTarget = Vector2(1, current_rock_type)
+			var sum = get_tile_sum(map, x, y, window_size.x, window_size.y)
+			
+			var color: Color
+			if sum <= 4:
+				if sum >= 1:
+					color = current_rock_colors[1]
+				else:
+					color = current_rock_colors[0]
 			else:
-				atlasTarget = Vector2(0, current_rock_type)
-			set_cell(0, Vector2(x, y), 0, atlasTarget)
+				color = current_rock_colors[2]
+				
+			image.set_pixel(x, y, color)
+	texture = ImageTexture.create_from_image(image)
+	texture_filter = CanvasItem.TextureFilter.TEXTURE_FILTER_NEAREST # Changes sprite scaling to stop the texture becoming blurry
 	
 func get_tile_sum(map:Array, x: int, y:int, width: int, height: int):
 	var sum = 0
