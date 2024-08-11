@@ -1,12 +1,13 @@
 extends Node2D
 
-var scores = {}
-var wall_count = 1
+var scores: Dictionary = {}
+var wall_count: int = 1
+var ores_dugs: int = 0
 
-var wall_scene = preload("res://wall.tscn")
-var ore_score_scene = preload("res://ore_score_row.tscn")
+var wall_scene: PackedScene = preload("res://wall.tscn")
+var ore_score_scene: PackedScene = preload("res://ore_score_row.tscn")
 
-var current_wall: Node2D
+var current_wall
 
 func _ready():
 	create_new_wall()
@@ -14,17 +15,21 @@ func _ready():
 func _input(event):
 	if event is InputEventKey and event.is_pressed() && not event.is_echo():
 		if event.keycode == KEY_SPACE:
-			wall_count += 1
-			
-			current_wall.free()
-			create_new_wall()
+			cycle_walls()
 			
 			$ui/wall_count.text = str(wall_count)
 		elif event.keycode == KEY_ENTER:
 			await RenderingServer.frame_post_draw
-			var viewport = get_viewport()
-			var texture = viewport.get_texture()
+			var viewport: Viewport = get_viewport()
+			var texture: ViewportTexture = viewport.get_texture()
 			texture.get_image().save_png('screenshot.png')
+			
+func cycle_walls():
+	wall_count += 1
+		
+	current_wall.visible = false # TODO Find way to hide wall and limit raycasting to the specific wall so that walls can be preloaded.
+	current_wall.queue_free()
+	create_new_wall()
 			
 func create_new_wall():
 	current_wall = wall_scene.instantiate()
@@ -32,7 +37,7 @@ func create_new_wall():
 	$wall_container.add_child(current_wall)
 	current_wall.ore_cutout.connect(_on_wall_ore_cutout)
 
-func _on_wall_ore_cutout(ore: OreTypes.OreType, _size: int):
+func _on_wall_ore_cutout(ore: OreTypes.OreType, wall_reference: int):
 	if ore in scores:
 		scores[ore].increment_count()
 	else:
@@ -40,3 +45,9 @@ func _on_wall_ore_cutout(ore: OreTypes.OreType, _size: int):
 		new_ore_score_row.with_data(ore)
 		$ui/scores.add_child(new_ore_score_row)
 		scores[ore] = new_ore_score_row
+	
+	if wall_reference == wall_count:
+		ores_dugs += 1
+		if ores_dugs >= 10:
+			cycle_walls()
+			ores_dugs = 0

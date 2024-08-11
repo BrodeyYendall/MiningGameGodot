@@ -147,5 +147,5 @@ func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
 	$crack_holder.add_child(crack)
 	return crack
 	
-func _ore_cutout(ore: OreTypes.OreType, size: int):
-	ore_cutout.emit(ore, size)
+func _ore_cutout(ore: OreTypes.OreType, wall_reference: int):
+	ore_cutout.emit(ore, wall_reference)
