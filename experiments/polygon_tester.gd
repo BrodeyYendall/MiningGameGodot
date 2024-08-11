@@ -1,7 +1,7 @@
 extends Node2D
 
 var iteration = 0
-var vertices = [Vector2(590, 609), Vector2(595, 604), Vector2(600, 602), Vector2(605, 598), Vector2(610, 594), Vector2(620, 591), Vector2(630, 596), Vector2(640, 594), Vector2(650, 595), Vector2(660, 596), Vector2(670, 591), Vector2(680, 593), Vector2(685, 595), Vector2(690, 599), Vector2(695, 604), Vector2(700, 608), Vector2(705, 611), Vector2(705, 619), Vector2(700, 624), Vector2(695, 628), Vector2(690, 633), Vector2(685, 637), Vector2(680, 638), Vector2(670, 634), Vector2(660, 641), Vector2(650, 640), Vector2(640, 639), Vector2(630, 641), Vector2(620, 631), Vector2(610, 636), Vector2(605, 633), Vector2(600, 628), Vector2(595, 624), Vector2(590, 619)]
+var vertices = [Vector2(25, 1), Vector2(26.86863, 11.71514), Vector2(23.62742, 23.62742), Vector2(12.24587, 29.56414), Vector2(1, 37), Vector2(-15.3688, 47.34622), Vector2(-37.59798, 41.59798), Vector2(-54.43277, 23.96101), Vector2(-69, 3), Vector2(-71.91036, -28.61468), Vector2(-63.88225, -63.88225), Vector2(-39.92201, -104.8655), Vector2(6, -138), Vector2(70.29082, -149.2118), Vector2(137.9361, -127.9361), Vector2(201.8625, -75.12889)]
 var alt_vertices = []
 var already_existed = {}
 

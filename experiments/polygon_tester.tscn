@@ -5,5 +5,4 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="polygon_tester" type="Node2D" parent="."]
-scale = Vector2(8, 8)
 script = ExtResource("1_nsuid")

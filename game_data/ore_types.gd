@@ -35,6 +35,15 @@ func get_ore_config(oreType: OreType) -> Constants.OreChunkConfig:
 	assert(false, "Failed to get ore config")
 	return null
 	
+func get_crack_generation_config(oreType: OreType) -> Constants.CrackConfig:
+	match oreType:
+		OreType.COPPER:
+			return Constants.NUGGET_ORE_CONFIG
+		OreType.IRON:
+			return Constants.BAND_ORE_CONFIG
+	assert(false, "Failed to get crack generation config")
+	return null
+	
 func get_ore_color(oreType: OreType) -> Color:
 	match oreType:
 		OreType.COPPER:

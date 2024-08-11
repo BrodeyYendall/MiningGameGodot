@@ -13,3 +13,6 @@ func _ready():
 
 func _draw():
 	draw_colored_polygon(cutout_vertices, Color.BLACK)
+
+func point_is_inside(point: Vector2) -> bool:
+	return Geometry2D.is_point_in_polygon(point, cutout_vertices)

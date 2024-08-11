@@ -1,27 +1,24 @@
-extends Crack
+extends Ore
 class_name NuggetOre
 
-var size = 0
-var oreType: OreTypes.OreType
-signal ore_cutout(ore: OreTypes.OreType, size: int)
+var top_line: PackedVector2Array = PackedVector2Array()
+var bottom_line: PackedVector2Array = PackedVector2Array()
+var centre_position = null
 
 var SMOOTH_SEGMENTS = 2
 var SMOOTH_INCREMENTS = 2
 var MIN_WIDTH = (SMOOTH_INCREMENTS * 2) + 1  # The min distance between the two lines before we end smoothing
 	
-func generate_ore(oreType: OreTypes.OreType, size: float):
-	self.oreType = oreType
-	generate_vertices_for_dir(Vector2(0, 0), Vector2(1, 0), size, Constants.NUGGET_ORE_CONFIG)
-	
-func generate_crack_line(start: Vector2, direction: Vector2, distance: float) -> Array[PackedVector2Array]:
-	var crack_lines = super.generate_crack_line(start, direction, distance)
+func _generate_ore():	
+	var config = OreTypes.get_crack_generation_config(oreType)
+	var crack_lines = RandomUtils.generate_crack_line(config, Vector2(0, 0), Vector2(1, 0), size)
 	
 	var start_smooth = smooth_tip(crack_lines[0][0], crack_lines[1][0], Vector2(-1, 0))
 	start_smooth[0].reverse()
 	start_smooth[1].reverse()
 	
-	var top_line = start_smooth[0]
-	var bottom_line = start_smooth[1]
+	top_line = start_smooth[0]
+	bottom_line = start_smooth[1]
 	
 	top_line.append_array(crack_lines[0])
 	bottom_line.append_array(crack_lines[1])
@@ -29,10 +26,13 @@ func generate_crack_line(start: Vector2, direction: Vector2, distance: float) ->
 	var end_smooth = smooth_tip(top_line[-1], bottom_line[-1], Vector2(1, 0))
 	top_line.append_array(end_smooth[0])
 	bottom_line.append_array(end_smooth[1])
-	
-	return [top_line, bottom_line]
+		
+	generate_hitbox()
+	randomly_rotate()
 	
 func smooth_tip(top: Vector2, bottom: Vector2, direction: Vector2):
+	var perpendicular_direction = Vector2(0, 1)
+	
 	var new_top_line = PackedVector2Array()
 	var new_bottom_line = PackedVector2Array()
 	
@@ -52,20 +52,25 @@ func smooth_tip(top: Vector2, bottom: Vector2, direction: Vector2):
 		new_bottom_line.append(current_bottom)
 		
 	return [new_top_line, new_bottom_line]
-
-func calculate_size():
-	for i in range(top_line.size()):
-		size += bottom_line[i].y - top_line[i].y
-
-func _on_area_entered(area):
-	if area is Cutout:
-		if size == 0:
-			calculate_size()
-		ore_cutout.emit(oreType, size)
 	
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	set_process(false)
+func generate_hitbox():	
+	var hitbox_vertices = PackedVector2Array()
+	hitbox_vertices.append_array(top_line)
+	
+	var bottom_copy = bottom_line.duplicate()
+	bottom_copy.reverse()
+	hitbox_vertices.append_array(bottom_copy)
+	
+	$hitbox.set_polygon(hitbox_vertices)
+	
+func randomly_rotate():
+	rotation += randi_range(0, 180)
+	
+func _get_centre_position() -> Vector2:
+	if centre_position == null:
+		var middle_index = top_line.size() / 2
+		centre_position = position + (top_line[middle_index] + bottom_line[middle_index]) / 2
+	return centre_position # This method should be implemented by the child
 
 func _draw():	
 	var shortened_vertices = PackedVector2Array()

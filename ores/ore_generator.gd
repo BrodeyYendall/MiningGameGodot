@@ -25,7 +25,7 @@ func _generate_ores(wall_count: int):
 func create_ore(oreType: OreTypes.OreType, position: Vector2):
 	var config = OreTypes.get_ore_config(oreType)
 	var ore = config.ore_type.instantiate()
-	ore.generate_ore(oreType, randi_range(config.ore_width[0], config.ore_width[1]))
+	ore.create(oreType, randi_range(config.ore_width[0], config.ore_width[1]))
 	ore.position = position
 	add_child(ore)
 	
@@ -55,25 +55,3 @@ func circle_raycast(position: Vector2, radius: int, max_results = 1) -> Array:
 	query.transform.origin = position
 	
 	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
-	
-#@export var LEVELS = {
-#	1: [
-#		[OreTypes.OreType.COPPER, 100]
-#	],
-#	3: [
-#			[OreTypes.OreType.COPPER, 95],
-#			[OreTypes.OreType.ZINC, 5]
-#		],
-#	5: [
-#			[OreTypes.OreType.COPPER, 90],
-#			[OreTypes.OreType.ZINC, 10]
-#		],
-#	8: [
-#			[OreTypes.OreType.COPPER, 85],
-#			[OreTypes.OreType.ZINC, 15]
-#		],
-#	10: [
-#			[OreTypes.OreType.COPPER, 80],
-#			[OreTypes.OreType.ZINC, 20]
-#		]
-#}

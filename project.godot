@@ -29,6 +29,7 @@ config/icon="res://icon.svg"
 
 Constants="*res://game_data/constants.gd"
 OreTypes="*res://game_data/ore_types.gd"
+RandomUtils="*res://random_utils.gd"
 
 [display]
 

@@ -6,3 +6,5 @@
 script = ExtResource("1_gaxga")
 
 [node name="hitbox" type="CollisionPolygon2D" parent="."]
+
+[connection signal="tree_entered" from="." to="." method="_on_tree_entered"]

@@ -1,15 +1,13 @@
-extends Area2D
+extends Ore
 
 var ore_vertices: PackedVector2Array
-var oreType: OreTypes.OreType
-var size = 0
 
 var VARIANCE = 2
 var MAX_VARIANCE = 6
 var SEGMENT_SIZE = 16
 var TOTAL_RADIUS = 64
 
-func generate_ore(oreType: OreTypes.OreType, size: int):
+func _generate_ore():
 	self.oreType = oreType
 	self.size = size
 	ore_vertices = PackedVector2Array()
@@ -20,7 +18,6 @@ func generate_ore(oreType: OreTypes.OreType, size: int):
 	for segment in range(SEGMENT_SIZE):
 		offset = randi_range(max(0, offset - VARIANCE), min(MAX_VARIANCE, offset + VARIANCE))
 		
-		self.size += offset * segment_ratio
 		var angle = (PI * 2 / SEGMENT_SIZE) * segment
 		var x = offset + size * cos(angle)
 		var y = offset + size * sin(angle)
@@ -28,9 +25,9 @@ func generate_ore(oreType: OreTypes.OreType, size: int):
 	$hitbox.polygon = ore_vertices
 
 func _draw():
-	draw_colored_polygon(ore_vertices, OreTypes.get_ore_color(oreType))
-
-
-func _on_area_entered(area):
-	if area is Cutout:
-		ore_cutout.emit(oreType, size)
+	var color = OreTypes.get_ore_color(oreType)
+	draw_colored_polygon(ore_vertices, color)
+	draw_polyline(ore_vertices, color.darkened(0.1), 1)
+	
+func _get_centre_position():
+	return position
