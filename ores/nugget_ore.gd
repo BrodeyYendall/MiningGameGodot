@@ -5,13 +5,13 @@ var size = 0
 var oreType: OreTypes.OreType
 signal ore_cutout(ore: OreTypes.OreType, size: int)
 
-var SMOOTH_SEGMENTS = 5
-var SMOOTH_INCREMENTS = 5
+var SMOOTH_SEGMENTS = 2
+var SMOOTH_INCREMENTS = 2
 var MIN_WIDTH = (SMOOTH_INCREMENTS * 2) + 1  # The min distance between the two lines before we end smoothing
 	
 func generate_ore(oreType: OreTypes.OreType, size: float):
 	self.oreType = oreType
-	generate_vertices_for_dir(Vector2(0, 0), Vector2(1, 0), size, Constants.CHUNK_ORE_CONFIG)
+	generate_vertices_for_dir(Vector2(0, 0), Vector2(1, 0), size, Constants.NUGGET_ORE_CONFIG)
 	
 func generate_crack_line(start: Vector2, direction: Vector2, distance: float) -> Array[PackedVector2Array]:
 	var crack_lines = super.generate_crack_line(start, direction, distance)
@@ -76,4 +76,9 @@ func _draw():
 	shortened_vertices.append_array(top_line)
 	shortened_vertices.append_array(bottom_copy)
 	
-	draw_colored_polygon(shortened_vertices, OreTypes.get_ore_color(oreType))
+	var color = OreTypes.get_ore_color(oreType)
+	draw_colored_polygon(shortened_vertices,color)
+	
+	var outline_vertices = shortened_vertices.duplicate()
+	outline_vertices.append(shortened_vertices[0])
+	draw_polyline(outline_vertices, color.darkened(0.05), 2)

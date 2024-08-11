@@ -1,18 +1,17 @@
 extends Node
 
-const SCREEN_WIDTH = 1920
-const SCREEN_HEIGHT = 1080
+const SCREEN_WIDTH = 640
+const SCREEN_HEIGHT = 360
 
 const HOLE_SIZE = 5
-var CUTOUT_CRACK_CONFIG = CrackConfig.new(6, 12, 5, 3, 10, 0.04)
-var LARGE_CRACK_CONFIG = CrackConfig.new(10, 40, 15, 5, 1000)
+var CUTOUT_CRACK_CONFIG = CrackConfig.new(3, 8, 2, 1, 4, 0.04, 10)
 
-var CHUNK_ORE_CONFIG = CrackConfig.new(40, 50, 5, 5, 10, 0.0, 10)
-var BAND_ORE_CONFIG = CrackConfig.new(20, 24, 2, 2, 4, 0.0, 10)
+var NUGGET_ORE_CONFIG = CrackConfig.new(10, 20, 2, 2, 4, 0.0, 5)
+var BAND_ORE_CONFIG = CrackConfig.new(5, 10, 1, 1, 2, 0.0, 5)
 
-var NUGGET_CONFIG = OreChunkConfig.new([30, 70], 80, 6, 4, preload("res://ores/nugget_ore.tscn"))
-var BAND_CONFIG = OreChunkConfig.new([100, 200], 80, 6, 4, preload("res://ores/band_ore.tscn"))
-var BALL_CONFIG = OreChunkConfig.new([30, 50], 100, 6, 4, preload("res://ores/ball_ore.tscn"))
+var NUGGET_CONFIG = OreChunkConfig.new([20, 40], 80, 6, 4, preload("res://ores/nugget_ore.tscn"))
+var BAND_CONFIG = OreChunkConfig.new([80, 120], 80, 6, 4, preload("res://ores/band_ore.tscn"))
+var BALL_CONFIG = OreChunkConfig.new([15, 25], 100, 6, 4, preload("res://ores/ball_ore.tscn"))
 
 class CrackConfig:
 	var min_width: int

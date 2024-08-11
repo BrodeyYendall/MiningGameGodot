@@ -4,11 +4,9 @@ var ore_vertices: PackedVector2Array
 var oreType: OreTypes.OreType
 var size = 0
 
-signal ore_cutout(ore: OreTypes.OreType, size: int)
-
-var VARIANCE = 4
-var MAX_VARIANCE = 8
-var SEGMENT_SIZE = 32
+var VARIANCE = 2
+var MAX_VARIANCE = 6
+var SEGMENT_SIZE = 16
 var TOTAL_RADIUS = 64
 
 func generate_ore(oreType: OreTypes.OreType, size: int):

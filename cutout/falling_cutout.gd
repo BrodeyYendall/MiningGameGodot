@@ -1,6 +1,6 @@
 extends Sprite2D
 
-@export var fall_speed = 500
+@export var fall_speed = 150
 @export var rotate_speed = 0.5
 @export var drop_shadow_offset = Vector2(20, 20)
 
