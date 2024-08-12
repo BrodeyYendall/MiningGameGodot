@@ -1,7 +1,7 @@
 extends Node2D
 
-@export var crack_distance = 300
-@export var new_hole_hitbox = 40
+@export var crack_distance = 200
+@export var new_hole_hitbox = 20
 
 signal generate_background(wall_count: int)
 signal cycle_formed(vertices: PackedVector2Array)

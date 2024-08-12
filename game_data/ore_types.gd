@@ -24,14 +24,14 @@ func get_ore_name(oreType: OreType) -> String:
 	assert(false, "Failed to get ore name")
 	return "Unkown"
 	
-func get_ore_config(oreType: OreType) -> Constants.OreChunkConfig:
+func get_ore_config(oreType: OreType) -> OreChunkConfigs.OreChunkConfig:
 	match oreType:
 		OreType.COPPER:
-			return Constants.NUGGET_CONFIG
+			return OreChunkConfigs.NUGGET_CONFIG
 		OreType.ZINC:
-			return Constants.BALL_CONFIG
+			return OreChunkConfigs.BALL_CONFIG
 		OreType.IRON:
-			return Constants.BAND_CONFIG
+			return OreChunkConfigs.BAND_CONFIG
 	assert(false, "Failed to get ore config")
 	return null
 	
@@ -54,4 +54,3 @@ func get_ore_color(oreType: OreType) -> Color:
 			return Color.CADET_BLUE
 	assert(false, "Failed to get ore color")
 	return Color.BLACK
-	
