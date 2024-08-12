@@ -30,8 +30,6 @@ func create_ore(oreType: OreTypes.OreType, config: OreChunkConfigs.OreChunkConfi
 	ore.position = ore_position
 	add_child(ore)
 	
-	ore.ore_cutout.connect(get_parent()._ore_cutout)
-	
 func get_current_level(wall_count: int) -> OreSpawn:
 	for i in range(levels.levels.size()):
 		if levels.levels[i].wall_count_threshold > wall_count:

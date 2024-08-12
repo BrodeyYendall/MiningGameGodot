@@ -9,28 +9,31 @@
 [node name="wall" type="Node2D"]
 script = ExtResource("1_bc856")
 
-[node name="background" type="Sprite2D" parent="."]
+[node name="contents" type="Node2D" parent="."]
+
+[node name="background" type="Sprite2D" parent="contents"]
 scale = Vector2(6, 6)
 script = ExtResource("3_hyv85")
 
-[node name="hole_holder" type="Node2D" parent="."]
+[node name="hole_holder" type="Node2D" parent="contents"]
 modulate = Color(1, 1, 1, 0.97)
 
-[node name="crack_holder" type="Node2D" parent="."]
+[node name="crack_holder" type="Node2D" parent="contents"]
 modulate = Color(1, 1, 1, 0.97)
 
-[node name="ore_generator" type="Node2D" parent="."]
+[node name="ore_generator" type="Node2D" parent="contents"]
 script = ExtResource("5_ce6x1")
 levels = ExtResource("5_bqbj5")
+
+[node name="cutout_holder" type="Node2D" parent="contents"]
 
 [node name="cutout_queue" type="Node2D" parent="."]
 script = ExtResource("4_agkfe")
 
-[node name="cutout_holder" type="Node2D" parent="cutout_queue"]
-
-[node name="falling_cutout_holder" type="Node2D" parent="cutout_queue"]
+[node name="falling_cutout_holder" type="Node2D" parent="."]
 
 [connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
-[connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]
-[connection signal="generate_background" from="." to="ore_generator" method="_generate_ores"]
-[connection signal="image_changed" from="background" to="cutout_queue" method="_on_background_image_changed"]
+[connection signal="generate_background" from="." to="contents/background" method="_on_wall_generate_background"]
+[connection signal="generate_background" from="." to="contents/ore_generator" method="_generate_ores"]
+[connection signal="image_changed" from="contents/background" to="cutout_queue" method="_on_background_image_changed"]
+[connection signal="ore_cutout" from="cutout_queue" to="." method="_ore_cutout"]

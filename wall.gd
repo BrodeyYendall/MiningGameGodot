@@ -5,7 +5,7 @@ extends Node2D
 
 signal generate_background(wall_count: int)
 signal cycle_formed(vertices: PackedVector2Array)
-signal ore_cutout(size: int)
+signal ore_cutout(ore: OreTypes.OreType, wall_reference: int)
 
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
@@ -138,14 +138,20 @@ func get_from_crack_map(first_id: int, second_id: int, cutout_centre: Vector2) -
 func create_hole_scene(hole_position: Vector2):
 	var hole = hole_scene.instantiate()
 	hole.position = hole_position
-	$hole_holder.add_child(hole)
+	$contents/hole_holder.add_child(hole)
 	holes.append(hole)
 	
 func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
 	var crack = crack_scene.instantiate()  
 	var crack_vertices = crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
-	$crack_holder.add_child(crack)
+	$contents/crack_holder.add_child(crack)
 	return crack
 	
-func _ore_cutout(ore: OreTypes.OreType, wall_reference: int):
-	ore_cutout.emit(ore, wall_reference)
+func _ore_cutout(ore: OreTypes.OreType):
+	ore_cutout.emit(ore, wall_count)
+	
+func destroy():
+	set_process_input(false)
+	$contents.visible = false
+	$contents.queue_free()
+	$cutout_queue.destroy()

@@ -5,6 +5,8 @@ class_name FallingCutout
 @export var rotate_speed = 0.5
 @export var drop_shadow_offset = Vector2(8, 8)
 
+signal cutout_offscreen(ores: Array[Ore])
+
 var cutout_vertices: PackedVector2Array
 var background_image: Image
 var cutout_size: float
@@ -15,8 +17,9 @@ var height: int
 var min_x: int
 var min_y: int
 var rotation_direction: int
+var ores: Array[Ore] = []
 
-func with_data(cutout_vertices: PackedVector2Array, background_image: Image) -> Node2D:
+func with_data(cutout_vertices: PackedVector2Array, background_image: Image) -> FallingCutout:
 	self.cutout_vertices = cutout_vertices
 	self.background_image = background_image
 	calculate_cutout_bounding_box()
@@ -56,8 +59,9 @@ func _ready():
 func _process(delta):	
 	position.y += (fall_speed * delta) / adjusted_cutout_size
 	rotation += (rotate_speed * delta * rotation_direction) / adjusted_cutout_size
-	if position.y > 1080 + height:
+	if position.y > Constants.SCREEN_HEIGHT + max(height, width):
 		queue_free()
+		cutout_offscreen.emit(ores)
 	
 func calculate_cutout_bounding_box():
 	min_x = cutout_vertices[0].x
@@ -92,6 +96,7 @@ func calculate_area():
 	return area
 	
 func add_ore(ore: Ore):
+	ores.append(ore)
 	ore.get_parent().remove_child(ore)
 	add_child(ore)
 	ore.position -= Vector2(min_x, min_y) + (Vector2(width, height) / 2)

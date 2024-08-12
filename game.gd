@@ -27,14 +27,14 @@ func _input(event):
 func cycle_walls():
 	wall_count += 1
 		
-	current_wall.visible = false # TODO Find way to hide wall and limit raycasting to the specific wall so that walls can be preloaded.
-	current_wall.queue_free()
+	current_wall.destroy()
 	create_new_wall()
 			
 func create_new_wall():
 	current_wall = wall_scene.instantiate()
 	current_wall.with_data(wall_count)
 	$wall_container.add_child(current_wall)
+	$wall_container.move_child(current_wall, 0)
 	current_wall.ore_cutout.connect(_on_wall_ore_cutout)
 
 func _on_wall_ore_cutout(ore: OreTypes.OreType, wall_reference: int):
