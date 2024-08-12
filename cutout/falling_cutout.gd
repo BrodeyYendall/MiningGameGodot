@@ -1,11 +1,12 @@
 extends Sprite2D
+class_name FallingCutout
 
 @export var fall_speed = 150
 @export var rotate_speed = 0.5
-@export var drop_shadow_offset = Vector2(20, 20)
+@export var drop_shadow_offset = Vector2(8, 8)
 
 var cutout_vertices: PackedVector2Array
-var viewport_image: Image
+var background_image: Image
 var cutout_size: float
 var adjusted_cutout_size: float
 
@@ -15,16 +16,15 @@ var min_x: int
 var min_y: int
 var rotation_direction: int
 
-func with_data(cutout_vertices: PackedVector2Array, viewport_image: Image) -> Node2D:
+func with_data(cutout_vertices: PackedVector2Array, background_image: Image) -> Node2D:
 	self.cutout_vertices = cutout_vertices
-	self.viewport_image = viewport_image
+	self.background_image = background_image
+	calculate_cutout_bounding_box()
 	return self
 	
 func _ready():
 	assert(not cutout_vertices.is_empty(), "cutout created with vertices, please call with_data().")
-	
 	rotation_direction = -1 if randi_range(0, 1) == 0 else 1
-	calculate_cutout_bounding_box()
 	
 	cutout_size = calculate_area()
 	adjusted_cutout_size = cutout_size / 20000
@@ -35,11 +35,10 @@ func _ready():
 	
 	for y in range(height):
 		for x in range(width):
-			var world_x = x + min_x
-			var world_y = y + min_y
-			var inside_polygon = Geometry2D.is_point_in_polygon(Vector2(world_x, world_y), cutout_vertices)
+			var world_pos = Vector2(x, y) + Vector2(min_x, min_y)
+			var inside_polygon = Geometry2D.is_point_in_polygon(world_pos, cutout_vertices)
 			if inside_polygon:
-				var color = viewport_image.get_pixel(world_x, world_y)
+				var color = background_image.get_pixelv(world_pos / 8)
 				image.set_pixel(x, y, color)
 			else:
 				image.set_pixel(x, y, Color(0, 0, 0, 0)) # Set transparency outside the polygon
@@ -91,3 +90,9 @@ func calculate_area():
 	
 	area = abs(area) / 2.0
 	return area
+	
+func add_ore(ore: Ore):
+	ore.get_parent().remove_child(ore)
+	add_child(ore)
+	ore.position -= Vector2(min_x, min_y) + (Vector2(width, height) / 2)
+	ore.queue_redraw()

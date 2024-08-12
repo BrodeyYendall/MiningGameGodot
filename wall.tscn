@@ -33,3 +33,4 @@ script = ExtResource("4_agkfe")
 [connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
 [connection signal="generate_background" from="." to="background" method="_on_wall_generate_background"]
 [connection signal="generate_background" from="." to="ore_generator" method="_generate_ores"]
+[connection signal="image_changed" from="background" to="cutout_queue" method="_on_background_image_changed"]

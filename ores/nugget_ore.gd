@@ -64,12 +64,13 @@ func generate_hitbox():
 	$hitbox.set_polygon(hitbox_vertices)
 	
 func randomly_rotate():
-	rotation += randi_range(0, 180)
+	set_rotation_degrees(randi_range(0, 180))
 	
 func _get_centre_position() -> Vector2:
 	if centre_position == null:
 		var middle_index = top_line.size() / 2
-		centre_position = position + (top_line[middle_index] + bottom_line[middle_index]) / 2
+		centre_position = (top_line[middle_index] + bottom_line[middle_index]) / 2
+		centre_position = centre_position.rotated(rotation) + position
 	return centre_position # This method should be implemented by the child
 
 func _draw():	

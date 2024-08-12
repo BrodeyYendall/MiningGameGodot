@@ -24,10 +24,10 @@ func _generate_ores(wall_count: int):
 		else:
 			fail_count += 1
 
-func create_ore(oreType: OreTypes.OreType, config: OreChunkConfigs.OreChunkConfig, position: Vector2):
+func create_ore(oreType: OreTypes.OreType, config: OreChunkConfigs.OreChunkConfig, ore_position: Vector2):
 	var ore = config.ore_type.instantiate()
 	ore.create(oreType, randi_range(config.ore_width[0], config.ore_width[1]))
-	ore.position = position
+	ore.position = ore_position
 	add_child(ore)
 	
 	ore.ore_cutout.connect(get_parent()._ore_cutout)

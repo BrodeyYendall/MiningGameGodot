@@ -7,11 +7,6 @@ var generated_wall_image: Image
 var queue = {}
 var id_counter = 0
 
-func _ready():
-	await RenderingServer.frame_post_draw
-	generated_wall_image = get_viewport().get_texture().get_image()
-	
-
 func queue_cutout(cutout_vecters: PackedVector2Array, new_cracks: Array[SignalingCrack]):
 	var cutout = cutout_scene.instantiate().with_data(cutout_vecters)
 	cutout.visible = false
@@ -35,6 +30,10 @@ func crack_completed(cutout_id: int):
 		refered_cutout["cutout"].visible = true
 		
 		var falling_cutout = falling_cutout_scene.instantiate().with_data(refered_cutout["vertices"], generated_wall_image)
+		(refered_cutout["cutout"] as Cutout).add_falling_cutout_reference(falling_cutout)
 		$falling_cutout_holder.add_child(falling_cutout)
 		
 		queue[cutout_id] = null
+
+func _on_background_image_changed(new_image: Image):
+	generated_wall_image = new_image

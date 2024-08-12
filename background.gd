@@ -4,7 +4,12 @@ extends Sprite2D
 	1: [Color(0.557, 0.557, 0.557), Color(0.498, 0.498, 0.498), Color(0.466, 0.466, 0.466)]
 }
 
+signal image_changed(new_image: Image)
+
 var current_rock_colors = 0
+
+func _ready():
+	scale = Vector2(Constants.BACKGROUND_SCALE, Constants.BACKGROUND_SCALE)
 
 func _on_wall_generate_background(wall_count: int):
 	current_rock_colors = ROCK_COLORS[1] # TODO Do this properly by handling this object being reset
@@ -50,6 +55,7 @@ func _on_wall_generate_background(wall_count: int):
 			image.set_pixel(x, y, color)
 	texture = ImageTexture.create_from_image(image)
 	texture_filter = CanvasItem.TextureFilter.TEXTURE_FILTER_NEAREST # Changes sprite scaling to stop the texture becoming blurry
+	image_changed.emit(image)
 	
 func get_tile_sum(map:Array, x: int, y:int, width: int, height: int):
 	var sum = 0
