@@ -1,4 +1,5 @@
 extends Node2D
+class_name Wall
 
 @export var crack_distance = 200
 @export var new_hole_hitbox = 20
@@ -10,13 +11,26 @@ signal ore_cutout(ore: OreTypes.OreType, wall_reference: int)
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
 
+var collision_layer = 0
 var wall_count = 1
 var cracks = {}
 var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
 var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
+	collision_layer = 1 << (wall_count % 8)
+	set_collision_layers(self)
+	
 	generate_background.emit(wall_count)
+
+func set_collision_layers(node: Node2D):
+	for child in node.get_children():
+		if child.has_method("set_collision_layer"):
+			child.set_collision_layer(collision_layer)
+			if child.has_method("set_collision_mask"):
+				child.set_collision_mask(collision_layer)
+		else:
+			set_collision_layers(child)
 
 func with_data(wall_count: int):
 	self.wall_count = wall_count
@@ -61,6 +75,7 @@ func can_crack_generate(start: Vector2, end):
 	query.set_from(start)
 	query.set_to(end.position)
 	query.set_collide_with_areas(true)
+	query.set_collision_mask(collision_layer)
 	var result = get_world_2d().direct_space_state.intersect_ray(query)
 	
 	# Return true if the object hit is the target circle. This means that nothing else was in the way.
@@ -117,6 +132,7 @@ func circle_raycast(position: Vector2, radius = new_hole_hitbox, max_results = 1
 	circle_shape.set_radius(radius)
 	query.set_shape(circle_shape)
 	query.set_collide_with_areas(true)
+	query.set_collision_mask(collision_layer)
 	query.transform.origin = position
 	
 	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
@@ -137,13 +153,17 @@ func get_from_crack_map(first_id: int, second_id: int, cutout_centre: Vector2) -
 	
 func create_hole_scene(hole_position: Vector2):
 	var hole = hole_scene.instantiate()
+	hole.set_collision_layer(collision_layer)
+	hole.set_collision_mask(collision_layer)
 	hole.position = hole_position
 	$contents/hole_holder.add_child(hole)
 	holes.append(hole)
 	
 func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
-	var crack = crack_scene.instantiate()  
-	var crack_vertices = crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
+	var crack: Crack = crack_scene.instantiate()  
+	crack.set_collision_layer(collision_layer)
+	crack.set_collision_mask(collision_layer)
+	crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
 	$contents/crack_holder.add_child(crack)
 	return crack
 	

@@ -9,10 +9,19 @@ signal ore_cutout(ore: OreTypes.OreType)
 var queue = {}
 var id_counter = 0
 var should_destroy = false
+var collision_layer: int = 1
+
+func set_collision_layer(layer: int):
+	collision_layer = layer
+	for child in $"../contents/cutout_holder".get_children():
+		child.set_collision_layer(layer)
+		child.set_collision_mask(layer)
 
 func queue_cutout(cutout_vecters: PackedVector2Array, new_cracks: Array[SignalingCrack]):
 	var cutout = cutout_scene.instantiate().with_data(cutout_vecters)
 	cutout.visible = false
+	cutout.set_collision_layer(collision_layer)
+	cutout.set_collision_mask(collision_layer)
 	$"../contents/cutout_holder".add_child(cutout)
 	
 	queue[id_counter] = {"vertices": cutout_vecters, "cutout": cutout, "new_cracks": new_cracks, "completed_cracks_count": 0}
@@ -41,11 +50,11 @@ func crack_completed(cutout_id: int):
 		
 func destroy():
 	should_destroy = true
+	check_for_destroy(0)
 	
-func check_for_destroy():
+func check_for_destroy(min_children: int):
 	var children = $"../falling_cutout_holder".get_children()
-	# When called due to falling cutout, there will be one child because the caller is still alive.
-	if $"../falling_cutout_holder".get_child_count() <= 1:  
+	if $"../falling_cutout_holder".get_child_count() <= min_children:  
 		get_parent().queue_free()
 
 func _on_background_image_changed(new_image: Image):
@@ -56,4 +65,5 @@ func _falling_cutout_offscreen(ores: Array[Ore]):
 		ore_cutout.emit(ore.oreType)
 		
 	if should_destroy:
-		check_for_destroy()
+		# The signalling cutout will be alive during the check so we set the min_children to 1
+		check_for_destroy(1)

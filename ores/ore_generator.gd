@@ -4,6 +4,14 @@ var ORE_BORDER_BUFFER = 50
 var MAX_ORE_WIDTH = 100
 
 @export var levels: OreSpawnLevels
+
+var collision_layer: int = 1
+
+func set_collision_layer(layer: int):
+	collision_layer = layer
+	for child in get_children():
+		child.set_collision_layer(layer)
+		child.set_collision_mask(layer)
 				
 func _generate_ores(wall_count: int):
 	var current_level = get_current_level(wall_count)
@@ -25,9 +33,11 @@ func _generate_ores(wall_count: int):
 			fail_count += 1
 
 func create_ore(oreType: OreTypes.OreType, config: OreChunkConfigs.OreChunkConfig, ore_position: Vector2):
-	var ore = config.ore_type.instantiate()
+	var ore: Ore = config.ore_type.instantiate()
 	ore.create(oreType, randi_range(config.ore_width[0], config.ore_width[1]))
 	ore.position = ore_position
+	ore.set_collision_layer(collision_layer)
+	ore.set_collision_mask(collision_layer)
 	add_child(ore)
 	
 func get_current_level(wall_count: int) -> OreSpawn:
@@ -50,6 +60,7 @@ func ore_raycast(position: Vector2, size: int, density: int, raycast_shape_func:
 	var shape = raycast_shape_func.call(size, density)
 	query.set_shape(shape)
 	query.set_collide_with_areas(true)
+	query.set_collision_mask(collision_layer)
 	query.transform.origin = position
 	
 	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
