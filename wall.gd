@@ -20,8 +20,14 @@ var pathfinder: AStar2D = AStar2D.new()
 func _ready():
 	collision_layer = 1 << (wall_count % 8)
 	set_collision_layers(self)
+	set_process_input(false)
+	
+	$contents/background.with_data(wall_count)
 	
 	generate_background.emit(wall_count)
+	
+func render():
+	$contents/background.render()
 
 func set_collision_layers(node: Node2D):
 	for child in node.get_children():

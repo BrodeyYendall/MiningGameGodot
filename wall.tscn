@@ -12,7 +12,6 @@ script = ExtResource("1_bc856")
 [node name="contents" type="Node2D" parent="."]
 
 [node name="background" type="Sprite2D" parent="contents"]
-scale = Vector2(6, 6)
 script = ExtResource("3_hyv85")
 
 [node name="hole_holder" type="Node2D" parent="contents"]

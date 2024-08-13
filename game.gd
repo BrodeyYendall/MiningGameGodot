@@ -7,10 +7,15 @@ var ores_dugs: int = 0
 var wall_scene: PackedScene = preload("res://wall.tscn")
 var ore_score_scene: PackedScene = preload("res://ore_score_row.tscn")
 
-var current_wall
+var current_wall: Wall
+var next_wall: Wall
 
 func _ready():
-	create_new_wall()
+	current_wall = create_new_wall(wall_count)
+	current_wall.render()
+	current_wall.set_process_input(true)
+	
+	next_wall = create_new_wall(wall_count + 1)
 
 func _input(event):
 	if event is InputEventKey and event.is_pressed() && not event.is_echo():
@@ -28,14 +33,18 @@ func cycle_walls():
 	wall_count += 1
 		
 	current_wall.destroy()
-	create_new_wall()
+	current_wall = next_wall
+	current_wall.render()
+	current_wall.set_process_input(true)
+	next_wall = create_new_wall(wall_count + 1)
 			
-func create_new_wall():
-	current_wall = wall_scene.instantiate()
-	current_wall.with_data(wall_count)
-	$wall_container.add_child(current_wall)
-	$wall_container.move_child(current_wall, 0)
-	current_wall.ore_cutout.connect(_on_wall_ore_cutout)
+func create_new_wall(wall_count: int) -> Wall:
+	var new_wall = wall_scene.instantiate()
+	new_wall.with_data(wall_count)
+	$wall_container.add_child(new_wall)
+	$wall_container.move_child(new_wall, 0)
+	new_wall.ore_cutout.connect(_on_wall_ore_cutout)
+	return new_wall
 
 func _on_wall_ore_cutout(ore: OreTypes.OreType, wall_reference: int):
 	if ore in scores:

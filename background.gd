@@ -7,14 +7,25 @@ extends Sprite2D
 signal image_changed(new_image: Image)
 
 var current_rock_colors = 0
+var background_generation_thread: Thread = Thread.new()
 
 func _ready():
-	scale = Vector2(Constants.BACKGROUND_SCALE, Constants.BACKGROUND_SCALE)
-
-func _on_wall_generate_background(wall_count: int):
-	current_rock_colors = ROCK_COLORS[1] # TODO Do this properly by handling this object being reset
+	scale = Vector2(8, 8)
 	
-	var window_size = get_viewport().size / 8
+func with_data(wall_count: int):
+	current_rock_colors = ROCK_COLORS[1] # TODO Do this properly by handling this object being reset
+	background_generation_thread.start(generate_background.bind(wall_count, Vector2(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), 
+		current_rock_colors))
+
+func render():
+	var generated_background = background_generation_thread.wait_to_finish()
+	
+	texture = generated_background[0]
+	texture_filter = CanvasItem.TextureFilter.TEXTURE_FILTER_NEAREST # Changes sprite scaling to stop the texture becoming blurry
+	image_changed.emit(generated_background[1])
+	
+func generate_background(wall_count: int, window_size: Vector2, rock_colors: Array) -> Array:
+	window_size /= 4
 	var map: Array = create_background_matrix(window_size.x, window_size.y)
 
 	for x in range(window_size.x):
@@ -46,16 +57,15 @@ func _on_wall_generate_background(wall_count: int):
 			var color: Color
 			if sum <= 4:
 				if sum >= 1:
-					color = current_rock_colors[1]
+					color = rock_colors[1]
 				else:
-					color = current_rock_colors[0]
+					color = rock_colors[0]
 			else:
-				color = current_rock_colors[2]
+				color = rock_colors[2]
 				
 			image.set_pixel(x, y, color)
-	texture = ImageTexture.create_from_image(image)
-	texture_filter = CanvasItem.TextureFilter.TEXTURE_FILTER_NEAREST # Changes sprite scaling to stop the texture becoming blurry
-	image_changed.emit(image)
+	var texture = ImageTexture.create_from_image(image)
+	return [texture, image]
 	
 func get_tile_sum(map:Array, x: int, y:int, width: int, height: int):
 	var sum = 0
