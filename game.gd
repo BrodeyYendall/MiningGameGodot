@@ -58,5 +58,5 @@ func _on_wall_ore_cutout(ore: OreTypes.OreType, wall_reference: int):
 	if wall_reference == wall_count:
 		ores_dugs += 1
 		if ores_dugs >= 10:
-			cycle_walls()
+			#cycle_walls()
 			ores_dugs = 0

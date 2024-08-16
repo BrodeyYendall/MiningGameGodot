@@ -1,7 +1,11 @@
 extends Node2D
 class_name Crack
 
+signal crack_destroyed(crack_start: int, crack_end: int)
+
+var crack_points: Array[int]
 var config: Constants.CrackConfig
+
 
 var start: Vector2
 var end = Vector2(-1, -1)
@@ -32,8 +36,9 @@ func generate_vertices_for_dir(start: Vector2, direction: Vector2, distance: flo
 		
 	generate_hitbox()
 
-func generate_vertices(start: Vector2, end: Vector2, config: Constants.CrackConfig) -> void:
+func generate_vertices(start: Vector2, end: Vector2, crack_points: Array[int], config: Constants.CrackConfig) -> void:
 	self.end = end
+	self.crack_points = crack_points
 	
 	generate_vertices_for_dir(start, start.direction_to(end), start.distance_to(end), config)
 	
@@ -44,9 +49,6 @@ func get_nearest_crack_line(vector: Vector2):
 	var direction = start.direction_to(end)
 	var perpendicular_direction = Vector2(-direction.y, direction.x).normalized()
 	
-	
-	# Check which side of the crack is closest.
-	# TODO: I dont quite remember why I am doing this. Need to investigate removing it
 	if vector.distance_to(start - perpendicular_direction) < vector.distance_to(start + perpendicular_direction):
 		crack_line = bottom_line.duplicate()
 	else:
@@ -100,3 +102,10 @@ func _process(delta):
 	if iteration >= top_line.size(): # top_line and bottom_line are the same size.
 		set_process(false)
 		
+func destroy():
+	crack_destroyed.emit(crack_points[0], crack_points[1])
+	queue_free()
+	
+func _to_string():
+	return "{%s <-> %s}" % [crack_points[0], crack_points[1]]
+	

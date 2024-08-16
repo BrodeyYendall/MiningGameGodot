@@ -3,21 +3,25 @@ class_name Wall
 
 @export var crack_distance = 200
 @export var new_hole_hitbox = 20
+@export var delay_between_holes = 200
 
 signal generate_background(wall_count: int)
-signal cycle_formed(vertices: PackedVector2Array)
+signal cycle_formed(cutout_vecters: PackedVector2Array, new_cracks: Array[SignalingCrack], all_cracks: Array[Crack]) # TODO Makes cracks one argument
 signal ore_cutout(ore: OreTypes.OreType, wall_reference: int)
 
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
 
+var prev_hole_created_at = 0
 var collision_layer = 0
 var wall_count = 1
 var cracks = {}
-var holes = []  # Stores references to actual hole instances. Vital for crack ray casting
+var holes: Dictionary = {}  # Stores references to actual hole instances. Vital for crack ray casting
+var hole_count = 0
 var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
+	print("\nNew wall\n")
 	collision_layer = 1 << (wall_count % 8)
 	set_collision_layers(self)
 	set_process_input(false)
@@ -46,30 +50,39 @@ func _input(event):
 		create_point(event.position)
 
 func create_point(position: Vector2):
-	pathfinder.add_point(holes.size(), position)
+	var current_time = Time.get_ticks_msec()
+	if current_time - prev_hole_created_at < delay_between_holes:
+		return
+	prev_hole_created_at = current_time
+	
+	print("Hole " + str(hole_count) + " created @ " + str(position))
+	
+	pathfinder.add_point(hole_count, position)
 		
-	var new_connections = create_new_cracks(position)
+	var new_connections = create_new_cracks(hole_count)
 	
 	if new_connections.size() >= 2:
 		check_for_cycle(new_connections[0], new_connections[1], position)
 		
 	for new_connection in new_connections[0]:
-		pathfinder.connect_points(holes.size(), new_connection)
+		pathfinder.connect_points(hole_count, new_connection)
 	
 	create_hole_scene(position)
 	queue_redraw()
 		
-func create_new_cracks(new_point_position: Vector2) -> Array:
+func create_new_cracks(new_point_id: int) -> Array:
+	var new_point_position = pathfinder.get_point_position(new_point_id)
+	
 	var new_connections: Array[int] = []
 	var new_cracks: Array[SignalingCrack] = []
 	
-	for i in range(holes.size()):
-		if can_crack_generate(new_point_position, holes[i]):
-			var crack = create_crack_scene(holes[i].position, new_point_position)
-			new_connections.append(i)
+	for id in holes:
+		if can_crack_generate(new_point_position, holes[id]):
+			var crack = create_crack_scene(holes[id].position, new_point_position, [id, hole_count])
+			new_connections.append(id)
 			new_cracks.append(crack)
 			
-			add_to_crack_map(i, holes.size(), crack)
+			add_to_crack_map(id, hole_count, crack)
 			
 	return [new_connections, new_cracks]
 	
@@ -101,12 +114,13 @@ func check_for_cycle(new_connections: Array[int], new_cracks: Array[SignalingCra
 
 	var points_used = {}
 	for cycle in cycles:
-		cycle.insert(0, holes.size())
-		cycle.append(holes.size())
+		cycle.insert(0, hole_count)
+		cycle.append(hole_count)
 		
 		var cycle_centre = calculate_circuit_centre(cycle)
 		var contains_unqiue_points = false
 		var path_vectors = PackedVector2Array()
+		var cracks_in_cycle = []
 		
 		for i in range(1, cycle.size()):
 			var current_point = cycle[i]
@@ -115,13 +129,16 @@ func check_for_cycle(new_connections: Array[int], new_cracks: Array[SignalingCra
 				points_used[current_point] = true
 				
 			var prev_point = cycle[i - 1]
-			var array_to_append = get_from_crack_map(prev_point, current_point, cycle_centre)
-			if i != cycle.size():
-				array_to_append = array_to_append.slice(0, -1)
-			path_vectors.append_array(array_to_append)
-					
+			var crack = get_from_crack_map(prev_point, current_point, cycle_centre)
+			cracks_in_cycle.append(crack[0])
+			
+			var crack_vertices = crack[1]
+			if i != crack_vertices.size():
+				crack_vertices = crack_vertices.slice(0, -1)
+			path_vectors.append_array(crack_vertices)
+			
 		if contains_unqiue_points:		
-			cycle_formed.emit(path_vectors, new_cracks)
+			cycle_formed.emit(path_vectors, new_cracks, cracks_in_cycle)
 			
 func calculate_circuit_centre(cycle: Array[int]) -> Vector2:
 	var total = Vector2(0, 0)
@@ -143,33 +160,38 @@ func circle_raycast(position: Vector2, radius = new_hole_hitbox, max_results = 1
 	
 	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
 	
-func add_to_crack_map(first_id: int, second_id: int, crack: Node2D):
+func add_to_crack_map(first_id: int, second_id: int, crack: Crack):
+	print("Adding %s -> %s = %s to map" % [first_id, second_id, crack])
 	var submap = cracks.get(first_id, {})
 	submap[second_id] = crack
 	cracks[first_id] = submap
 	
-func get_from_crack_map(first_id: int, second_id: int, cutout_centre: Vector2) -> PackedVector2Array:
+func get_from_crack_map(first_id: int, second_id: int, cutout_centre: Vector2) -> Array:
 	var forward = cracks.get(first_id, {}).get(second_id, null)
 	if forward == null:
-		var backwards = cracks[second_id][first_id].get_nearest_crack_line(cutout_centre)
+		var crack = cracks[second_id][first_id]
+		var backwards = crack.get_nearest_crack_line(cutout_centre)
 		backwards.reverse()
 		
-		return backwards
-	return forward.get_nearest_crack_line(cutout_centre)
+		return [crack, backwards]
+	return [forward, forward.get_nearest_crack_line(cutout_centre)]
 	
 func create_hole_scene(hole_position: Vector2):
 	var hole = hole_scene.instantiate()
+	hole.with_data(hole_count)
 	hole.set_collision_layer(collision_layer)
 	hole.set_collision_mask(collision_layer)
 	hole.position = hole_position
 	$contents/hole_holder.add_child(hole)
-	holes.append(hole)
+	holes[hole_count] = hole
+	hole_count += 1
 	
-func create_crack_scene(start: Vector2, end: Vector2) -> Node2D:
+func create_crack_scene(start: Vector2, end: Vector2, crack_points: Array[int]) -> Node2D:
 	var crack: Crack = crack_scene.instantiate()  
+	crack.crack_destroyed.connect(_crack_destroyed)
 	crack.set_collision_layer(collision_layer)
 	crack.set_collision_mask(collision_layer)
-	crack.generate_vertices(start, end, Constants.CUTOUT_CRACK_CONFIG)
+	crack.generate_vertices(start, end, crack_points, Constants.CUTOUT_CRACK_CONFIG)
 	$contents/crack_holder.add_child(crack)
 	return crack
 	
@@ -181,3 +203,31 @@ func destroy():
 	$contents.visible = false
 	$contents.queue_free()
 	$cutout_queue.destroy()
+
+func _crack_destroyed(start: int, end: int):
+	print("Destroying " + str(start) + " <-> " + str(end))
+	pathfinder.disconnect_points(start, end)
+	
+	if start in cracks:
+		var forward = cracks[start]
+		forward.erase(end)
+	if pathfinder.get_point_connections(start).size() == 0:
+		destroy_point(start)
+	else:
+		print(str(start) + " connects to " + str(pathfinder.get_point_connections(start)))
+		
+	if end in cracks:
+		var backwards = cracks[end]
+		backwards.erase(start)
+	if pathfinder.get_point_connections(end).size() == 0:
+		print("Can destroy " + str(end))
+		destroy_point(end)
+	else:
+		print(str(end) + " connects to " + str(pathfinder.get_point_connections(end)))
+	
+func destroy_point(point_id: int):
+	print("Destroying " + str(point_id))
+	cracks.erase(point_id)
+	holes[point_id].queue_free()
+	holes.erase(point_id)
+	pathfinder.remove_point(point_id)
