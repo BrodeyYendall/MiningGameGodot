@@ -25,12 +25,15 @@ func render():
 	image_changed.emit(generated_background[1])
 	
 func generate_background(wall_count: int, window_size: Vector2, rock_colors: Array) -> Array:
+	# Due to background generations occuring in the background, calls to the base rng will occur at random times,
+	# causing undeterministic rng/games. We use a seperate RNG for backgrounds to fix this. 
+	var rng = RandomNumberGenerator.new() 
 	window_size /= 4
 	var map: Array = create_background_matrix(window_size.x, window_size.y)
 
 	for x in range(window_size.x):
 		for y in range(window_size.y):
-			var rand = randf()
+			var rand = rng.randf()
 			if rand >= 0.55:
 				map[y][x] = 1
 			else:
