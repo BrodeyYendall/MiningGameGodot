@@ -30,7 +30,6 @@ levels = ExtResource("5_bqbj5")
 script = ExtResource("4_agkfe")
 
 [node name="falling_cutout_holder" type="Node2D" parent="."]
-visible = false
 
 [connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
 [connection signal="generate_background" from="." to="contents/ore_generator" method="_generate_ores"]

@@ -1,7 +1,7 @@
 extends Sprite2D
 class_name FallingCutout
 
-@export var fall_speed = 150
+@export var fall_speed = 200
 @export var rotate_speed = 0.5
 @export var drop_shadow_offset = Vector2(8, 8)
 
@@ -57,7 +57,7 @@ func _ready():
 	
 	
 func _process(delta):	
-	position.y += (fall_speed * delta) / adjusted_cutout_size
+	position.y += fall_speed * delta
 	rotation += (rotate_speed * delta * rotation_direction) / adjusted_cutout_size
 	if position.y > Constants.SCREEN_HEIGHT + max(height, width):
 		queue_free()
