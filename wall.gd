@@ -3,7 +3,6 @@ class_name Wall
 
 @export var crack_distance = 200
 @export var new_hole_hitbox = 20
-@export var delay_between_holes = 200
 
 signal generate_background(wall_count: int)
 signal cycle_formed(cutout_vecters: PackedVector2Array, new_cracks: Array[SignalingCrack], all_cracks: Array[Crack]) # TODO Makes cracks one argument
@@ -12,7 +11,6 @@ signal ore_cutout(ore: OreTypes.OreType, wall_reference: int)
 var hole_scene = preload("res://hole.tscn")
 var crack_scene = preload("res://crack.tscn")
 
-var prev_hole_created_at = 0
 var collision_layer = 0
 var wall_count = 1
 var cracks = {}
@@ -32,6 +30,7 @@ func _ready():
 	
 func render():
 	$contents/background.render()
+	InputManager.create_hole.connect(_create_hole)
 
 func set_collision_layers(node: Node2D):
 	for child in node.get_children():
@@ -45,30 +44,23 @@ func set_collision_layers(node: Node2D):
 func with_data(wall_count: int):
 	self.wall_count = wall_count
 
-func _input(event):
-	if event is InputEventMouseButton && event.is_pressed() && circle_raycast(event.position).is_empty():
-		create_point(event.position)
-
-func create_point(position: Vector2):
-	var current_time = Time.get_ticks_msec()
-	if current_time - prev_hole_created_at < delay_between_holes:
-		return
-	prev_hole_created_at = current_time
+func _create_hole(position: Vector2):
+	if circle_raycast(position).is_empty():
+		print("Hole " + str(hole_count) + " created @ " + str(position))
 	
-	print("Hole " + str(hole_count) + " created @ " + str(position))
-	
-	pathfinder.add_point(hole_count, position)
+		pathfinder.add_point(hole_count, position)
+			
+		var new_connections = create_new_cracks(hole_count)
 		
-	var new_connections = create_new_cracks(hole_count)
-	
-	if new_connections.size() >= 2:
-		check_for_cycle(new_connections[0], new_connections[1], position)
+		if new_connections.size() >= 2:
+			check_for_cycle(new_connections[0], new_connections[1], position)
+			
+		for new_connection in new_connections[0]:
+			pathfinder.connect_points(hole_count, new_connection)
 		
-	for new_connection in new_connections[0]:
-		pathfinder.connect_points(hole_count, new_connection)
+		create_hole_scene(position)
+		queue_redraw()
 	
-	create_hole_scene(position)
-	queue_redraw()
 		
 func create_new_cracks(new_point_id: int) -> Array:
 	var new_point_position = pathfinder.get_point_position(new_point_id)
@@ -199,7 +191,7 @@ func _ore_cutout(ore: OreTypes.OreType):
 	ore_cutout.emit(ore, wall_count)
 	
 func destroy():
-	set_process_input(false)
+	InputManager.create_hole.disconnect(_create_hole)
 	$contents.visible = false
 	$contents.queue_free()
 	$cutout_queue.destroy()

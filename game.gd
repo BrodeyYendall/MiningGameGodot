@@ -16,21 +16,11 @@ func _ready():
 	current_wall.set_process_input(true)
 	
 	next_wall = create_new_wall(wall_count + 1)
-
-func _input(event):
-	if event is InputEventKey and event.is_pressed() && not event.is_echo():
-		if event.keycode == KEY_SPACE:
-			cycle_walls()
+	InputManager.next_wall.connect(_cycle_walls)
 			
-			$ui/wall_count.text = str(wall_count)
-		elif event.keycode == KEY_ENTER:
-			await RenderingServer.frame_post_draw
-			var viewport: Viewport = get_viewport()
-			var texture: ViewportTexture = viewport.get_texture()
-			texture.get_image().save_png('screenshot.png')
-			
-func cycle_walls():
+func _cycle_walls():
 	wall_count += 1
+	$ui/wall_count.text = str(wall_count)
 		
 	current_wall.destroy()
 	current_wall = next_wall

@@ -31,6 +31,7 @@ Constants="*res://game_data/constants.gd"
 OreTypes="*res://game_data/ore_types.gd"
 RandomUtils="*res://random_utils.gd"
 OreChunkConfigs="*res://game_data/ore_chunk_configs.gd"
+InputManager="*res://input_manager.gd"
 
 [display]
 
