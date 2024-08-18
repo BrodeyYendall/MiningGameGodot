@@ -43,6 +43,8 @@ func crack_completed(cutout_id: int):
 	
 	if refered_cutout["completed_cracks_count"] == refered_cutout["new_crack_count"]:
 		var cutout: Cutout = refered_cutout["cutout"]
+		cutout.destroy_crack.connect(_crack_destroy)
+		cutout.destroy_hole.connect(_hole_destroy)
 		
 		var falling_cutout: FallingCutout = falling_cutout_scene.instantiate().with_data(cutout.cutout_vertices, generated_wall_image)
 		cutout.add_falling_cutout_reference(falling_cutout)
@@ -94,3 +96,9 @@ func _falling_cutout_offscreen(ores: Array[Ore]):
 	if should_destroy:
 		# The signalling cutout will be alive during the check so we set the min_children to 1
 		check_for_destroy(1)
+		
+func _crack_destroy(crack: Crack):
+	get_parent().destroy_crack(crack.crack_points[0], crack.crack_points[1])
+	
+func _hole_destroy(hole: Hole):
+	get_parent()._destroy_cracks_and_hole(hole.point_number)

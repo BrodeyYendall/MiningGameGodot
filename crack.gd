@@ -103,7 +103,6 @@ func _process(delta):
 		set_process(false)
 		
 func destroy():
-	crack_destroyed.emit(crack_points[0], crack_points[1])
 	queue_free()
 	
 func _to_string():

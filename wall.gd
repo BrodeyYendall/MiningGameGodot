@@ -169,7 +169,8 @@ func get_from_crack_map(first_id: int, second_id: int, cutout_centre: Vector2) -
 	return [forward, forward.get_nearest_crack_line(cutout_centre)]
 	
 func create_hole_scene(hole_position: Vector2):
-	var hole = hole_scene.instantiate()
+	var hole: Hole = hole_scene.instantiate()
+	hole.destroy_hole.connect(_destroy_cracks_and_hole)
 	hole.with_data(hole_count)
 	hole.set_collision_layer(collision_layer)
 	hole.set_collision_mask(collision_layer)
@@ -179,8 +180,7 @@ func create_hole_scene(hole_position: Vector2):
 	hole_count += 1
 	
 func create_crack_scene(start: Vector2, end: Vector2, crack_points: Array[int]) -> Node2D:
-	var crack: Crack = crack_scene.instantiate()  
-	crack.crack_destroyed.connect(_crack_destroyed)
+	var crack: Crack = crack_scene.instantiate()
 	crack.set_collision_layer(collision_layer)
 	crack.set_collision_mask(collision_layer)
 	crack.generate_vertices(start, end, crack_points, Constants.CUTOUT_CRACK_CONFIG)
@@ -196,28 +196,37 @@ func destroy():
 	$contents.queue_free()
 	$cutout_queue.destroy()
 
-func _crack_destroyed(start: int, end: int):
+func _destroy_cracks_and_hole(point_id: int):
+	for connection in pathfinder.get_point_connections(point_id):
+		destroy_crack(connection, point_id)
+
+func destroy_crack(start: int, end: int):
 	print("Destroying " + str(start) + " <-> " + str(end))
 	pathfinder.disconnect_points(start, end)
 	
 	if start in cracks:
 		var forward = cracks[start]
-		forward.erase(end)
+		if end in forward:
+			forward[end].destroy()
+			forward.erase(end)
+		
 	if pathfinder.get_point_connections(start).size() == 0:
-		destroy_point(start)
+		_destroy_point(start)
 	else:
 		print(str(start) + " connects to " + str(pathfinder.get_point_connections(start)))
 		
 	if end in cracks:
 		var backwards = cracks[end]
-		backwards.erase(start)
+		if start in backwards:
+			backwards[start].destroy()
+			backwards.erase(start)
 	if pathfinder.get_point_connections(end).size() == 0:
 		print("Can destroy " + str(end))
-		destroy_point(end)
+		_destroy_point(end)
 	else:
 		print(str(end) + " connects to " + str(pathfinder.get_point_connections(end)))
 	
-func destroy_point(point_id: int):
+func _destroy_point(point_id: int):
 	print("Destroying " + str(point_id))
 	cracks.erase(point_id)
 	holes[point_id].queue_free()

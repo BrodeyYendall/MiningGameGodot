@@ -1,10 +1,14 @@
 extends Area2D
 class_name Cutout
 
+signal destroy_crack(crack: Crack)
+signal destroy_hole(hole: Hole)
+
 var cutout_vertices: PackedVector2Array
 var cracks: Array
 var related_falling_cutout: FallingCutout = null
 var ores_in_cutout: Array[Ore] = []
+var holes_in_cutout: Array[Hole] = []
 
 func with_data(cutout_vertices: PackedVector2Array, cracks: Array) -> Node2D:
 	print("Creating cutout with " + str(cracks))
@@ -26,17 +30,24 @@ func add_ore(ore: Ore):
 		# If the cracks are fast enough then the falling cutout can generate before ore signals its in the cutout.
 		# The following line mades the ore retroactively in this scenario. 
 		related_falling_cutout.call_deferred("add_ore", ore)
+		
+func add_hole(hole: Hole):
+	holes_in_cutout.append(hole)
 	
 func add_falling_cutout_reference(falling_cutout: FallingCutout):
 	self.related_falling_cutout = falling_cutout
 	
 	for ore in ores_in_cutout:
 		falling_cutout.add_ore(ore)
+		
+	for hole in holes_in_cutout:
+		destroy_hole.emit(hole)
 
 func point_is_inside(point: Vector2) -> bool:
 	return Geometry2D.is_point_in_polygon(point, cutout_vertices)
 	
 func merge_cutout(cutout_to_merge: Cutout):
+	print("Merging %s with %s" % [cracks, cutout_to_merge.cracks])
 	var result = Geometry2D.merge_polygons(cutout_to_merge.cutout_vertices, cutout_vertices)
 	
 	var cracks_to_remove = []
@@ -51,7 +62,7 @@ func merge_cutout(cutout_to_merge: Cutout):
 		new_cutout_cracks.erase(crack)
 		cracks.erase(crack)
 		
-		crack.destroy()
+		destroy_crack.emit(crack)
 	cracks.append_array(new_cutout_cracks)
 	
 	with_data(result[0], cracks)
