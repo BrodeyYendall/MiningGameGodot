@@ -45,7 +45,7 @@ func with_data(wall_count: int):
 	self.wall_count = wall_count
 
 func _create_hole(position: Vector2):
-	if circle_raycast(position).is_empty():
+	if RaycastHelper.circle_raycast(position, collision_layer, new_hole_hitbox).is_empty():
 		print("Hole " + str(hole_count) + " created @ " + str(position))
 	
 		pathfinder.add_point(hole_count, position)
@@ -82,16 +82,9 @@ func can_crack_generate(start: Vector2, end):
 	if end.position.distance_to(start) > crack_distance:
 		return false
 	
-	var query = PhysicsRayQueryParameters2D.new()
-	query.set_from(start)
-	query.set_to(end.position)
-	query.set_collide_with_areas(true)
-	query.set_collision_mask(collision_layer)
-	var result = get_world_2d().direct_space_state.intersect_ray(query)
-	
 	# Return true if the object hit is the target circle. This means that nothing else was in the way.
 	# We do not exclude the target circle because cutouts attached to it will get in the way
-	return result.rid == end.get_rid()
+	return RaycastHelper.line_raycast(start, end.position, collision_layer).rid == end.get_rid()
 		
 			
 func check_for_cycle(new_connections: Array[int], new_cracks: Array[SignalingCrack], new_point: Vector2):
@@ -140,17 +133,6 @@ func calculate_circuit_centre(cycle: Array[int]) -> Vector2:
 		positions.append(point_position)
 		total += point_position
 	return total / cycle.size()
-			
-func circle_raycast(position: Vector2, radius = new_hole_hitbox, max_results = 1) -> Array:
-	var query = PhysicsShapeQueryParameters2D.new()
-	var circle_shape = CircleShape2D.new()
-	circle_shape.set_radius(radius)
-	query.set_shape(circle_shape)
-	query.set_collide_with_areas(true)
-	query.set_collision_mask(collision_layer)
-	query.transform.origin = position
-	
-	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
 	
 func add_to_crack_map(first_id: int, second_id: int, crack: Crack):
 	print("Adding %s -> %s = %s to map" % [first_id, second_id, crack])

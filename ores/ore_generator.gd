@@ -56,11 +56,5 @@ func get_ore_from_table(oreTable: Array[OreTableRow]) -> OreTableRow:
 	return null
 	
 func ore_raycast(position: Vector2, size: int, density: int, raycast_shape_func: Callable, max_results = 1) -> Array:
-	var query = PhysicsShapeQueryParameters2D.new()
 	var shape = raycast_shape_func.call(size, density)
-	query.set_shape(shape)
-	query.set_collide_with_areas(true)
-	query.set_collision_mask(collision_layer)
-	query.transform.origin = position
-	
-	return get_world_2d().direct_space_state.intersect_shape(query, max_results)
+	return RaycastHelper.raycast_shape(position, shape, collision_layer, max_results)

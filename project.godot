@@ -32,6 +32,7 @@ OreTypes="*res://game_data/ore_types.gd"
 RandomUtils="*res://random_utils.gd"
 OreChunkConfigs="*res://game_data/ore_chunk_configs.gd"
 InputManager="*res://input_manager.gd"
+RaycastHelper="*res://raycast_helper.gd"
 
 [display]
 
