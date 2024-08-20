@@ -7,6 +7,8 @@ script = ExtResource("1_m6pba")
 
 [node name="wall_container" type="Node2D" parent="."]
 
+[node name="falling_cutout_holder" type="Node2D" parent="."]
+
 [node name="ui" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0

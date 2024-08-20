@@ -25,8 +25,10 @@ levels = ExtResource("5_bqbj5")
 
 [node name="cutout_holder" type="Node2D" parent="contents"]
 
-[node name="cutout_queue" type="Node2D" parent="."]
+[node name="cutout_queue" type="Node2D" parent="." node_paths=PackedStringArray("cutout_holder", "falling_cutout_holder")]
 script = ExtResource("4_agkfe")
+cutout_holder = NodePath("../contents/cutout_holder")
+falling_cutout_holder = NodePath("../falling_cutout_holder")
 
 [node name="falling_cutout_holder" type="Node2D" parent="."]
 

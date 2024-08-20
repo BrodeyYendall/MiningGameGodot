@@ -3,6 +3,7 @@ class_name Wall
 
 @export var crack_distance = 200
 @export var new_hole_hitbox = 20
+@export var falling_cutout_holder: Node2D
 
 signal generate_background(wall_count: int)
 signal cycle_formed(cutout_vecters: PackedVector2Array, new_cracks: Array[SignalingCrack], all_cracks: Array[Crack]) # TODO Makes cracks one argument
@@ -19,6 +20,7 @@ var hole_count = 0
 var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
+	$cutout_queue.falling_cutout_holder = falling_cutout_holder
 	print("\nNew wall\n")
 	collision_layer = 1 << (wall_count % 8)
 	set_collision_layers(self)

@@ -38,9 +38,9 @@ func remove_front_wall():
 func create_new_wall(wall_count: int) -> Wall:
 	var new_wall = wall_scene.instantiate()
 	new_wall.with_data(wall_count)
+	new_wall.falling_cutout_holder = $falling_cutout_holder
 	$wall_container.add_child(new_wall)
 	$wall_container.move_child(new_wall, 0)
-	#new_wall.ore_cutout.connect(_on_wall_ore_cutout)
 	return new_wall
 
 func process_create_hole(point: Vector2):

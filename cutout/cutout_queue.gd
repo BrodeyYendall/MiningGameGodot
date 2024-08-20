@@ -1,5 +1,8 @@
 extends Node2D
 
+@export var cutout_holder: Node2D
+@export var falling_cutout_holder: Node2D
+
 var falling_cutout_scene = preload("res://cutout/falling_cutout.tscn")
 var cutout_scene = preload("res://cutout/cutout.tscn")
 var generated_wall_image: Image
@@ -15,7 +18,7 @@ var collision_layer: int = 1
 
 func set_collision_layer(layer: int):
 	collision_layer = layer
-	for child in $"../contents/cutout_holder".get_children():
+	for child in cutout_holder.get_children():
 		child.set_collision_layer(layer)
 		child.set_collision_mask(layer)
 
@@ -50,7 +53,7 @@ func crack_completed(cutout_id: int):
 		var falling_cutout: FallingCutout = falling_cutout_scene.instantiate().with_data(cutout.cutout_vertices, generated_wall_image)
 		cutout.add_falling_cutout_reference(falling_cutout)
 		falling_cutout.cutout_offscreen.connect(_falling_cutout_offscreen)
-		$"../falling_cutout_holder".add_child(falling_cutout)
+		falling_cutout_holder.add_child(falling_cutout)
 		
 		render_cutout.emit(cutout.cutout_vertices)
 		check_for_cutout_merge(cutout)
@@ -77,7 +80,7 @@ func create_cutout(cutout_vecters: PackedVector2Array, cracks: Array) -> Cutout:
 	var cutout = cutout_scene.instantiate().with_data(cutout_vecters, cracks)
 	cutout.set_collision_layer(collision_layer)
 	cutout.set_collision_mask(collision_layer)
-	$"../contents/cutout_holder".add_child(cutout)
+	cutout_holder.add_child(cutout)
 	return cutout
 		
 func destroy():
@@ -85,7 +88,7 @@ func destroy():
 	check_for_destroy(0)
 	
 func check_for_destroy(min_children: int):
-	if $"../falling_cutout_holder".get_child_count() <= min_children:  
+	if falling_cutout_holder.get_child_count() <= min_children:  
 		get_parent().queue_free()
 
 func _on_background_image_changed(new_image: Image):
