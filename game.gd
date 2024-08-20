@@ -1,52 +1,66 @@
 extends Node2D
 
+@export var wall_queue_size = 4
+@export var initial_walls_rendered = 2
+@export var cutout_edge_buffer = 15 
+
 var scores: Dictionary = {}
-var wall_count: int = 1
+var min_wall_count: int = 1
 var ores_dugs: int = 0
 
 var wall_scene: PackedScene = preload("res://wall.tscn")
 var ore_score_scene: PackedScene = preload("res://ore_score_row.tscn")
 
-var current_wall: Wall
-var next_wall: Wall
+var active_walls: Array[Wall]
+var wall_queue: Array[Wall]
 
 func _ready():
-	current_wall = create_new_wall(wall_count)
-	current_wall.render()
-	current_wall.set_process_input(true)
+	for i in range(wall_queue_size):
+		wall_queue.append(create_new_wall(i + 1))
+	for i in range(initial_walls_rendered):
+		activate_next_wall()
+	InputManager.next_wall.connect(remove_front_wall)
+	InputManager.create_hole.connect(process_create_hole)
 	
-	next_wall = create_new_wall(wall_count + 1)
-	InputManager.next_wall.connect(_cycle_walls)
-			
-func _cycle_walls():
-	wall_count += 1
-	$ui/wall_count.text = str(wall_count)
-		
-	current_wall.destroy()
-	current_wall = next_wall
-	current_wall.render()
-	current_wall.set_process_input(true)
-	next_wall = create_new_wall(wall_count + 1)
+func activate_next_wall():
+	var next_wall: Wall = wall_queue.pop_front()
+	next_wall.render()
+	next_wall.cycle_formed.connect(_first_cutout_in_wall.bind(next_wall))
+	active_walls.append(next_wall)
+	wall_queue.append(create_new_wall(wall_queue[-1].wall_count + 1))
+	
+func remove_front_wall():
+	var front_wall = active_walls.pop_front()
+	front_wall.destroy()
+	activate_next_wall()
+	min_wall_count += 1
 			
 func create_new_wall(wall_count: int) -> Wall:
 	var new_wall = wall_scene.instantiate()
 	new_wall.with_data(wall_count)
 	$wall_container.add_child(new_wall)
 	$wall_container.move_child(new_wall, 0)
-	new_wall.ore_cutout.connect(_on_wall_ore_cutout)
+	#new_wall.ore_cutout.connect(_on_wall_ore_cutout)
 	return new_wall
 
-func _on_wall_ore_cutout(ore: OreTypes.OreType, wall_reference: int):
-	if ore in scores:
-		scores[ore].increment_count()
-	else:
-		var new_ore_score_row = ore_score_scene.instantiate()
-		new_ore_score_row.with_data(ore)
-		$ui/scores.add_child(new_ore_score_row)
-		scores[ore] = new_ore_score_row
+func process_create_hole(point: Vector2):
+	var objects_on_point = RaycastHelper.circle_raycast(point, 0xFFFFFFFF, 1, 32)
 	
-	if wall_reference == wall_count:
-		ores_dugs += 1
-		if ores_dugs >= 10:
-			#cycle_walls()
-			ores_dugs = 0
+	var deepest_cutout = min_wall_count
+	for object in objects_on_point:
+		if object.collider is Cutout:
+			var cutout_wall_count = (object.collider as Cutout).get_parent_wall_count()
+			deepest_cutout = max(deepest_cutout, cutout_wall_count + 1)
+	var target_wall = deepest_cutout - min_wall_count
+	
+	if target_wall > 0:
+		var objects_on_layer_above = RaycastHelper.circle_raycast(point, active_walls[target_wall - 1].collision_layer, cutout_edge_buffer, 2)
+		for object in objects_on_layer_above:
+			if not object.collider is Cutout:
+				return
+	
+	active_walls[target_wall].create_hole(point)
+
+func _first_cutout_in_wall(_cutout_vecters, _new_cracks, _all_cracks, wall: Wall):
+	wall.cycle_formed.disconnect(_first_cutout_in_wall)
+	activate_next_wall()

@@ -30,7 +30,6 @@ func _ready():
 	
 func render():
 	$contents/background.render()
-	InputManager.create_hole.connect(_create_hole)
 
 func set_collision_layers(node):
 	for child in node.get_children():
@@ -44,7 +43,7 @@ func set_collision_layers(node):
 func with_data(wall_count: int):
 	self.wall_count = wall_count
 
-func _create_hole(position: Vector2):
+func create_hole(position: Vector2):
 	if RaycastHelper.circle_raycast(position, collision_layer, new_hole_hitbox).is_empty():
 		print("Hole " + str(hole_count) + " created @ " + str(position))
 	
@@ -173,7 +172,6 @@ func _ore_cutout(ore: OreTypes.OreType):
 	ore_cutout.emit(ore, wall_count)
 	
 func destroy():
-	InputManager.create_hole.disconnect(_create_hole)
 	$contents.visible = false
 	$contents.queue_free()
 	$cutout_queue.destroy()

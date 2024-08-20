@@ -20,6 +20,10 @@ func with_data(wall_count: int):
 func render():
 	var generated_background = background_generation_thread.wait_to_finish()
 	
+	$subview/render.material.set_shader_parameter("polygon_points", cutouts_to_render)
+	$subview/render.material.set_shader_parameter("polygon_indices", cutout_indices)
+	$subview/render.material.set_shader_parameter("polygon_count", cutout_indices.size())
+	
 	$subview/render.scale = Vector2(6, 6)
 	$subview/render.texture = generated_background[0]
 	$subview/render.texture_filter = CanvasItem.TextureFilter.TEXTURE_FILTER_NEAREST # Changes sprite scaling to stop the texture becoming blurry

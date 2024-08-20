@@ -73,3 +73,6 @@ func merge_cutout(cutout_to_merge: Cutout):
 	
 func destroy():
 	queue_free()
+
+func get_parent_wall_count():
+	return get_parent().get_parent().get_parent().wall_count

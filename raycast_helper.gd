@@ -13,7 +13,7 @@ func line_raycast(start: Vector2, end: Vector2, collision_layer: int):
 	query.set_collision_mask(collision_layer)
 	return space.intersect_ray(query)
 
-func circle_raycast(point: Vector2, collision_layer: int, radius = 15, max_results = 1) -> Array:
+func circle_raycast(point: Vector2, collision_layer: int = 0xFFFFFFFF, radius = 15, max_results = 1) -> Array:
 	var query = PhysicsShapeQueryParameters2D.new()
 	var circle_shape = CircleShape2D.new()
 	circle_shape.set_radius(radius)
