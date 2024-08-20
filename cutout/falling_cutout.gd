@@ -41,7 +41,7 @@ func _ready():
 			var world_pos = Vector2(x, y) + Vector2(min_x, min_y)
 			var inside_polygon = Geometry2D.is_point_in_polygon(world_pos, cutout_vertices)
 			if inside_polygon:
-				var color = background_image.get_pixelv(world_pos / 8)
+				var color = background_image.get_pixelv(world_pos)
 				image.set_pixel(x, y, color)
 			else:
 				image.set_pixel(x, y, Color(0, 0, 0, 0)) # Set transparency outside the polygon

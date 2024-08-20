@@ -21,7 +21,7 @@ func _ready():
 	$hitbox.set_polygon(cutout_vertices)
 
 func _draw():
-	draw_colored_polygon(cutout_vertices, Color(Color.BLACK, 0.5))
+	draw_colored_polygon(cutout_vertices, Color(Color.BLACK, 0.2))
 	
 func add_ore(ore: Ore):
 	if related_falling_cutout == null:

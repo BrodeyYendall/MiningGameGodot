@@ -32,7 +32,7 @@ func render():
 	$contents/background.render()
 	InputManager.create_hole.connect(_create_hole)
 
-func set_collision_layers(node: Node2D):
+func set_collision_layers(node):
 	for child in node.get_children():
 		if child.has_method("set_collision_layer"):
 			child.set_collision_layer(collision_layer)

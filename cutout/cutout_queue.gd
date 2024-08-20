@@ -5,6 +5,7 @@ var cutout_scene = preload("res://cutout/cutout.tscn")
 var generated_wall_image: Image
 
 signal ore_cutout(ore: OreTypes.OreType)
+signal render_cutout(cutout_vertices: PackedVector2Array)
 
 var queue = {}
 var cutout_map = {} # A map pointing a crack to the cutouts that use it. 
@@ -34,7 +35,7 @@ func queue_cutout(cutout_vecters: PackedVector2Array, new_cracks: Array[Signalin
 		# Not having this if statement causes an annoying error message when the crack is already connected.
 		if not crack.crack_complete.is_connected(crack_completed):
 			crack.crack_complete.connect(crack_completed)
-		
+	
 	id_counter += 1
 	
 func crack_completed(cutout_id: int):
@@ -51,6 +52,7 @@ func crack_completed(cutout_id: int):
 		falling_cutout.cutout_offscreen.connect(_falling_cutout_offscreen)
 		$"../falling_cutout_holder".add_child(falling_cutout)
 		
+		render_cutout.emit(cutout.cutout_vertices)
 		check_for_cutout_merge(cutout)
 		
 		queue[cutout_id] = null

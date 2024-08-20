@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
 
 [ext_resource type="Script" path="res://wall.gd" id="1_bc856"]
-[ext_resource type="Script" path="res://background.gd" id="3_hyv85"]
+[ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://background.tscn" id="2_udeak"]
 [ext_resource type="Script" path="res://cutout/cutout_queue.gd" id="4_agkfe"]
 [ext_resource type="Resource" uid="uid://by2xncyvekmvm" path="res://game_data/ore_spawn_levels.tres" id="5_bqbj5"]
 [ext_resource type="Script" path="res://ores/ore_generator.gd" id="5_ce6x1"]
@@ -11,8 +11,7 @@ script = ExtResource("1_bc856")
 
 [node name="contents" type="Node2D" parent="."]
 
-[node name="background" type="Sprite2D" parent="contents"]
-script = ExtResource("3_hyv85")
+[node name="background" parent="contents" instance=ExtResource("2_udeak")]
 
 [node name="hole_holder" type="Node2D" parent="contents"]
 modulate = Color(1, 1, 1, 0.97)
@@ -35,3 +34,4 @@ script = ExtResource("4_agkfe")
 [connection signal="generate_background" from="." to="contents/ore_generator" method="_generate_ores"]
 [connection signal="image_changed" from="contents/background" to="cutout_queue" method="_on_background_image_changed"]
 [connection signal="ore_cutout" from="cutout_queue" to="." method="_ore_cutout"]
+[connection signal="render_cutout" from="cutout_queue" to="contents/background" method="_on_cutout_queue_render_cutout"]
