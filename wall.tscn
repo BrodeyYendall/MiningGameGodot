@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
 
-[ext_resource type="Script" path="res://wall.gd" id="1_bc856"]
+[ext_resource type="Script" uid="uid://0vwt4esd4tag" path="res://wall.gd" id="1_bc856"]
 [ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://background.tscn" id="2_udeak"]
-[ext_resource type="Script" path="res://cutout/cutout_queue.gd" id="4_agkfe"]
+[ext_resource type="Script" uid="uid://b0qfs1vp5ggnh" path="res://cutout/cutout_queue.gd" id="4_agkfe"]
 [ext_resource type="Resource" uid="uid://by2xncyvekmvm" path="res://game_data/ore_spawn_levels.tres" id="5_bqbj5"]
-[ext_resource type="Script" path="res://ores/ore_generator.gd" id="5_ce6x1"]
+[ext_resource type="Script" uid="uid://nckw0br75vqp" path="res://ores/ore_generator.gd" id="5_ce6x1"]
 
 [node name="wall" type="Node2D"]
 script = ExtResource("1_bc856")

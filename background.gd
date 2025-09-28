@@ -1,7 +1,7 @@
 extends Sprite2D
 
 @export var ROCK_COLORS = {
-	1: [Color(0.557, 0.557, 0.557), Color(0.498, 0.498, 0.498), Color(0.466, 0.466, 0.466)]
+	1: [Color.from_rgba8(20, 27, 35), Color.from_rgba8(15, 20, 26), Color.from_rgba8(47, 54, 58)]
 }
 
 signal image_changed(new_image: Image)
