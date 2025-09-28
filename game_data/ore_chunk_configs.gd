@@ -1,8 +1,8 @@
 extends Node
 
-var NUGGET_CONFIG = OreChunkConfig.new([20, 40], 80, 6, 4, create_ball_raycast_shape, preload("res://ores/nugget_ore.tscn"))
-var BAND_CONFIG = OreChunkConfig.new([80, 120], 80, 6, 4, create_nugget_raycast_shape, preload("res://ores/nugget_ore.tscn"))
-var BALL_CONFIG = OreChunkConfig.new([15, 25], 100, 6, 4, create_band_raycast_shape, preload("res://ores/ball_ore.tscn"))
+var NUGGET_CONFIG = OreChunkConfig.new([20, 40], 80, 6, 4, create_ball_raycast_shape, preload("res://scenes/ores/nugget_ore.tscn"))
+var BAND_CONFIG = OreChunkConfig.new([80, 120], 80, 6, 4, create_nugget_raycast_shape, preload("res://scenes/ores/nugget_ore.tscn"))
+var BALL_CONFIG = OreChunkConfig.new([15, 25], 100, 6, 4, create_band_raycast_shape, preload("res://scenes/ores/ball_ore.tscn"))
 
 class OreChunkConfig: 
 	var ore_width: Array[int]

@@ -21,18 +21,18 @@ resources_spreadsheet_view/context_menu_on_leftclick=false
 [application]
 
 config/name="MiningGame"
-run/main_scene="res://game.tscn"
+run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://sprites/icon.svg"
 
 [autoload]
 
 Constants="*res://game_data/constants.gd"
 OreTypes="*res://game_data/ore_types.gd"
-RandomUtils="*res://random_utils.gd"
+RandomUtils="*res://scripts/random_utils.gd"
 OreChunkConfigs="*res://game_data/ore_chunk_configs.gd"
-InputManager="*res://input_manager.gd"
-RaycastHelper="*res://raycast_helper.gd"
+InputManager="*res://scripts/input_manager.gd"
+RaycastHelper="*res://scripts/raycast_helper.gd"
 
 [display]
 
