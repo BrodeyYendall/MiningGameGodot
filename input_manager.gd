@@ -89,4 +89,3 @@ class InputRecord:
 		self.type = type
 		self.timestamp = timestamp
 		self.additional_data = additional_data
-
