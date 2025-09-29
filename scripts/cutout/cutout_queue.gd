@@ -7,7 +7,7 @@ var falling_cutout_scene = preload("res://scenes/cutout/falling_cutout.tscn")
 var cutout_scene = preload("res://scenes/cutout/cutout.tscn")
 var generated_wall_image: Image
 
-signal ore_cutout(ore: OreTypes.OreType)
+signal ore_cutout
 signal render_cutout(cutout_vertices: PackedVector2Array)
 
 var queue = {}
@@ -94,9 +94,9 @@ func check_for_destroy(min_children: int):
 func _on_background_image_changed(new_image: Image):
 	generated_wall_image = new_image
 
-func _falling_cutout_offscreen(ores: Array[Ore]):
+func _falling_cutout_offscreen(ores: Array[Area2D]):
 	for ore in ores:
-		ore_cutout.emit(ore.oreType)
+		ore_cutout.emit()
 		
 	if should_destroy:
 		# The signalling cutout will be alive during the check so we set the min_children to 1

@@ -7,7 +7,7 @@ class_name Wall
 
 signal generate_background(wall_count: int)
 signal cycle_formed(cutout_vecters: PackedVector2Array, new_cracks: Array[Node2D], all_cracks: Array[Node2D]) # TODO Makes cracks one argument
-signal ore_cutout(ore: OreTypes.OreType, wall_reference: int)
+signal ore_cutout(wall_reference: int)
 
 var hole_scene = preload("res://scenes/hole.tscn")
 var crack_script = preload("res://scripts/crack/Crack.cs")
@@ -167,8 +167,8 @@ func create_crack_scene(start: Vector2, end: Vector2, crack_points: Array[int]) 
 	$contents/crack_holder.add_child(crack)
 	return crack
 	
-func _ore_cutout(ore: OreTypes.OreType):
-	ore_cutout.emit(ore, wall_count)
+func _ore_cutout():
+	ore_cutout.emit(wall_count)
 	
 func destroy():
 	$contents.visible = false

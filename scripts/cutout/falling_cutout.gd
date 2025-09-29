@@ -5,7 +5,7 @@ class_name FallingCutout
 @export var rotate_speed = 0.5
 @export var drop_shadow_offset = Vector2(8, 8)
 
-signal cutout_offscreen(ores: Array[Ore])
+signal cutout_offscreen(ores: Array[Area2D])
 
 var cutout_vertices: PackedVector2Array
 var background_image: Image
@@ -17,7 +17,7 @@ var height: int
 var min_x: int
 var min_y: int
 var rotation_direction: int
-var ores: Array[Ore] = []
+var ores: Array[Area2D] = []
 
 func with_data(cutout_vertices: PackedVector2Array, background_image: Image) -> FallingCutout:
 	self.cutout_vertices = cutout_vertices
@@ -95,7 +95,7 @@ func calculate_area():
 	area = abs(area) / 2.0
 	return area
 	
-func add_ore(ore: Ore):
+func add_ore(ore: Area2D):
 	ores.append(ore)
 	ore.get_parent().remove_child(ore)
 	add_child(ore)

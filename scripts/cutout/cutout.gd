@@ -7,7 +7,7 @@ signal destroy_hole(hole: Hole)
 var cutout_vertices: PackedVector2Array
 var cracks: Array
 var related_falling_cutout: FallingCutout = null
-var ores_in_cutout: Array[Ore] = []
+var ores_in_cutout: Array[Area2D] = []
 var holes_in_cutout: Array[Hole] = []
 
 func with_data(cutout_vertices: PackedVector2Array, cracks: Array) -> Node2D:
@@ -23,7 +23,7 @@ func _ready():
 func _draw():
 	draw_colored_polygon(cutout_vertices, Color(Color.BLACK, 0.2))
 	
-func add_ore(ore: Ore):
+func add_ore(ore: Area2D):
 	if related_falling_cutout == null:
 		ores_in_cutout.append(ore)  # This will be added to the falling cutout when add_falling_cutout_reference is called
 	else: 
