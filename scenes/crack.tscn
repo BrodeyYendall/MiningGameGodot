@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://1dyspcark233"]
 
-[ext_resource type="Script" uid="uid://c211u13y51ffa" path="res://scripts/signaling_crack.gd" id="1_xpfu5"]
+[ext_resource type="Script" uid="uid://d3e2sgffldicf" path="res://scripts/crack/Crack.cs" id="1_yn26b"]
 
 [node name="crack" type="Area2D"]
-script = ExtResource("1_xpfu5")
+script = ExtResource("1_yn26b")
 
 [node name="hitbox" type="CollisionPolygon2D" parent="."]

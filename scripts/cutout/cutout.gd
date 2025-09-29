@@ -1,7 +1,7 @@
 extends Area2D
 class_name Cutout
 
-signal destroy_crack(crack: Crack)
+signal destroy_crack(crack: Vector2)
 signal destroy_hole(hole: Hole)
 
 var cutout_vertices: PackedVector2Array

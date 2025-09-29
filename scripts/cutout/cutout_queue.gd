@@ -22,7 +22,7 @@ func set_collision_layer(layer: int):
 		child.set_collision_layer(layer)
 		child.set_collision_mask(layer)
 
-func queue_cutout(cutout_vecters: PackedVector2Array, new_cracks: Array[SignalingCrack], all_cracks: Array):
+func queue_cutout(cutout_vecters: PackedVector2Array, new_cracks: Array[Node2D], all_cracks: Array):
 	var cutout = create_cutout(cutout_vecters, all_cracks)
 	cutout.visible = false
 	
@@ -33,11 +33,11 @@ func queue_cutout(cutout_vecters: PackedVector2Array, new_cracks: Array[Signalin
 	}
 	
 	for crack in new_cracks:
-		crack.add_parent(id_counter)
+		crack.AddParent(id_counter)
 		
 		# Not having this if statement causes an annoying error message when the crack is already connected.
-		if not crack.crack_complete.is_connected(crack_completed):
-			crack.crack_complete.connect(crack_completed)
+		if not crack.CrackComplete.is_connected(crack_completed):
+			crack.CrackComplete.connect(crack_completed)
 	
 	id_counter += 1
 	
@@ -102,8 +102,8 @@ func _falling_cutout_offscreen(ores: Array[Ore]):
 		# The signalling cutout will be alive during the check so we set the min_children to 1
 		check_for_destroy(1)
 		
-func _crack_destroy(crack: Crack):
-	get_parent().destroy_crack(crack.crack_points[0], crack.crack_points[1])
+func _crack_destroy(crack: Node2D):
+	get_parent().destroy_crack(crack.CrackPointReferences[0], crack.CrackPointReferences[1])
 	
 func _hole_destroy(hole: Hole):
 	get_parent()._destroy_cracks_and_hole(hole.point_number)
