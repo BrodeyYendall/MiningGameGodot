@@ -134,7 +134,7 @@ public partial class Crack : Area2D
     /**
      * Gets the crack as a polygon but does not include the start and end vertex.
      * This is to prevent hitbox overlaps I think.
-     * TODO See if I should start/end here. 
+     * TODO See if I should add start/end to this polygon. 
      */
     private Vector2[] GetHitboxPolygon()
     {

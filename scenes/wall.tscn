@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkkjnrvv1puwq"]
+[gd_scene load_steps=5 format=3 uid="uid://dkkjnrvv1puwq"]
 
 [ext_resource type="Script" uid="uid://0vwt4esd4tag" path="res://scripts/wall.gd" id="1_bc856"]
 [ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/background.tscn" id="2_udeak"]
+[ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_tdtm6"]
 [ext_resource type="Script" uid="uid://b0qfs1vp5ggnh" path="res://scripts/cutout/cutout_queue.gd" id="4_agkfe"]
-[ext_resource type="Resource" uid="uid://by2xncyvekmvm" path="res://game_data/ore_spawn_levels.tres" id="5_bqbj5"]
-[ext_resource type="Script" uid="uid://nckw0br75vqp" path="res://scripts/ores/ore_generator.gd" id="5_ce6x1"]
 
 [node name="wall" type="Node2D"]
 script = ExtResource("1_bc856")
@@ -20,8 +19,7 @@ modulate = Color(1, 1, 1, 0.97)
 modulate = Color(1, 1, 1, 0.97)
 
 [node name="ore_generator" type="Node2D" parent="contents"]
-script = ExtResource("5_ce6x1")
-levels = ExtResource("5_bqbj5")
+script = ExtResource("3_tdtm6")
 
 [node name="cutout_holder" type="Node2D" parent="contents"]
 
@@ -33,7 +31,7 @@ falling_cutout_holder = NodePath("../falling_cutout_holder")
 [node name="falling_cutout_holder" type="Node2D" parent="."]
 
 [connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
-[connection signal="generate_background" from="." to="contents/ore_generator" method="_generate_ores"]
+[connection signal="generate_background" from="." to="contents/ore_generator" method="GenerateOres"]
 [connection signal="image_changed" from="contents/background" to="cutout_queue" method="_on_background_image_changed"]
 [connection signal="ore_cutout" from="cutout_queue" to="." method="_ore_cutout"]
 [connection signal="render_cutout" from="cutout_queue" to="contents/background" method="_on_cutout_queue_render_cutout"]

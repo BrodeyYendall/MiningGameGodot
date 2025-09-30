@@ -11,17 +11,8 @@ public partial class Ore : Area2D
     private static readonly int SegmentSize = 16;
     private static readonly int TotalRadius = 64;
     
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/ores/ball_ore.tscn");
-
     private int size;
     private Vector2[] oreVertices;
-    
-    public static Ore Create(int size, Vector2 position, uint collision_layer)
-    {
-        var ore = _attachedScene.Instantiate<Ore>();
-        ore.Initialize(size, position, collision_layer);
-        return ore;
-    }
 
     public void Initialize(int size, Vector2 position, uint collision_layer)
     {
