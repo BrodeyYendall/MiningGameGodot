@@ -11,39 +11,30 @@ public partial class Ore : Area2D
     private static readonly int SegmentSize = 16;
     private static readonly int TotalRadius = 64;
     
-    private int size;
     private Vector2[] oreVertices;
 
-    public void Initialize(int size, Vector2 position, uint collision_layer)
+    public void Initialize(int scale, Vector2 position, uint collision_layer)
     {
-        this.size = size;
-
-        List<Vector2> oreVerticesList = new();
-        var offset = 0;
-
-        for (int segment = 0; segment < SegmentSize; segment++)
-        {
-            offset = GD.RandRange(Mathf.Max(0, offset - Variance), Mathf.Min(MaxVariance, offset + Variance));
-
-            var angle = (Mathf.Pi * 2 / SegmentSize) * segment;
-            var x = offset + size * Mathf.Cos(angle);
-            var y = offset + size * Mathf.Sin(angle);
-            
-            oreVerticesList.Add(new Vector2(x, y));
-        }
-        
-        oreVertices = oreVerticesList.ToArray();
-        GetNode<CollisionPolygon2D>("hitbox").SetPolygon(oreVertices);
+        SelectRandomSprite();
+        CollisionLayer = collision_layer;
+        CollisionMask = collision_layer;
         Position = position;
-        SetCollisionLayer(collision_layer);
-        SetCollisionMask(collision_layer);
+        Scale = new Vector2(scale, scale);
     }
 
-    public override void _Draw()
-    { 
-        var color = Colors.SaddleBrown;
-        DrawColoredPolygon(oreVertices, color);
-        DrawPolyline(oreVertices, color.Darkened(0.1f), 1);
+    private void SelectRandomSprite()
+    {
+        var sprite = GetNode<Sprite2D>("Sprite");
+        var spriteRegion = sprite.RegionRect;
+        
+        int horizontalCount = sprite.Texture.GetWidth() / (int) spriteRegion.Size.X;
+        int verticalCount = sprite.Texture.GetHeight() / (int) spriteRegion.Size.Y;
+
+        int x = GD.RandRange(0, horizontalCount - 1) * (int) spriteRegion.Size.X;
+        int y = GD.RandRange(0, verticalCount - 1) * (int) spriteRegion.Size.Y;
+
+        spriteRegion.Position = new Vector2(x, y);
+        sprite.RegionRect = spriteRegion;
     }
 
     public override void _Ready()

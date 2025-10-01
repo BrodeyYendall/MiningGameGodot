@@ -35,7 +35,8 @@ public partial class OreGenerator : Node2D
 		    var randomLocation = new Vector2(
 			    GD.RandRange(OreBorderBuffer, ScreenWidth - OreBorderBuffer),
 			    GD.RandRange(OreBorderBuffer, ScreenHeight - OreBorderBuffer));
-		    var scale = (float) GD.RandRange(1d, 1.3d);
+		    
+		    var scale = 1f; // TODO Randomize scaling?
 
 		    OreFactory<Ore> targetOreFactory = SelectOreFromTable(oreTable);
 		    targetOreFactory.Space = space;

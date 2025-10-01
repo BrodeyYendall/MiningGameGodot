@@ -29,18 +29,20 @@ public abstract partial class OreFactory<T>: Node2D
     public virtual T CreateOre(Vector2 location, float scale, uint collisionLayer)
     {
         var ore = GetAttachedScene().Instantiate<T>();
-        ore.Initialize((int) (GetBaseRadius() * scale), location, collisionLayer);
+        ore.Initialize((int) scale, location, collisionLayer);
         return ore;
     }
 
-    protected virtual Shape2D GetOreRaycastShape(float scale = 1)
+    protected virtual Shape2D GetOreRaycastShape(float scale)
     {
-        var shape = new CircleShape2D();
-        shape.Radius = GetBaseRadius() * scale;
+        var shape = new RectangleShape2D();
+
+        float width = GetBaseWidth() * scale;
+        shape.Size = new Vector2(width, width);
         return shape;
     }
 
-    protected virtual float GetBaseRadius()
+    protected virtual float GetBaseWidth()
     {
         throw new System.NotImplementedException("Either implement GetOreRaycastShape or GetBaseRadius.");
     }
