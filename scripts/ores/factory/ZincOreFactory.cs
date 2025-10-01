@@ -5,7 +5,7 @@ namespace MiningGame.scripts.ores.factory;
 public partial class ZincOreFactory : OreFactory<Ore>
 {
     
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/ores/ore.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/ores/ZincOre.tscn");
 
     protected override PackedScene GetAttachedScene()
     {
@@ -14,6 +14,6 @@ public partial class ZincOreFactory : OreFactory<Ore>
     
     protected override float GetBaseWidth()
     {
-        return 40f;
+        return 32f;
     }
 }

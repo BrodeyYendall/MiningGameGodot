@@ -5,7 +5,7 @@ namespace MiningGame.scripts.ores.factory;
 public partial class CopperOreFactory : OreFactory<Ore>
 {
     
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/ores/ore.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/ores/GoldOre.tscn");
 
     protected override PackedScene GetAttachedScene()
     {

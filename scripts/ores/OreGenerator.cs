@@ -59,7 +59,7 @@ public partial class OreGenerator : Node2D
     {
 	    foreach (OreTable oreTable in OreTable.AllOreTables)
 	    {
-		    if (wallCount >= oreTable.WallCountThreshold)
+		    if (wallCount <= oreTable.WallCountThreshold)
 		    {
 			    return oreTable;
 		    }

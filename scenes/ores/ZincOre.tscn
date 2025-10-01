@@ -1,19 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://bprmhfnjuybe6"]
+[gd_scene load_steps=4 format=3 uid="uid://bpsep63cmdjn1"]
 
-[ext_resource type="Script" uid="uid://dkia33kap8lk4" path="res://scripts/ores/Ore.cs" id="1_d3n2b"]
-[ext_resource type="Texture2D" uid="uid://c7fwi0m6wadm2" path="res://sprites/ore/gold/gold-tleset.png" id="2_bv18p"]
+[ext_resource type="Script" uid="uid://dkia33kap8lk4" path="res://scripts/ores/Ore.cs" id="1_p80xm"]
+[ext_resource type="Texture2D" uid="uid://cqdi6qkw5l7xt" path="res://sprites/ore/zinc/tilemap.png" id="2_p80xm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7ef1v"]
 size = Vector2(32, 32)
 
 [node name="Ore" type="Area2D"]
-script = ExtResource("1_d3n2b")
+script = ExtResource("1_p80xm")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_7ef1v")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_bv18p")
+texture = ExtResource("2_p80xm")
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
 
