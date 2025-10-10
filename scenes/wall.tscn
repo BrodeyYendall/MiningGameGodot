@@ -32,5 +32,6 @@ fallingCutoutHolder = NodePath("../falling_cutout_holder")
 
 [connection signal="cycle_formed" from="." to="cutout_queue" method="QueueCutout"]
 [connection signal="generate_background" from="." to="contents/ore_generator" method="GenerateOres"]
+[connection signal="ImageChange" from="contents/background" to="cutout_queue" method="OnBackgroundImageChanged"]
 [connection signal="OreCutout" from="cutout_queue" to="." method="_ore_cutout"]
-[connection signal="RenderCutout" from="cutout_queue" to="contents/background" method="_on_cutout_queue_render_cutout"]
+[connection signal="RenderCutout" from="cutout_queue" to="contents/background" method="OnCutoutQueueRenderCutoutHandler"]

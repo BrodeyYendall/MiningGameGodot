@@ -20,7 +20,7 @@ func _draw():
 func _on_area_entered(area: Area2D):
 	if "cutoutVertices" in area:	
 		if Geometry2D.clip_polygons(_get_square_wrapper(), area.cutoutVertices).is_empty():
-			area.add_hole(self)
+			area.AddHole(self)
 
 # Used to determine if a hole is completely surrounded by a cutout. A square "hitbox" is used for
 # optimisation and to be sure that it is surrounded. 

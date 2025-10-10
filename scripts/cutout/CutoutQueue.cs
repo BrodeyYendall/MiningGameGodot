@@ -156,11 +156,13 @@ public partial class CutoutQueue: Node2D
 
     public override void _Ready()
     {
-        // TODO Change this back to signals after the migration is completed. Currently I am unable to Send an image with signals
-        wallImage = GetNode("../contents/background/subview").Call("get_texture").As<Texture2D>().GetImage();
-        
         int wallCount = GetParent().Get("wall_count").AsInt32(); // TODO Find a better way to do this
         collisionLayer = (uint)(1 << (wallCount % 8)); // TODO Move collision layer management  to an autoload/singleton
+    }
+
+    public void OnBackgroundImageChanged(Image image)
+    {
+        wallImage = image;
     }
 
     private partial class QueueEntry (

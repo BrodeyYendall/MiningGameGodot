@@ -94,7 +94,7 @@ public partial class Crack : Area2D
         return nearestCrackLine.ToArray();
     }
 
-    public void Destroy()
+    public void destory()
     {
         QueueFree();
     }

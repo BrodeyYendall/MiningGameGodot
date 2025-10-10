@@ -49,7 +49,7 @@ func process_create_hole(point: Vector2):
 	var deepest_cutout = min_wall_count
 	for object in objects_on_point:
 		if object.collider.has_method("GetParentWallCount"):
-			var cutout_wall_count = object.collider.GetParentWallCount()
+			var cutout_wall_count = object.collider.get_parent_wall_count()
 			deepest_cutout = max(deepest_cutout, cutout_wall_count + 1)
 	var target_wall = deepest_cutout - min_wall_count
 	

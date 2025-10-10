@@ -56,8 +56,6 @@ public partial class FallingCutout : Sprite2D
         adjustedCutoutSize = Mathf.Min(2f, Mathf.Max(0.75f, adjustedCutoutSize));
 
         Image image = Image.CreateEmpty(size.X, size.Y, false, Image.Format.Rgba8);
-        // image.SetPixel(0, 0, new Color(0, 0, 0, 0)); // Set pixels outside the polygon as transparent.
-
         for (int y = 0; y < size.Y; y++)
         {
             for (int x = 0; x < size.X; x++)
@@ -65,7 +63,7 @@ public partial class FallingCutout : Sprite2D
                 Vector2I worldPosition = new Vector2I(x, y) + new Vector2I(initPosition.X, initPosition.Y);
                 if (Geometry2D.IsPointInPolygon(worldPosition, cutoutVertices))
                 {
-                    Color color = Colors.Black; // TODO The background image is currently empty, need to fix after migrating background generation. backgroundImage.GetPixelv(worldPosition);
+                    Color color = backgroundImage.GetPixelv(worldPosition);
                     image.SetPixel(x, y, color);
                 }
                 else

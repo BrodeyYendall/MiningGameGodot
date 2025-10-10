@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d2bvw7tp5jk4l"]
 
-[ext_resource type="Script" uid="uid://dya2bq1gjmtv8" path="res://scripts/background.gd" id="1_y0upk"]
+[ext_resource type="Script" uid="uid://uf5pp23efp3f" path="res://scripts/Background.cs" id="1_y0upk"]
 [ext_resource type="Shader" uid="uid://deyv0sdqvh78d" path="res://shaders/wall_transparency_shader.gdshader" id="2_jougr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ki05r"]
@@ -18,5 +18,7 @@ transparent_bg = true
 size = Vector2i(640, 360)
 
 [node name="render" type="Sprite2D" parent="subview"]
+texture_filter = 1
+texture_repeat = 1
 material = SubResource("ShaderMaterial_ki05r")
 centered = false

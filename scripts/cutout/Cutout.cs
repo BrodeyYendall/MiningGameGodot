@@ -115,10 +115,10 @@ public partial class Cutout : Area2D
         Initialize(merge[0], cracks, CollisionLayer);
         QueueRedraw();
 
-        cutoutToMerge.Destroy();
+        cutoutToMerge.destory();
     }
 
-    public void Destroy()
+    public void destory()
     {
         QueueFree();
     }

@@ -26,12 +26,12 @@ func _ready():
 	set_collision_layers(self)
 	set_process_input(false)
 	
-	$contents/background.with_data(wall_count)
+	$contents/background.Initialize()
 	
 	generate_background.emit(wall_count)
 	
 func render():
-	$contents/background.render()
+	$contents/background.WaitForRender()
 
 func set_collision_layers(node):
 	for child in node.get_children():
@@ -186,7 +186,7 @@ func destroy_crack(start: int, end: int):
 	if start in cracks:
 		var forward = cracks[start]
 		if end in forward:
-			forward[end].Destroy()
+			forward[end].destory()
 			forward.erase(end)
 		
 	if pathfinder.get_point_connections(start).size() == 0:
