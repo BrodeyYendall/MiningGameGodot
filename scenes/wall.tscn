@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://0vwt4esd4tag" path="res://scripts/wall.gd" id="1_bc856"]
 [ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/background.tscn" id="2_udeak"]
 [ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_tdtm6"]
-[ext_resource type="Script" uid="uid://b0qfs1vp5ggnh" path="res://scripts/cutout/cutout_queue.gd" id="4_agkfe"]
+[ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutQueue.cs" id="4_tdtm6"]
 
 [node name="wall" type="Node2D"]
 script = ExtResource("1_bc856")
@@ -23,15 +23,14 @@ script = ExtResource("3_tdtm6")
 
 [node name="cutout_holder" type="Node2D" parent="contents"]
 
-[node name="cutout_queue" type="Node2D" parent="." node_paths=PackedStringArray("cutout_holder", "falling_cutout_holder")]
-script = ExtResource("4_agkfe")
-cutout_holder = NodePath("../contents/cutout_holder")
-falling_cutout_holder = NodePath("../falling_cutout_holder")
+[node name="cutout_queue" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder")]
+script = ExtResource("4_tdtm6")
+cutoutHolder = NodePath("../contents/cutout_holder")
+fallingCutoutHolder = NodePath("../falling_cutout_holder")
 
 [node name="falling_cutout_holder" type="Node2D" parent="."]
 
-[connection signal="cycle_formed" from="." to="cutout_queue" method="queue_cutout"]
+[connection signal="cycle_formed" from="." to="cutout_queue" method="QueueCutout"]
 [connection signal="generate_background" from="." to="contents/ore_generator" method="GenerateOres"]
-[connection signal="image_changed" from="contents/background" to="cutout_queue" method="_on_background_image_changed"]
-[connection signal="ore_cutout" from="cutout_queue" to="." method="_ore_cutout"]
-[connection signal="render_cutout" from="cutout_queue" to="contents/background" method="_on_cutout_queue_render_cutout"]
+[connection signal="OreCutout" from="cutout_queue" to="." method="_ore_cutout"]
+[connection signal="RenderCutout" from="cutout_queue" to="contents/background" method="_on_cutout_queue_render_cutout"]

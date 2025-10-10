@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://djfulbsxvku3o"]
 
-[ext_resource type="Script" uid="uid://dxb52jr5nysp6" path="res://scripts/cutout/falling_cutout.gd" id="1_qchi3"]
-[ext_resource type="Script" uid="uid://b3kxtmg6oxdae" path="res://scripts/cutout/falling_cutout_shadow.gd" id="2_8n0ph"]
+[ext_resource type="Script" uid="uid://bfx0ulkeq6fki" path="res://scripts/cutout/FallingCutout.cs" id="1_qchi3"]
+[ext_resource type="Script" uid="uid://mapngt5g7s4e" path="res://scripts/cutout/FallingCutoutShadow.cs" id="2_8n0ph"]
 
 [node name="falling_cutout" type="Sprite2D"]
 script = ExtResource("1_qchi3")

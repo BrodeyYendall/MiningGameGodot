@@ -17,9 +17,9 @@ func _draw():
 	draw_string(ThemeDB.fallback_font, Vector2(-2, 3), str(point_number), 0, -1, 12)
 
 
-func _on_area_entered(area):
-	if area is Cutout:		
-		if Geometry2D.clip_polygons(_get_square_wrapper(), area.cutout_vertices).is_empty():
+func _on_area_entered(area: Area2D):
+	if "cutoutVertices" in area:	
+		if Geometry2D.clip_polygons(_get_square_wrapper(), area.cutoutVertices).is_empty():
 			area.add_hole(self)
 
 # Used to determine if a hole is completely surrounded by a cutout. A square "hitbox" is used for

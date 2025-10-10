@@ -126,3 +126,7 @@ func _on_cutout_queue_render_cutout(cutout_Vertices: PackedVector2Array):
 	texture = await get_subview_texture()
 	cutouts_to_render = PackedVector2Array()
 	cutout_indices = [0]
+
+
+func _ore_cutout() -> void:
+	pass # Replace with function body.

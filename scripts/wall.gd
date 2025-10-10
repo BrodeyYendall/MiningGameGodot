@@ -20,7 +20,7 @@ var hole_count = 0
 var pathfinder: AStar2D = AStar2D.new()
 
 func _ready():
-	$cutout_queue.falling_cutout_holder = falling_cutout_holder
+	$cutout_queue.fallingCutoutHolder = falling_cutout_holder
 	print("\nNew wall\n")
 	collision_layer = 1 << (wall_count % 8)
 	set_collision_layers(self)
@@ -123,7 +123,7 @@ func check_for_cycle(new_connections: Array[int], new_cracks: Array[Node2D], new
 				crack_vertices = crack_vertices.slice(0, -1)
 			path_vectors.append_array(crack_vertices)
 			
-		if contains_unqiue_points:		
+		if contains_unqiue_points:	
 			cycle_formed.emit(path_vectors, new_cracks, cracks_in_cycle)
 			
 func calculate_circuit_centre(cycle: Array[int]) -> Vector2:

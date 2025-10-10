@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Godot;
+using MiningGame.scripts.cutout;
 using Vector2 = Godot.Vector2;
 
 namespace MiningGame.scripts.ores;
@@ -37,20 +38,23 @@ public partial class Ore : Area2D
         sprite.RegionRect = spriteRegion;
     }
 
-    public override void _Ready()
-    {
-        AreaEntered +=  OnAreaEntered;
-    }
-
     private void OnAreaEntered(Area2D area)
     {
-        // TODO If area is Cutout. Requires Cutout to be migrated to C# too.
-        if (area.Call("point_is_inside", Position).AsBool())
+        if (area is Cutout cutout)
         {
-            area.Call("add_ore", this);
-            AreaEntered -= OnAreaEntered;
+            if (cutout.PointIsInside(Position))
+            {
+                cutout.AddOre(this);
+                SetDeferred("Monitoring", false);
+                SetDeferred("Monitorable", false);
+            }
         }
-        
+    }
+
+    public void ChangeParent(Node parent)
+    {
+        GetParent().RemoveChild(this);
+        parent.AddChild(this);
     }
     
     

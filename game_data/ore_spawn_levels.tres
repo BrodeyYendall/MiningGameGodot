@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="OreSpawnLevels" load_steps=2 format=3 uid="uid://by2xncyvekmvm"]
-
-[ext_resource type="Script" path="res://game_data/ore_spawn_levels.gd" id="1_1nauy"]
-
-[resource]
-script = ExtResource("1_1nauy")
-levels = null

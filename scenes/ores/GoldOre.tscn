@@ -17,4 +17,4 @@ texture = ExtResource("2_bv18p")
 region_enabled = true
 region_rect = Rect2(0, 0, 32, 32)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_entered" from="." to="." method="OnAreaEntered"]

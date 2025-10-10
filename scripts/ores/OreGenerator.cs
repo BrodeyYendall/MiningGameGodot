@@ -10,10 +10,6 @@ public partial class OreGenerator : Node2D
     private static readonly int OreGenFailCount = 10;
     private static readonly int OreGenSuccessCount = 10;
 
-    // TODO Move these variables to a constants class
-    private static readonly int ScreenWidth = 640;
-    private static readonly int ScreenHeight = 360;
-
     private PhysicsDirectSpaceState2D space;
     
     public override void _Ready()
@@ -33,8 +29,8 @@ public partial class OreGenerator : Node2D
 	    while (failCount <= OreGenFailCount && successCount < OreGenSuccessCount)
 	    {
 		    var randomLocation = new Vector2(
-			    GD.RandRange(OreBorderBuffer, ScreenWidth - OreBorderBuffer),
-			    GD.RandRange(OreBorderBuffer, ScreenHeight - OreBorderBuffer));
+			    GD.RandRange(OreBorderBuffer, Constants.ScreenWidth - OreBorderBuffer),
+			    GD.RandRange(OreBorderBuffer, Constants.ScreenHeight - OreBorderBuffer));
 		    
 		    var scale = 1f; // TODO Randomize scaling?
 

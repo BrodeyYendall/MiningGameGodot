@@ -28,8 +28,6 @@ config/icon="res://sprites/icon.svg"
 [autoload]
 
 Constants="*res://game_data/constants.gd"
-OreTypes="*res://game_data/ore_types.gd"
-OreChunkConfigs="*res://game_data/ore_chunk_configs.gd"
 InputManager="*res://scripts/autoload/input_manager.gd"
 RaycastHelper="*res://scripts/autoload/raycast_helper.gd"
 

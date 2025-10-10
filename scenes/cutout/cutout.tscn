@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b36uw2ry80p7a"]
 
-[ext_resource type="Script" uid="uid://bpdoidag80ynd" path="res://scripts/cutout/cutout.gd" id="1_mamnt"]
+[ext_resource type="Script" uid="uid://dfqfmy68pj1bb" path="res://scripts/cutout/Cutout.cs" id="1_mamnt"]
 
 [node name="cutout" type="Area2D"]
 script = ExtResource("1_mamnt")

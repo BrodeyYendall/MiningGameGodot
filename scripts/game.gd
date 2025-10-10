@@ -48,15 +48,15 @@ func process_create_hole(point: Vector2):
 	
 	var deepest_cutout = min_wall_count
 	for object in objects_on_point:
-		if object.collider is Cutout:
-			var cutout_wall_count = (object.collider as Cutout).get_parent_wall_count()
+		if object.collider.has_method("GetParentWallCount"):
+			var cutout_wall_count = object.collider.GetParentWallCount()
 			deepest_cutout = max(deepest_cutout, cutout_wall_count + 1)
 	var target_wall = deepest_cutout - min_wall_count
 	
 	if target_wall > 0:
 		var objects_on_layer_above = RaycastHelper.circle_raycast(point, active_walls[target_wall - 1].collision_layer, cutout_edge_buffer, 2)
 		for object in objects_on_layer_above:
-			if not object.collider is Cutout:
+			if not object.collider.has_method("GetParentWallCount"):
 				return
 	
 	active_walls[target_wall].create_hole(point)
