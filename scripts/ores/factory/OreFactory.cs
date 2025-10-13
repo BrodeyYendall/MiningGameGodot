@@ -1,29 +1,16 @@
 ﻿using System.Linq;
 using Godot;
+using MiningGame.scripts.helper;
 
 namespace MiningGame.scripts.ores;
 
 public abstract partial class OreFactory<T>: Node2D
     where T : Ore
 {
-    protected PhysicsDirectSpaceState2D space;
-    public PhysicsDirectSpaceState2D Space { 
-        get => space;
-        set => space = value;
-    }
-    
-    public bool CanGenerateAt(Vector2 location, float scale)
+    public bool CanGenerateAt(Vector2 location, float scale, uint collisionLayer)
     {
-        var query = new PhysicsShapeQueryParameters2D();
-        query.Shape = GetOreRaycastShape(scale);
-        query.CollideWithAreas = true;
-        query.CollisionMask = 0xFFFFFFFF;
-
-        var transform = query.Transform;
-        transform.Origin = location;
-        query.Transform = transform;
-        
-        return !space.IntersectShape(query, 1).Any();
+        Shape2D shape = GetOreRaycastShape(scale);
+        return !RaycastHelper.Instance.RaycastShape(location, shape, collisionLayer).Any();
     }
 
     public virtual T CreateOre(Vector2 location, float scale, uint collisionLayer)

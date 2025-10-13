@@ -1,12 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://dkkjnrvv1puwq"]
 
-[ext_resource type="Script" uid="uid://0vwt4esd4tag" path="res://scripts/wall.gd" id="1_bc856"]
+[ext_resource type="Script" uid="uid://2yvu6q174vr1" path="res://scripts/Wall.cs" id="1_tdtm6"]
 [ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/background.tscn" id="2_udeak"]
 [ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_tdtm6"]
 [ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutQueue.cs" id="4_tdtm6"]
 
-[node name="wall" type="Node2D"]
-script = ExtResource("1_bc856")
+[node name="wall" type="Node2D" node_paths=PackedStringArray("HoleHolder", "CrackHolder")]
+script = ExtResource("1_tdtm6")
+HoleHolder = NodePath("contents/hole_holder")
+CrackHolder = NodePath("contents/crack_holder")
 
 [node name="contents" type="Node2D" parent="."]
 
@@ -30,8 +32,8 @@ fallingCutoutHolder = NodePath("../falling_cutout_holder")
 
 [node name="falling_cutout_holder" type="Node2D" parent="."]
 
-[connection signal="cycle_formed" from="." to="cutout_queue" method="QueueCutout"]
-[connection signal="generate_background" from="." to="contents/ore_generator" method="GenerateOres"]
+[connection signal="CycleFormed" from="." to="cutout_queue" method="QueueCutout"]
+[connection signal="GenerateBackground" from="." to="contents/ore_generator" method="GenerateOres"]
 [connection signal="ImageChange" from="contents/background" to="cutout_queue" method="OnBackgroundImageChanged"]
-[connection signal="OreCutout" from="cutout_queue" to="." method="_ore_cutout"]
+[connection signal="OreCutout" from="cutout_queue" to="." method="EmitOreCutout"]
 [connection signal="RenderCutout" from="cutout_queue" to="contents/background" method="OnCutoutQueueRenderCutoutHandler"]

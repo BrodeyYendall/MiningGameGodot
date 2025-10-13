@@ -4,24 +4,17 @@ using Godot;
 
 namespace MiningGame.scripts.ores;
 
-public partial class OreGenerator : Node2D
+public partial class OreGenerator : Node2D, ICollisionObjectCreator
 {
     private static readonly int OreBorderBuffer = 50;
     private static readonly int OreGenFailCount = 10;
     private static readonly int OreGenSuccessCount = 10;
 
-    private PhysicsDirectSpaceState2D space;
-    
-    public override void _Ready()
-    {
-	    space = GetWorld2D().DirectSpaceState;
-    }
-
+    private uint collisionLayer;
     
     private void GenerateOres(int level)
     {
 	    OreTable oreTable = GetOreTableForCurrentLevel(level);
-	    uint collisionLayer = (uint)(1 << (level % 8)); // TODO Move collision layer management  to an autoload/singleton
 
 	    int failCount = 0;
 	    int successCount = 0;
@@ -31,16 +24,13 @@ public partial class OreGenerator : Node2D
 		    var randomLocation = new Vector2(
 			    GD.RandRange(OreBorderBuffer, Constants.ScreenWidth - OreBorderBuffer),
 			    GD.RandRange(OreBorderBuffer, Constants.ScreenHeight - OreBorderBuffer));
-		    
-		    var scale = 1f; // TODO Randomize scaling?
 
 		    OreFactory<Ore> targetOreFactory = SelectOreFromTable(oreTable);
-		    targetOreFactory.Space = space;
 		    
-		    if (targetOreFactory.CanGenerateAt(randomLocation, scale))
+		    if (targetOreFactory.CanGenerateAt(randomLocation, 1f, collisionLayer))
 		    {
 			    successCount++;
-			    Ore ore = targetOreFactory.CreateOre(randomLocation, scale, collisionLayer);
+			    Ore ore = targetOreFactory.CreateOre(randomLocation, 1f, collisionLayer);
 			    AddChild(ore);
 		    }
 		    else
@@ -76,5 +66,10 @@ public partial class OreGenerator : Node2D
 	    }
 
 	    throw new InvalidOperationException("Ore ratios do not sum to 100 or no valid ore could be selected.");
+    }
+
+    public void SetCollisionLayer(uint collisionLayer)
+    {
+	    this.collisionLayer = collisionLayer;
     }
 }

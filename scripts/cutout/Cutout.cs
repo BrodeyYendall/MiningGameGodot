@@ -15,13 +15,13 @@ public partial class Cutout : Area2D
     public delegate void DestroyCrackEventHandler(Crack crack);
     
     [Signal]
-    public delegate void DestroyHoleEventHandler(Node2D crack);
+    public delegate void DestroyHoleEventHandler(Hole crack);
 
     public Vector2[] cutoutVertices;
     public List<Crack> cracks;
     private FallingCutout relatedFallingCutout;
     private List<Ore> oresInCutout = new();
-    private List<Node2D> holesInCutout = new();
+    private List<Hole> holesInCutout = new();
 
     public static Cutout Create(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer)
     {
@@ -63,7 +63,7 @@ public partial class Cutout : Area2D
         }
     }
 
-    public void AddHole(Node2D hole)
+    public void AddHole(Hole hole)
     {
         holesInCutout.Add(hole);
     }
@@ -77,7 +77,7 @@ public partial class Cutout : Area2D
             fallingCutout.AddOre(ore);
         }
 
-        foreach (Node2D hole in holesInCutout)
+        foreach (Hole hole in holesInCutout)
         {
             EmitSignalDestroyHole(hole);
         }
@@ -115,10 +115,10 @@ public partial class Cutout : Area2D
         Initialize(merge[0], cracks, CollisionLayer);
         QueueRedraw();
 
-        cutoutToMerge.destory();
+        cutoutToMerge.Destroy();
     }
 
-    public void destory()
+    public void Destroy()
     {
         QueueFree();
     }

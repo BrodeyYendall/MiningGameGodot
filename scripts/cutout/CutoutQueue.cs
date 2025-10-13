@@ -40,7 +40,7 @@ public partial class CutoutQueue: Node2D
         }
     }
 
-    public void QueueCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks) // TODO Change the signature after Wall is migrated.
+    public void QueueCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall _)
     {
         var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer);
         cutoutHolder.AddChild(cutout);
@@ -127,7 +127,7 @@ public partial class CutoutQueue: Node2D
         }
     }
 
-    public void destroy() // TODO Rename to Destroy after all code is migrated
+    public void Destroy()
     {
         shouldDestroy = true;
         CheckForDestroy(0);
@@ -144,22 +144,16 @@ public partial class CutoutQueue: Node2D
     
     private void CrackDestroy(Crack crack)
     {
-        Node2D wall = GetParent<Node2D>();
-        wall.Call("destroy_crack", crack.CrackPointReferences[0], crack.CrackPointReferences[1]);
+        Wall wall = GetParent<Wall>();
+        wall.DestroyCrack(crack.CrackPointReferences[0], crack.CrackPointReferences[1]);
     }
 
-    private void HoleDestroy(Node2D hole)
+    private void HoleDestroy(Hole hole)
     {
-        Node2D wall = GetParent<Node2D>();
-        wall.Call("_destroy_cracks_and_hole", hole.Get("point_number"));
+        Wall wall = GetParent<Wall>();
+        wall.DestroyCracksAndHole(hole.PointNumber);
     }
-
-    public override void _Ready()
-    {
-        int wallCount = GetParent().Get("wall_count").AsInt32(); // TODO Find a better way to do this
-        collisionLayer = (uint)(1 << (wallCount % 8)); // TODO Move collision layer management  to an autoload/singleton
-    }
-
+    
     public void OnBackgroundImageChanged(Image image)
     {
         wallImage = image;

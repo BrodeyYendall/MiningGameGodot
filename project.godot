@@ -29,7 +29,7 @@ config/icon="res://sprites/icon.svg"
 
 Constants="*res://game_data/constants.gd"
 InputManager="*res://scripts/autoload/input_manager.gd"
-RaycastHelper="*res://scripts/autoload/raycast_helper.gd"
+RaycastHelper="*res://scripts/helper/RaycastHelper.cs"
 
 [display]
 
