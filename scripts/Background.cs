@@ -33,7 +33,7 @@ public partial class Background : Sprite2D
     /// Waits for the background Image to be generated and then performs the nessacary scaling/rendering of the image.
     /// This Sprite's texture is set to the result and the ImageChanged signal is emitted with the result.
     /// </summary>
-    public async void WaitForRender() // TODO Return Task after migrating Wall to C#
+    public async Task WaitForRender() // TODO Return Task after migrating Wall to C#
     { 
         ImageTexture generatedBackground = backgroundGenerationThread.WaitToFinish().As<ImageTexture>();
 

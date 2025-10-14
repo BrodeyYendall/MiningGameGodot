@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using MiningGame.scripts.autoload;
 using MiningGame.scripts.crack;
@@ -11,6 +12,10 @@ namespace MiningGame.scripts;
 
 public partial class Wall: Node2D, ICollisionObjectCreator
 {
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/wall.tscn");
+
+    
+    
     private static readonly int CrackDistance = 200;
     private static readonly int NewHoleHitbox = 20;
     
@@ -30,6 +35,8 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     public delegate void OreCutoutEventHandler(int wallReference);
 
     private uint collisionLayer = 0;
+    public uint CollisionLayer => collisionLayer;
+    
     private Dictionary<int, Dictionary<int, Crack>> cracks = new();
     private Dictionary<int, Hole>  holes = new();
     private int currentHoleId = 0;
@@ -39,6 +46,14 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     public int WallCount => wallCount;
     private Node2D fallingCutoutHolder;
 
+    public static Wall Create(int wallCount, Node2D fallingCutoutHolder)
+    {
+        Wall wall = _attachedScene.Instantiate<Wall>();
+        
+        wall.Initialize(wallCount, fallingCutoutHolder);
+        return wall;
+    }
+    
     public void Initialize(int wallCount, Node2D fallingCutoutHolder)
     {
         this.wallCount = wallCount;
@@ -232,7 +247,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
         GetNode<CutoutQueue>("cutout_queue").Destroy();
     }
 
-    public void DestroyCracksAndHole(int pointId)
+    public void DestroyCracksAndHole(int pointId) // Make Wall responsible for managing the destruction of Cutouts/Cracks/Holes
     {
         foreach (int connection in pathfinder.GetPointConnections(pointId))
         {
@@ -279,9 +294,9 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     }
     
 
-    public void Render()
+    public async Task Render()
     {
-        GetNode<Background>("contents/background").WaitForRender();
+        await GetNode<Background>("contents/background").WaitForRender();
     }
 
     public void SetCollisionLayer(uint collisionLayer)

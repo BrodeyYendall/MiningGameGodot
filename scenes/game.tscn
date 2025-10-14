@@ -1,9 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://h5ydrs5ls1q2"]
 
-[ext_resource type="Script" uid="uid://d1y2cae7j78lx" path="res://scripts/game.gd" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://wht418tua6wp" path="res://scripts/WallManager.cs" id="1_uwrxv"]
 
-[node name="game" type="Node2D"]
+[node name="game" type="Node2D" node_paths=PackedStringArray("FallingCutoutHolder", "WallContainer")]
 script = ExtResource("1_uwrxv")
+FallingCutoutHolder = NodePath("falling_cutout_holder")
+WallContainer = NodePath("wall_container")
 
 [node name="wall_container" type="Node2D" parent="."]
 
