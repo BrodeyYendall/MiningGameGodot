@@ -4,4 +4,35 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+
+    <PropertyGroup>
+        <!--
+            Copies all dependency assemblies to the output directory
+            Required for gdUnit4Net to find all necessary assemblies at runtime
+        -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <!--
+            Explicitly sets the test framework to gdUnit4Net
+            Helps test runners identify which framework to use for test discovery and execution
+        -->
+        <TestFramework>GdUnit4</TestFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!--
+            Core .NET test SDK - provides the foundation for running tests
+            Required by most test adapters and runners
+        -->
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
+        <!--
+            gdUnit4Net API - provides the testing framework classes, attributes, and assertions
+            Contains [TestSuite], [TestCase], AssertThat(), and other core testing functionality
+        -->
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-alpha2"/>
+        <!--
+            gdUnit4Net test adapter - enables test discovery and execution in IDEs and CI/CD
+            Allows Visual Studio, Rider, and dotnet test to find and run gdUnit4Net tests
+        -->
+        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
+    </ItemGroup>
 </Project>
