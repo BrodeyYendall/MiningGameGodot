@@ -12,7 +12,7 @@ namespace MiningGame.scripts;
 
 public partial class Wall: Node2D, ICollisionObjectCreator
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/wall.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/Wall.tscn");
     
     private static readonly int CrackDistance = 200;
     private static readonly int NewHoleHitbox = 20;

@@ -9,7 +9,7 @@ namespace MiningGame.scripts.cutout;
 
 public partial class Cutout : Area2D
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/cutout.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/Cutout.tscn");
     [Export] private CollisionPolygon2D hitbox;
     
     [Signal] public delegate void DestroyCrackEventHandler(Crack crack);

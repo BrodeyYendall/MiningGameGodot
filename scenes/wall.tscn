@@ -1,43 +1,43 @@
 [gd_scene load_steps=5 format=3 uid="uid://dkkjnrvv1puwq"]
 
-[ext_resource type="Script" uid="uid://2yvu6q174vr1" path="res://scripts/Wall.cs" id="1_tdtm6"]
-[ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/background.tscn" id="2_udeak"]
-[ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_tdtm6"]
-[ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutQueue.cs" id="4_tdtm6"]
+[ext_resource type="Script" uid="uid://2yvu6q174vr1" path="res://scripts/Wall.cs" id="1_gakk0"]
+[ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/Background.tscn" id="2_rri1v"]
+[ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_2w28i"]
+[ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutQueue.cs" id="4_03wr4"]
 
-[node name="wall" type="Node2D" node_paths=PackedStringArray("holeHolder", "crackHolder", "cutoutQueue", "contents", "background")]
-script = ExtResource("1_tdtm6")
-holeHolder = NodePath("contents/hole_holder")
-crackHolder = NodePath("contents/crack_holder")
-cutoutQueue = NodePath("cutout_queue")
-contents = NodePath("contents")
-background = NodePath("contents/background")
+[node name="Wall" type="Node2D" node_paths=PackedStringArray("holeHolder", "crackHolder", "cutoutQueue", "contents", "background")]
+script = ExtResource("1_gakk0")
+holeHolder = NodePath("Contents/HoleHolder")
+crackHolder = NodePath("Contents/CrackHolder")
+cutoutQueue = NodePath("CutoutQueue")
+contents = NodePath("Contents")
+background = NodePath("Contents/Background")
 
-[node name="contents" type="Node2D" parent="."]
+[node name="Contents" type="Node2D" parent="."]
 
-[node name="background" parent="contents" instance=ExtResource("2_udeak")]
+[node name="Background" parent="Contents" instance=ExtResource("2_rri1v")]
 
-[node name="hole_holder" type="Node2D" parent="contents"]
+[node name="HoleHolder" type="Node2D" parent="Contents"]
 modulate = Color(1, 1, 1, 0.97)
 
-[node name="crack_holder" type="Node2D" parent="contents"]
+[node name="CrackHolder" type="Node2D" parent="Contents"]
 modulate = Color(1, 1, 1, 0.97)
 
-[node name="ore_generator" type="Node2D" parent="contents"]
-script = ExtResource("3_tdtm6")
+[node name="OreGenerator" type="Node2D" parent="Contents"]
+script = ExtResource("3_2w28i")
 
-[node name="cutout_holder" type="Node2D" parent="contents"]
+[node name="CutoutHolder" type="Node2D" parent="Contents"]
 
-[node name="cutout_queue" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder", "parentWall")]
-script = ExtResource("4_tdtm6")
-cutoutHolder = NodePath("../contents/cutout_holder")
-fallingCutoutHolder = NodePath("../falling_cutout_holder")
+[node name="CutoutQueue" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder", "parentWall")]
+script = ExtResource("4_03wr4")
+cutoutHolder = NodePath("../Contents/CutoutHolder")
+fallingCutoutHolder = NodePath("../FallingCutoutHolder")
 parentWall = NodePath("..")
 
-[node name="falling_cutout_holder" type="Node2D" parent="."]
+[node name="FallingCutoutHolder" type="Node2D" parent="."]
 
-[connection signal="CycleFormed" from="." to="cutout_queue" method="QueueCutout"]
-[connection signal="GenerateBackground" from="." to="contents/ore_generator" method="GenerateOres"]
-[connection signal="ImageChange" from="contents/background" to="cutout_queue" method="OnBackgroundImageChanged"]
-[connection signal="OreCutout" from="cutout_queue" to="." method="EmitOreCutout"]
-[connection signal="RenderCutout" from="cutout_queue" to="contents/background" method="OnCutoutQueueRenderCutoutHandler"]
+[connection signal="CycleFormed" from="." to="CutoutQueue" method="QueueCutout"]
+[connection signal="GenerateBackground" from="." to="Contents/OreGenerator" method="GenerateOres"]
+[connection signal="ImageChange" from="Contents/Background" to="CutoutQueue" method="OnBackgroundImageChanged"]
+[connection signal="OreCutout" from="CutoutQueue" to="." method="EmitOreCutout"]
+[connection signal="RenderCutout" from="CutoutQueue" to="Contents/Background" method="OnCutoutQueueRenderCutoutHandler"]

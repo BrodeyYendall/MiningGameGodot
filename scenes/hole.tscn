@@ -1,15 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwcl3x5awte17"]
 
-[ext_resource type="Script" uid="uid://dcqd7l58dhmpe" path="res://scripts/Hole.cs" id="1_lerre"]
+[ext_resource type="Script" uid="uid://dcqd7l58dhmpe" path="res://scripts/Hole.cs" id="1_vabtr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_my65i"]
 radius = 15.0
 
-[node name="hole" type="Area2D" node_paths=PackedStringArray("hitbox")]
-script = ExtResource("1_lerre")
-hitbox = NodePath("hitbox")
+[node name="Hole" type="Area2D" node_paths=PackedStringArray("hitbox")]
+script = ExtResource("1_vabtr")
+hitbox = NodePath("Hitbox")
 
-[node name="hitbox" type="CollisionShape2D" parent="."]
+[node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_my65i")
 
 [connection signal="area_entered" from="." to="." method="OnAreaEntered"]

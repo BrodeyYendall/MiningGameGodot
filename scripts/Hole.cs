@@ -6,7 +6,7 @@ namespace MiningGame.scripts;
 
 public partial class Hole : Area2D
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/hole.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/Hole.tscn");
 
     [Export] private CollisionShape2D hitbox;
     

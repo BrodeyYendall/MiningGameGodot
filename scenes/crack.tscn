@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://1dyspcark233"]
 
-[ext_resource type="Script" uid="uid://d3e2sgffldicf" path="res://scripts/crack/Crack.cs" id="1_yn26b"]
+[ext_resource type="Script" uid="uid://d3e2sgffldicf" path="res://scripts/crack/Crack.cs" id="1_mgvx7"]
 
-[node name="crack" type="Area2D" node_paths=PackedStringArray("hitbox")]
-script = ExtResource("1_yn26b")
-hitbox = NodePath("hitbox")
+[node name="Crack" type="Area2D" node_paths=PackedStringArray("hitbox")]
+script = ExtResource("1_mgvx7")
+hitbox = NodePath("Hitbox")
 
-[node name="hitbox" type="CollisionPolygon2D" parent="."]
+[node name="Hitbox" type="CollisionPolygon2D" parent="."]

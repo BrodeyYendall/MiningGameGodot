@@ -1,24 +1,24 @@
 [gd_scene load_steps=2 format=3 uid="uid://h5ydrs5ls1q2"]
 
-[ext_resource type="Script" uid="uid://wht418tua6wp" path="res://scripts/WallManager.cs" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://wht418tua6wp" path="res://scripts/WallManager.cs" id="1_ibkli"]
 
-[node name="game" type="Node2D" node_paths=PackedStringArray("FallingCutoutHolder", "WallContainer")]
-script = ExtResource("1_uwrxv")
-FallingCutoutHolder = NodePath("falling_cutout_holder")
-WallContainer = NodePath("wall_container")
+[node name="Game" type="Node2D" node_paths=PackedStringArray("FallingCutoutHolder", "WallContainer")]
+script = ExtResource("1_ibkli")
+FallingCutoutHolder = NodePath("FallingCutoutHolder")
+WallContainer = NodePath("WallContainer")
 
-[node name="wall_container" type="Node2D" parent="."]
+[node name="WallContainer" type="Node2D" parent="."]
 
-[node name="falling_cutout_holder" type="Node2D" parent="."]
+[node name="FallingCutoutHolder" type="Node2D" parent="."]
 
-[node name="ui" type="Control" parent="."]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
-[node name="scores" type="GridContainer" parent="ui"]
+[node name="Scores" type="GridContainer" parent="UI"]
 layout_mode = 0
 offset_left = 1.0
 offset_top = 50.0
