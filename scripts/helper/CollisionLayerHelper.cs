@@ -26,6 +26,6 @@ public partial class CollisionLayerHelper : Node
 
     public static void GetAndSetWallCollisionLayer(Wall wall)
     {
-        SetAndPropagateCollisionLayer(wall, (uint)(1 << (wall.WallCount % 8)));
+        SetAndPropagateCollisionLayer(wall, (uint)(1 << (wall.WallNumber % 8)));
     }
 }

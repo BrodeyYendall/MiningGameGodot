@@ -7,10 +7,7 @@ namespace MiningGame.scripts.ores;
 
 public partial class Ore : Area2D
 {
-    private static readonly int Variance = 2;
-    private static readonly int MaxVariance = 6;
-    private static readonly int SegmentSize = 16;
-    private static readonly int TotalRadius = 64;
+    [Export] private Sprite2D sprite;
     
     private Vector2[] oreVertices;
 
@@ -25,7 +22,6 @@ public partial class Ore : Area2D
 
     private void SelectRandomSprite()
     {
-        var sprite = GetNode<Sprite2D>("Sprite");
         var spriteRegion = sprite.RegionRect;
         
         int horizontalCount = sprite.Texture.GetWidth() / (int) spriteRegion.Size.X;

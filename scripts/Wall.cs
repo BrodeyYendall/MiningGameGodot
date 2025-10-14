@@ -13,26 +13,19 @@ namespace MiningGame.scripts;
 public partial class Wall: Node2D, ICollisionObjectCreator
 {
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/wall.tscn");
-
-    
     
     private static readonly int CrackDistance = 200;
     private static readonly int NewHoleHitbox = 20;
     
-    [Export]
-    public Node2D HoleHolder;
+    [Export] private Node2D holeHolder;
+    [Export] private Node2D crackHolder;
+    [Export] private CutoutQueue cutoutQueue;
+    [Export] private Node2D contents;
+    [Export] private Background background;
 
-    [Export]
-    public Node2D CrackHolder;
-
-    [Signal]
-    public delegate void GenerateBackgroundEventHandler(int wallCount);
-    
-    [Signal]
-    public delegate void CycleFormedEventHandler(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall wall);
-    
-    [Signal]
-    public delegate void OreCutoutEventHandler(int wallReference);
+    [Signal] public delegate void GenerateBackgroundEventHandler(int wallCount);
+    [Signal] public delegate void CycleFormedEventHandler(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall wall);
+    [Signal] public delegate void OreCutoutEventHandler(int wallReference);
 
     private uint collisionLayer = 0;
     public uint CollisionLayer => collisionLayer;
@@ -42,8 +35,8 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     private int currentHoleId = 0;
     private AStar2D pathfinder = new();
     
-    private int wallCount = 1;
-    public int WallCount => wallCount;
+    private int wallNumber = 1;
+    public int WallNumber => wallNumber;
     private Node2D fallingCutoutHolder;
 
     public static Wall Create(int wallCount, Node2D fallingCutoutHolder)
@@ -56,18 +49,18 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     
     public void Initialize(int wallCount, Node2D fallingCutoutHolder)
     {
-        this.wallCount = wallCount;
+        this.wallNumber = wallCount;
         this.fallingCutoutHolder = fallingCutoutHolder;
     }
     
     public override void _Ready()
     {
-        GetNode<CutoutQueue>("cutout_queue").fallingCutoutHolder = fallingCutoutHolder;
+        cutoutQueue.fallingCutoutHolder = fallingCutoutHolder;
         CollisionLayerHelper.GetAndSetWallCollisionLayer(this);
         SetProcessInput(false);
         
-        GetNode<Background>("contents/background").Initialize();
-        EmitSignalGenerateBackground(wallCount);
+        background.Initialize();
+        EmitSignalGenerateBackground(wallNumber);
     }
 
     public void CreateHole(Vector2 position)
@@ -106,7 +99,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
             if (CanGenerateCrack(newPointPosition, holes[id]))
             {
                 var crack = Crack.Create(holes[id].Position, newPointPosition, collisionLayer, [id, currentHoleId]);
-                CrackHolder.AddChild(crack);
+                crackHolder.AddChild(crack);
                 
                 newConnections.Add(id);
                 newCracks.Add(crack);
@@ -228,7 +221,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
         var hole = Hole.Create(currentHoleId, holePosition, collisionLayer);
         hole.DestroyHole += DestroyCracksAndHole;
         
-        HoleHolder.AddChild(hole);
+        holeHolder.AddChild(hole);
         holes[currentHoleId] = hole;
         currentHoleId++;
         return hole;
@@ -236,15 +229,14 @@ public partial class Wall: Node2D, ICollisionObjectCreator
 
     private void EmitOreCutout()
     {
-        EmitSignalOreCutout(wallCount);
+        EmitSignalOreCutout(wallNumber);
     }
 
     public void Destroy()
     {
-        Node2D contents = GetNode<Node2D>("contents");
         contents.Visible = false;
         contents.QueueFree();
-        GetNode<CutoutQueue>("cutout_queue").Destroy();
+        cutoutQueue.Destroy();
     }
 
     public void DestroyCracksAndHole(int pointId) // Make Wall responsible for managing the destruction of Cutouts/Cracks/Holes
@@ -296,7 +288,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
 
     public async Task Render()
     {
-        await GetNode<Background>("contents/background").WaitForRender();
+        await background.WaitForRender();
     }
 
     public void SetCollisionLayer(uint collisionLayer)

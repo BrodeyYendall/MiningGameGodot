@@ -9,9 +9,11 @@ shader_parameter/polygon_points = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 
 shader_parameter/polygon_indices = PackedInt32Array(0, 0, 0, 0, 0)
 shader_parameter/polygon_count = 0
 
-[node name="background" type="Sprite2D"]
+[node name="background" type="Sprite2D" node_paths=PackedStringArray("subViewport", "subViewportSprite")]
 centered = false
 script = ExtResource("1_y0upk")
+subViewport = NodePath("subview")
+subViewportSprite = NodePath("subview/render")
 
 [node name="subview" type="SubViewport" parent="."]
 transparent_bg = true

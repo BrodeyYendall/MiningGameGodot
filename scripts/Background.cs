@@ -10,11 +10,11 @@ namespace MiningGame.scripts;
 
 public partial class Background : Sprite2D
 {
-    [Signal]
-    public delegate void ImageChangeEventHandler(Image newImage);
+    [Signal] public delegate void ImageChangeEventHandler(Image newImage);
+    [Signal] public delegate void BackgroundGenerationCompletedEventHandler(ImageTexture backgroundGenerated);
 
-    [Signal]
-    public delegate void BackgroundGenerationCompletedEventHandler(ImageTexture backgroundGenerated);
+    [Export] private SubViewport subViewport;
+    [Export] private Sprite2D subViewportSprite;
 
     private GodotThread backgroundGenerationThread = new();
     private List<Vector2> cutoutsToRender = [];
@@ -22,8 +22,7 @@ public partial class Background : Sprite2D
     
     public void Initialize()
     {
-        Sprite2D render = GetRender();
-        render.Scale = new Vector2(6, 6);
+        subViewportSprite.Scale = new Vector2(6, 6);
         
         backgroundGenerationThread.Start(Callable.From(() => new BackgroundGenerator(
             new Vector2I(Constants.ScreenWidth, Constants.ScreenHeight)).GenerateBackground()));
@@ -33,12 +32,12 @@ public partial class Background : Sprite2D
     /// Waits for the background Image to be generated and then performs the nessacary scaling/rendering of the image.
     /// This Sprite's texture is set to the result and the ImageChanged signal is emitted with the result.
     /// </summary>
-    public async Task WaitForRender() // TODO Return Task after migrating Wall to C#
+    public async Task WaitForRender()
     { 
         ImageTexture generatedBackground = backgroundGenerationThread.WaitToFinish().As<ImageTexture>();
 
         await Render(generatedBackground);
-        GetRender().Scale = new Vector2(1, 1); // Reset the scaling because the "screenshot" is already resized.
+        subViewportSprite.Scale = new Vector2(1, 1); // Reset the scaling because the "screenshot" is already resized.
         
         EmitSignalImageChange(Texture.GetImage());
     }
@@ -84,16 +83,14 @@ public partial class Background : Sprite2D
     /// <param name="texture">The texture to render and "modify".</param>
     private async Task Render(Texture2D texture)
     {
-        Sprite2D render = GetRender();
-        render.Texture = texture;
+        subViewportSprite.Texture = texture;
         
-        SetShadowParameters(render);
-
-        var subViewport = GetSubViewport();
-        Texture = await GetSubviewTexture(subViewport);
+        SetShadowParameters(subViewportSprite);
+        
+        Texture = await GetSubviewTexture();
     }
 
-    private async Task<ImageTexture> GetSubviewTexture(SubViewport subViewport)
+    private async Task<ImageTexture> GetSubviewTexture()
     {
         subViewport.SetUpdateMode(SubViewport.UpdateMode.Once);
         
@@ -109,16 +106,6 @@ public partial class Background : Sprite2D
         ((ShaderMaterial)render.Material).SetShaderParameter("polygon_indices", Variant.From(cutoutIndices.ToArray()));
         ((ShaderMaterial)render.Material).SetShaderParameter("polygon_count", Variant.From(cutoutIndices.Count));
         render.QueueRedraw();
-    }
-
-    private SubViewport GetSubViewport()
-    {
-        return GetNode<SubViewport>("subview");
-    }
-
-    private Sprite2D GetRender()
-    {
-        return GetNode<Sprite2D>("subview/render");
     }
 }
 

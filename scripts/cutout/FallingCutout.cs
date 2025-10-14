@@ -10,8 +10,9 @@ public partial class FallingCutout : Sprite2D
 {
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/falling_cutout.tscn");
 
-    [Signal]
-    public delegate void CutoutOffscreenEventHandler(Ore[] ores);
+    [Export] private FallingCutoutShadow fallingCutoutShadow;
+
+    [Signal] public delegate void CutoutOffscreenEventHandler(Ore[] ores);
 
     private static readonly Vector2 DropShadowOffset = new Vector2(8, 8);
     private static readonly int FallSpeed = 200;
@@ -77,8 +78,7 @@ public partial class FallingCutout : Sprite2D
         
         Vector2I halfSize = size / 2;
         Position = initPosition + halfSize;
-
-        FallingCutoutShadow fallingCutoutShadow = GetNode<FallingCutoutShadow>("drop_shadow");
+        
         fallingCutoutShadow.PrepareShadow(cutoutVertices, initPosition);
         fallingCutoutShadow.Position = -halfSize + DropShadowOffset;
     }

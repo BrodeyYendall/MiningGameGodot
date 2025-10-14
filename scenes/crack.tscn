@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://d3e2sgffldicf" path="res://scripts/crack/Crack.cs" id="1_yn26b"]
 
-[node name="crack" type="Area2D"]
+[node name="crack" type="Area2D" node_paths=PackedStringArray("hitbox")]
 script = ExtResource("1_yn26b")
+hitbox = NodePath("hitbox")
 
 [node name="hitbox" type="CollisionPolygon2D" parent="."]

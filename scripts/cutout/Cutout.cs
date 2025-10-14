@@ -10,36 +10,36 @@ namespace MiningGame.scripts.cutout;
 public partial class Cutout : Area2D
 {
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/cutout.tscn");
+    [Export] private CollisionPolygon2D hitbox;
     
-    [Signal]
-    public delegate void DestroyCrackEventHandler(Crack crack);
+    [Signal] public delegate void DestroyCrackEventHandler(Crack crack);
+    [Signal] public delegate void DestroyHoleEventHandler(Hole crack);
     
-    [Signal]
-    public delegate void DestroyHoleEventHandler(Hole crack);
-
     public Vector2[] cutoutVertices;
     public List<Crack> cracks;
+    private Wall parentWall;
     private FallingCutout relatedFallingCutout;
     private List<Ore> oresInCutout = new();
     private List<Hole> holesInCutout = new();
 
-    public static Cutout Create(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer)
+    public static Cutout Create(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer, Wall parentWall)
     {
         Cutout cutout = _attachedScene.Instantiate<Cutout>();
         
-        cutout.Initialize(cutoutVertices, cracks, collisionLayer);
+        cutout.Initialize(cutoutVertices, cracks, collisionLayer, parentWall);
         return cutout;
     }
     
-    public void Initialize(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer)
+    public void Initialize(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer, Wall parentWall)
     {
         this.cutoutVertices = cutoutVertices;
         this.cracks = cracks;
+        this.parentWall = parentWall;
         
         CollisionLayer = collisionLayer;
         CollisionMask = collisionLayer;
         
-        GetNode<CollisionPolygon2D>("hitbox").SetPolygon(cutoutVertices);
+        hitbox.SetPolygon(cutoutVertices);
         GD.Print("Set vertices");
     }
 
@@ -112,7 +112,7 @@ public partial class Cutout : Area2D
         }
         cracks.AddRange(newCutoutCracks);
         
-        Initialize(merge[0], cracks, CollisionLayer);
+        Initialize(merge[0], cracks, CollisionLayer, parentWall);
         QueueRedraw();
 
         cutoutToMerge.Destroy();
@@ -125,6 +125,6 @@ public partial class Cutout : Area2D
 
     public int GetParentWallCount()
     {
-        return GetParent().GetParent().Get("wall_count").AsInt32(); // TODO Find a better way to do this
+        return parentWall.WallNumber;
     }
 }

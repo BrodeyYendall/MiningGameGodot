@@ -7,18 +7,12 @@ namespace MiningGame.scripts.cutout;
 
 public partial class CutoutQueue: Node2D
 {
-    [Export]
-    public Node2D cutoutHolder;
-
-    [Export]
-    public Node2D fallingCutoutHolder;
-
-
-    [Signal]
-    public delegate void OreCutoutEventHandler();
+    [Export] public Node2D cutoutHolder;
+    [Export] public Node2D fallingCutoutHolder;
+    [Export] public Wall parentWall;
     
-    [Signal]
-    public delegate void RenderCutoutEventHandler(Vector2[] cutoutVertices);
+    [Signal] public delegate void OreCutoutEventHandler();
+    [Signal] public delegate void RenderCutoutEventHandler(Vector2[] cutoutVertices);
     
 
     private Image wallImage;
@@ -42,7 +36,7 @@ public partial class CutoutQueue: Node2D
 
     public void QueueCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall _)
     {
-        var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer);
+        var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer, parentWall);
         cutoutHolder.AddChild(cutout);
         cutout.Visible = false;
           
@@ -137,21 +131,18 @@ public partial class CutoutQueue: Node2D
     {
         if (fallingCutoutHolder.GetChildren().Count <= minChildren)
         {
-            GetParent().QueueFree();
-            
+            QueueFree();
         }
     }
     
     private void CrackDestroy(Crack crack)
-    {
-        Wall wall = GetParent<Wall>();
-        wall.DestroyCrack(crack.CrackPointReferences[0], crack.CrackPointReferences[1]);
+    { 
+        parentWall.DestroyCrack(crack.CrackPointReferences[0], crack.CrackPointReferences[1]);
     }
 
     private void HoleDestroy(Hole hole)
     {
-        Wall wall = GetParent<Wall>();
-        wall.DestroyCracksAndHole(hole.PointNumber);
+        parentWall.DestroyCracksAndHole(hole.PointNumber);
     }
     
     public void OnBackgroundImageChanged(Image image)

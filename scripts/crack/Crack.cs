@@ -10,11 +10,11 @@ namespace MiningGame.scripts.crack;
 public partial class Crack : Area2D
 {
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/crack.tscn");
+    [Export] private CollisionPolygon2D hitbox;
     
     private static readonly CrackConfig CutoutCrackConfig = new(3, 8, 2, 1, 4, 0.04f, 10); 
     
-    [Signal]
-    public delegate void CrackCompleteEventHandler(int parent);
+    [Signal] public delegate void CrackCompleteEventHandler(int parent);
     
     private CrackConfig config;
     private Vector2 start;
@@ -48,7 +48,7 @@ public partial class Crack : Area2D
         
         GenerateCrackVertices(start.DistanceTo(end));
         
-        GetNode<CollisionPolygon2D>("hitbox").SetPolygon(GetHitboxPolygon());
+        hitbox.SetPolygon(GetHitboxPolygon());
         SetCollisionLayer(collisionLayer);
         SetCollisionMask(collisionLayer);
     }

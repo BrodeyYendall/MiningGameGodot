@@ -8,9 +8,9 @@ public partial class Hole : Area2D
 {
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/hole.tscn");
 
+    [Export] private CollisionShape2D hitbox;
     
-    [Signal]
-    public delegate void DestroyHoleEventHandler(int pointId);
+    [Signal] public delegate void DestroyHoleEventHandler(int pointId);
 
     private int pointNumber;
     public int PointNumber => pointNumber;
@@ -34,7 +34,7 @@ public partial class Hole : Area2D
     
     public override void _Ready()
     {
-        CircleShape2D shape = (CircleShape2D) GetNode<CollisionShape2D>("hitbox").Shape;
+        CircleShape2D shape = (CircleShape2D) hitbox.Shape;
         shape.Radius = Constants.HoleSize;
     }
 

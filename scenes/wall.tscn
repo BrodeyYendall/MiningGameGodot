@@ -5,10 +5,13 @@
 [ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_tdtm6"]
 [ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutQueue.cs" id="4_tdtm6"]
 
-[node name="wall" type="Node2D" node_paths=PackedStringArray("HoleHolder", "CrackHolder")]
+[node name="wall" type="Node2D" node_paths=PackedStringArray("holeHolder", "crackHolder", "cutoutQueue", "contents", "background")]
 script = ExtResource("1_tdtm6")
-HoleHolder = NodePath("contents/hole_holder")
-CrackHolder = NodePath("contents/crack_holder")
+holeHolder = NodePath("contents/hole_holder")
+crackHolder = NodePath("contents/crack_holder")
+cutoutQueue = NodePath("cutout_queue")
+contents = NodePath("contents")
+background = NodePath("contents/background")
 
 [node name="contents" type="Node2D" parent="."]
 
@@ -25,10 +28,11 @@ script = ExtResource("3_tdtm6")
 
 [node name="cutout_holder" type="Node2D" parent="contents"]
 
-[node name="cutout_queue" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder")]
+[node name="cutout_queue" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder", "parentWall")]
 script = ExtResource("4_tdtm6")
 cutoutHolder = NodePath("../contents/cutout_holder")
 fallingCutoutHolder = NodePath("../falling_cutout_holder")
+parentWall = NodePath("..")
 
 [node name="falling_cutout_holder" type="Node2D" parent="."]
 

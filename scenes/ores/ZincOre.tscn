@@ -6,8 +6,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7ef1v"]
 size = Vector2(32, 32)
 
-[node name="Ore" type="Area2D"]
+[node name="Ore" type="Area2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_p80xm")
+sprite = NodePath("Sprite")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_7ef1v")

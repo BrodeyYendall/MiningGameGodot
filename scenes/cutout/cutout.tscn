@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dfqfmy68pj1bb" path="res://scripts/cutout/Cutout.cs" id="1_mamnt"]
 
-[node name="cutout" type="Area2D"]
+[node name="cutout" type="Area2D" node_paths=PackedStringArray("hitbox")]
 script = ExtResource("1_mamnt")
+hitbox = NodePath("hitbox")
 
 [node name="hitbox" type="CollisionPolygon2D" parent="."]

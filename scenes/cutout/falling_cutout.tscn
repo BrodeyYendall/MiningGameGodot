@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://bfx0ulkeq6fki" path="res://scripts/cutout/FallingCutout.cs" id="1_qchi3"]
 [ext_resource type="Script" uid="uid://mapngt5g7s4e" path="res://scripts/cutout/FallingCutoutShadow.cs" id="2_8n0ph"]
 
-[node name="falling_cutout" type="Sprite2D"]
+[node name="falling_cutout" type="Sprite2D" node_paths=PackedStringArray("fallingCutoutShadow")]
 script = ExtResource("1_qchi3")
+fallingCutoutShadow = NodePath("drop_shadow")
 
 [node name="drop_shadow" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0.5)
