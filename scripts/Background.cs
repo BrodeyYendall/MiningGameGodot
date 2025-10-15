@@ -42,10 +42,13 @@ public partial class Background : Sprite2D
         EmitSignalImageChange(Texture.GetImage());
     }
     
-    // Called when CutoutQueue.RenderCutout Signal is emitted. This is needed because Godot doesn't like async methods.
-    public void OnCutoutQueueRenderCutoutHandler(Vector2[] cutoutVertices)
+    /// <summary>
+    ///  Called when  <see cref="CutoutManager.RenderCutoutEventHandler"/> Signal is emitted. This is needed because Godot doesn't like async methods.
+    /// </summary>
+    /// <param name="cutoutPolygon">The polygon to cut out of the background texture</param>
+    public void RenderCutoutHandler(Vector2[] cutoutPolygon)
     {
-        _ = OnCutoutQueueRenderCutout(cutoutVertices);
+        _ = RenderCutout(cutoutPolygon);
     }
     
     /// <summary>
@@ -60,7 +63,7 @@ public partial class Background : Sprite2D
     /// passing excessive data to the shader; The image is "saved" each time. 
     /// </summary>
     /// <param name="cutoutPolygon">The polygon to cut out of the background texture</param>
-    public async Task OnCutoutQueueRenderCutout(Vector2[] cutoutPolygon)
+    public async Task RenderCutout(Vector2[] cutoutPolygon)
     {
         cutoutsToRender.AddRange(cutoutPolygon);
         cutoutIndices.Add(cutoutIndices[^1] + cutoutPolygon.Length);

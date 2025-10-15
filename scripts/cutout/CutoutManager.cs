@@ -5,7 +5,7 @@ using MiningGame.scripts.ores;
 
 namespace MiningGame.scripts.cutout;
 
-public partial class CutoutQueue: Node2D
+public partial class CutoutManager: Node2D
 {
     [Export] public Node2D cutoutHolder;
     [Export] public Node2D fallingCutoutHolder;
@@ -34,7 +34,7 @@ public partial class CutoutQueue: Node2D
         }
     }
 
-    public void QueueCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall _)
+    public void CreateCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall _)
     {
         var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer, parentWall);
         cutoutHolder.AddChild(cutout);
@@ -64,9 +64,6 @@ public partial class CutoutQueue: Node2D
         if (queueEntry.CompletedCrackCount == queueEntry.NewCrackCount)
         {
             Cutout cutout = queueEntry.Cutout;
-            cutout.DestroyCrack += CrackDestroy;
-            cutout.DestroyHole += HoleDestroy;
-            
             FallingCutout fallingCutout = FallingCutout.Create(cutout.cutoutVertices, wallImage);
             cutout.AddFallingCutoutReference(fallingCutout);
             fallingCutout.CutoutOffscreen += FallingCutoutOffscreen;
@@ -85,7 +82,7 @@ public partial class CutoutQueue: Node2D
         foreach (Crack crack in cutout.cracks)
         {
             Cutout cutoutFromMap = cutoutMap.GetValueOrDefault(crack, null);
-            if (cutoutFromMap != null && !cutoutsToMerge.Contains(cutoutFromMap))
+            if (cutoutFromMap != null)
             {
                 cutoutsToMerge.Add(cutoutFromMap);
             }
@@ -135,29 +132,24 @@ public partial class CutoutQueue: Node2D
         }
     }
     
-    private void CrackDestroy(Crack crack)
-    { 
-        parentWall.DestroyCrack(crack.CrackPointReferences[0], crack.CrackPointReferences[1]);
-    }
-
-    private void HoleDestroy(Hole hole)
-    {
-        parentWall.DestroyCracksAndHole(hole.PointNumber);
-    }
-    
-    public void OnBackgroundImageChanged(Image image)
+    /// <summary>
+    /// Updates the background image to use when generating falling cutouts
+    /// Through <see cref="Background.ImageChangeEventHandler"/> at <see cref="Background.WaitForRender"/> 
+    /// </summary>
+    /// <param name="image">The new background image</param>
+    private void OnBackgroundImageChanged(Image image)
     {
         wallImage = image;
     }
 
-    private partial class QueueEntry (
+    private class QueueEntry (
         Cutout cutout,
         int newCrackCount,
         int completedCrackCount
         )
     {
-        public Cutout Cutout { get; set; } = cutout;
-        public int NewCrackCount { get; set; } = newCrackCount;
+        public Cutout Cutout { get; } = cutout;
+        public int NewCrackCount { get; } = newCrackCount;
         public int CompletedCrackCount { get; set; } = completedCrackCount;
     }
 }

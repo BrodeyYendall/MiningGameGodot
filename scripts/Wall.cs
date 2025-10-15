@@ -19,7 +19,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     
     [Export] private Node2D holeHolder;
     [Export] private Node2D crackHolder;
-    [Export] private CutoutQueue cutoutQueue;
+    [Export] private CutoutManager cutoutManager;
     [Export] private Node2D contents;
     [Export] private Background background;
 
@@ -55,7 +55,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     
     public override void _Ready()
     {
-        cutoutQueue.fallingCutoutHolder = fallingCutoutHolder;
+        cutoutManager.fallingCutoutHolder = fallingCutoutHolder;
         CollisionLayerHelper.GetAndSetWallCollisionLayer(this);
         SetProcessInput(false);
         
@@ -236,7 +236,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     {
         contents.Visible = false;
         contents.QueueFree();
-        cutoutQueue.Destroy();
+        cutoutManager.Destroy();
     }
 
     public void DestroyCracksAndHole(int pointId) // Make Wall responsible for managing the destruction of Cutouts/Cracks/Holes
@@ -247,7 +247,12 @@ public partial class Wall: Node2D, ICollisionObjectCreator
         }
     }
 
-    public void DestroyCrack(int start, int end)
+    public void DestroyCrack(Crack crack)
+    {
+        DestroyCrack(crack.CrackPointReferences[0], crack.CrackPointReferences[1]);
+    }
+
+    private void DestroyCrack(int start, int end)
     {
         GD.Print($"Destroying {start} <-> {end}");
         pathfinder.DisconnectPoints(start, end);

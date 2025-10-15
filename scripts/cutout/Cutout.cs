@@ -12,9 +12,6 @@ public partial class Cutout : Area2D
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/Cutout.tscn");
     [Export] private CollisionPolygon2D hitbox;
     
-    [Signal] public delegate void DestroyCrackEventHandler(Crack crack);
-    [Signal] public delegate void DestroyHoleEventHandler(Hole crack);
-    
     public Vector2[] cutoutVertices;
     public List<Crack> cracks;
     private Wall parentWall;
@@ -79,7 +76,7 @@ public partial class Cutout : Area2D
 
         foreach (Hole hole in holesInCutout)
         {
-            EmitSignalDestroyHole(hole);
+            parentWall.DestroyCracksAndHole(hole.PointNumber);
         }
     }
 
@@ -108,7 +105,7 @@ public partial class Cutout : Area2D
             newCutoutCracks.Remove(crack);
             cracks.Remove(crack);
             
-            EmitSignalDestroyCrack(crack);
+            parentWall.DestroyCrack(crack);
         }
         cracks.AddRange(newCutoutCracks);
         

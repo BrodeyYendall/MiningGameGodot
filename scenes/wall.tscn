@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://2yvu6q174vr1" path="res://scripts/Wall.cs" id="1_gakk0"]
 [ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/Background.tscn" id="2_rri1v"]
 [ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/ores/OreGenerator.cs" id="3_2w28i"]
-[ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutQueue.cs" id="4_03wr4"]
+[ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/cutout/CutoutManager.cs" id="4_03wr4"]
 
-[node name="Wall" type="Node2D" node_paths=PackedStringArray("holeHolder", "crackHolder", "cutoutQueue", "contents", "background")]
+[node name="Wall" type="Node2D" node_paths=PackedStringArray("holeHolder", "crackHolder", "cutoutManager", "contents", "background")]
 script = ExtResource("1_gakk0")
 holeHolder = NodePath("Contents/HoleHolder")
 crackHolder = NodePath("Contents/CrackHolder")
-cutoutQueue = NodePath("CutoutQueue")
+cutoutManager = NodePath("CutoutManager")
 contents = NodePath("Contents")
 background = NodePath("Contents/Background")
 
@@ -28,7 +28,7 @@ script = ExtResource("3_2w28i")
 
 [node name="CutoutHolder" type="Node2D" parent="Contents"]
 
-[node name="CutoutQueue" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder", "parentWall")]
+[node name="CutoutManager" type="Node2D" parent="." node_paths=PackedStringArray("cutoutHolder", "fallingCutoutHolder", "parentWall")]
 script = ExtResource("4_03wr4")
 cutoutHolder = NodePath("../Contents/CutoutHolder")
 fallingCutoutHolder = NodePath("../FallingCutoutHolder")
@@ -36,8 +36,8 @@ parentWall = NodePath("..")
 
 [node name="FallingCutoutHolder" type="Node2D" parent="."]
 
-[connection signal="CycleFormed" from="." to="CutoutQueue" method="QueueCutout"]
+[connection signal="CycleFormed" from="." to="CutoutManager" method="CreateCutout"]
 [connection signal="GenerateBackground" from="." to="Contents/OreGenerator" method="GenerateOres"]
-[connection signal="ImageChange" from="Contents/Background" to="CutoutQueue" method="OnBackgroundImageChanged"]
-[connection signal="OreCutout" from="CutoutQueue" to="." method="EmitOreCutout"]
-[connection signal="RenderCutout" from="CutoutQueue" to="Contents/Background" method="OnCutoutQueueRenderCutoutHandler"]
+[connection signal="ImageChange" from="Contents/Background" to="CutoutManager" method="OnBackgroundImageChanged"]
+[connection signal="OreCutout" from="CutoutManager" to="." method="EmitOreCutout"]
+[connection signal="RenderCutout" from="CutoutManager" to="Contents/Background" method="RenderCutoutHandler"]
