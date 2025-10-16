@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Godot;
+using MiningGame.scripts.autoload;
 using MiningGame.scripts.crack;
 using MiningGame.scripts.ores;
 
 namespace MiningGame.scripts.cutout;
 
-public partial class CutoutManager: Node2D
+public partial class CutoutManager: Node2D, ICollisionObjectCreator
 {
     [Export] public Node2D cutoutHolder;
     [Export] public Node2D fallingCutoutHolder;
@@ -22,18 +23,6 @@ public partial class CutoutManager: Node2D
     private bool shouldDestroy = false;
     private uint collisionLayer = 1;
     
-    
-
-    public void SetCollisionLayer(uint layer)
-    {
-        collisionLayer = layer;
-        foreach (Cutout child in cutoutHolder.GetChildren())
-        {
-            child.SetCollisionLayer(layer);
-            child.SetCollisionMask(layer);
-        }
-    }
-
     public void CreateCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall _)
     {
         var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer, parentWall);
@@ -141,6 +130,12 @@ public partial class CutoutManager: Node2D
     {
         wallImage = image;
     }
+    
+    public void SetCollisionLayer(uint layer)
+    {
+        collisionLayer = layer;
+    }
+
 
     private class QueueEntry (
         Cutout cutout,

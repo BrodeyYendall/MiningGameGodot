@@ -7,31 +7,31 @@ namespace MiningGame.scripts.ores;
 
 public partial class Ore : Area2D
 {
-    [Export] private Sprite2D sprite;
+    [Export] public Sprite2D Sprite;
     
     private Vector2[] oreVertices;
 
-    public void Initialize(int scale, Vector2 position, uint collision_layer)
+    public void Initialize(int scale, Vector2 position, uint collisionLayer)
     {
         SelectRandomSprite();
-        CollisionLayer = collision_layer;
-        CollisionMask = collision_layer;
+        CollisionLayer = collisionLayer;
+        CollisionMask = collisionLayer;
         Position = position;
         Scale = new Vector2(scale, scale);
     }
 
     private void SelectRandomSprite()
     {
-        var spriteRegion = sprite.RegionRect;
+        var spriteRegion = Sprite.RegionRect;
         
-        int horizontalCount = sprite.Texture.GetWidth() / (int) spriteRegion.Size.X;
-        int verticalCount = sprite.Texture.GetHeight() / (int) spriteRegion.Size.Y;
+        int horizontalCount = Sprite.Texture.GetWidth() / (int) spriteRegion.Size.X;
+        int verticalCount = Sprite.Texture.GetHeight() / (int) spriteRegion.Size.Y;
 
         int x = GD.RandRange(0, horizontalCount - 1) * (int) spriteRegion.Size.X;
         int y = GD.RandRange(0, verticalCount - 1) * (int) spriteRegion.Size.Y;
 
         spriteRegion.Position = new Vector2(x, y);
-        sprite.RegionRect = spriteRegion;
+        Sprite.RegionRect = spriteRegion;
     }
 
     private void OnAreaEntered(Area2D area)
