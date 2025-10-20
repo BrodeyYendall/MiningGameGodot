@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using Godot;
+using FileAccess = Godot.FileAccess;
 
 namespace MiningGame.scripts.helper;
 
 public partial class InputManager : Node
 {
     private static readonly string SaveLocation = "res://scenarios/most_recent.jsonl";
-    private static readonly string LoadScenario = "res://scenarios/most_recent.jsonl";
+    private static readonly string LoadScenario = "";
 
     private static InputManager _instance;
     public static InputManager Instance => _instance;
@@ -25,13 +27,49 @@ public partial class InputManager : Node
     private int eventIndex = 0;
     private ulong prevHoleCreatedAt = 0;
     private FileAccess saveFile;
+    private ulong lastEventTime;
+    
+    public override void _Input(InputEvent inputEvent)
+    {
+        ProcessInput(inputEvent);
+    }
+
+    private void ProcessInput(InputEvent inputEvent)
+    {
+        ulong currentTime = Time.GetTicksMsec();
+        ulong eventDelay = currentTime - lastEventTime;
+        
+        if (inputEvent is InputEventMouseButton inputMouseEvent && inputEvent.IsPressed())
+        {
+            if (currentTime - prevHoleCreatedAt >= (ulong) Constants.DelayBetweenHoles)
+            {
+                prevHoleCreatedAt = currentTime;
+                EmitSignalCreateHole(inputMouseEvent.Position);
+                AddEvent(new InputRecord("create_hole", eventDelay, new Dictionary<string, string>()
+                {
+                    {"x", inputMouseEvent.Position.X.ToString()},
+                    {"y", inputMouseEvent.Position.Y.ToString()},
+                }));
+            } 
+        } else if (inputEvent is InputEventKey inputKeyEvent && inputEvent.IsPressed() && !inputEvent.IsEcho())
+        {
+            switch (inputKeyEvent.Keycode)
+            {
+                case Key.Space:
+                    EmitSignalNextWall();
+                    AddEvent(new InputRecord("next_wall", eventDelay, new Dictionary<string, string>()));
+                    break;
+            }
+        }
+    }
 
     public override void _Ready()
     {
         if (LoadScenario == "")
         {
             SetProcess(false);
-
+            DirAccess.RemoveAbsolute(SaveLocation);
+            
             ulong newSeed = GD.Randi();
             GD.Seed(newSeed);
             AddEvent(new InputRecord("seed", 0, new Dictionary<string, string>
@@ -54,38 +92,7 @@ public partial class InputManager : Node
 
             GD.Seed(ulong.Parse(events[0].AdditionalData["seed"]));
             eventIndex++;
-        }
-    }
-    
-    public override void _Input(InputEvent inputEvent)
-    {
-        ProcessInput(inputEvent);
-    }
-
-    private void ProcessInput(InputEvent inputEvent)
-    {
-        ulong currentTime = Time.GetTicksMsec();
-        if (inputEvent is InputEventMouseButton inputMouseEvent && inputEvent.IsPressed())
-        {
-            if (currentTime - prevHoleCreatedAt >= (ulong) Constants.DelayBetweenHoles)
-            {
-                prevHoleCreatedAt = currentTime;
-                EmitSignalCreateHole(inputMouseEvent.Position);
-                AddEvent(new InputRecord("create_hole", currentTime, new Dictionary<string, string>()
-                {
-                    {"x", inputMouseEvent.Position.X.ToString()},
-                    {"y", inputMouseEvent.Position.Y.ToString()},
-                }));
-            } 
-        } else if (inputEvent is InputEventKey inputKeyEvent && inputEvent.IsPressed() && !inputEvent.IsEcho())
-        {
-            switch (inputKeyEvent.Keycode)
-            {
-                case Key.Space:
-                    EmitSignalNextWall();
-                    AddEvent(new InputRecord("next_wall", currentTime, new Dictionary<string, string>()));
-                    break;
-            }
+            lastEventTime = Time.GetTicksMsec();
         }
     }
 
@@ -102,14 +109,17 @@ public partial class InputManager : Node
             saveFile.Flush();
 
         }
+
+        lastEventTime = Time.GetTicksMsec();
     }
 
     public override void _Process(double delta)
     {
         ulong currentTime = Time.GetTicksMsec();
+        ulong timeSinceLastEvent = currentTime - lastEventTime;
         InputRecord currentEvent = events[eventIndex];
         
-        if (currentTime >= currentEvent.Timestamp)
+        if (timeSinceLastEvent >= currentEvent.EventDelay)
         {
             switch (currentEvent.Type)
             {
@@ -132,6 +142,7 @@ public partial class InputManager : Node
                     break;
             }
             eventIndex++;
+            lastEventTime = currentTime;
         }
 
         if (eventIndex == events.Count)
@@ -150,10 +161,10 @@ public partial class InputManager : Node
         _instance = this;
     }
 
-    public class InputRecord(string type, ulong timestamp, Dictionary<string, string> additionalData)
+    public class InputRecord(string type, ulong eventDelay, Dictionary<string, string> additionalData)
     {
         public string Type => type;
-        public ulong Timestamp => timestamp;
+        public ulong EventDelay => eventDelay;
         public Dictionary<string, string> AdditionalData => additionalData;
     }
 }
