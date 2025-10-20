@@ -25,7 +25,7 @@ public partial class CutoutManager: Node2D, ICollisionObjectCreator
     
     public void CreateCutout(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall _)
     {
-        var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer, parentWall);
+        var cutout = Cutout.Create(cutoutVertices, [..allCracks], collisionLayer, this);
         cutoutHolder.AddChild(cutout);
         cutout.Visible = false;
           
@@ -111,6 +111,17 @@ public partial class CutoutManager: Node2D, ICollisionObjectCreator
     {
         shouldDestroy = true;
         CheckForDestroy(0);
+    }
+
+    public void DestroyCracksAndHole(int holeNumber)
+    {
+        parentWall.DestroyCracksAndHole(holeNumber);
+    }
+
+    public void DestroyCrack(Crack crack)
+    {
+        parentWall.DestroyCrack(crack);
+        cutoutMap.Remove(crack);
     }
     
     private void CheckForDestroy(int minChildren)

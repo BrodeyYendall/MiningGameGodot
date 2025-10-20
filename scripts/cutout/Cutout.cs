@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using Godot;
 using Godot.Collections;
 using MiningGame.scripts.crack;
@@ -14,24 +15,24 @@ public partial class Cutout : Area2D
     
     public Vector2[] cutoutVertices;
     public List<Crack> cracks;
-    private Wall parentWall;
+    private CutoutManager parent;
     private FallingCutout relatedFallingCutout;
     private List<Ore> oresInCutout = new();
     private List<Hole> holesInCutout = new();
 
-    public static Cutout Create(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer, Wall parentWall)
+    public static Cutout Create(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer, CutoutManager parent)
     {
         Cutout cutout = _attachedScene.Instantiate<Cutout>();
         
-        cutout.Initialize(cutoutVertices, cracks, collisionLayer, parentWall);
+        cutout.Initialize(cutoutVertices, cracks, collisionLayer, parent);
         return cutout;
     }
     
-    public void Initialize(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer, Wall parentWall)
+    public void Initialize(Vector2[] cutoutVertices, List<Crack> cracks, uint collisionLayer, CutoutManager parent)
     {
         this.cutoutVertices = cutoutVertices;
         this.cracks = cracks;
-        this.parentWall = parentWall;
+        this.parent = parent;
         
         CollisionLayer = collisionLayer;
         CollisionMask = collisionLayer;
@@ -76,7 +77,7 @@ public partial class Cutout : Area2D
 
         foreach (Hole hole in holesInCutout)
         {
-            parentWall.DestroyCracksAndHole(hole.PointNumber);
+            parent.DestroyCracksAndHole(hole.PointNumber);
         }
     }
 
@@ -97,7 +98,7 @@ public partial class Cutout : Area2D
                 cracksToRemove.Add(crack);
             }
         }
-
+        
         // Add each crack from the other cutout which is not also in this crack.
         List<Crack> newCutoutCracks = new List<Crack>(cutoutToMerge.cracks);
         foreach (Crack crack in cracksToRemove)
@@ -105,11 +106,11 @@ public partial class Cutout : Area2D
             newCutoutCracks.Remove(crack);
             cracks.Remove(crack);
             
-            parentWall.DestroyCrack(crack);
+            parent.DestroyCrack(crack);
         }
         cracks.AddRange(newCutoutCracks);
         
-        Initialize(merge[0], cracks, CollisionLayer, parentWall);
+        Initialize(merge[0], cracks, CollisionLayer, parent);
         QueueRedraw();
 
         cutoutToMerge.Destroy();
@@ -122,6 +123,6 @@ public partial class Cutout : Area2D
 
     public int GetParentWallCount()
     {
-        return parentWall.WallNumber;
+        return parent.parentWall.WallNumber;
     }
 }
