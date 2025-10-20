@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://dineghj8c5vbk"]
 
-[ext_resource type="Script" path="res://experiments/polygon_tester.gd" id="1_nsuid"]
+[ext_resource type="Script" uid="uid://bfmntk6lvu12t" path="res://experiments/PolygonTester.cs" id="1_0b0o3"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="polygon_tester" type="Node2D" parent="."]
-script = ExtResource("1_nsuid")
+script = ExtResource("1_0b0o3")

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using Godot;
 
 namespace MiningGame.scripts.helper;
 
 public partial class InputManager : Node
 {
-    private static readonly string SaveLocation = "res://scenarios/most_recent.json";
-    private static readonly string LoadScenario = "";
+    private static readonly string SaveLocation = "res://scenarios/most_recent.jsonl";
+    private static readonly string LoadScenario = "res://scenarios/most_recent.jsonl";
 
     private static InputManager _instance;
     public static InputManager Instance => _instance;
@@ -18,7 +20,7 @@ public partial class InputManager : Node
     [Signal]
     public delegate void NextWallEventHandler();
 
-    private List<InputRecord> events;
+    private List<InputRecord> events = [];
     private bool saveEvents = true;
     private int eventIndex = 0;
     private ulong prevHoleCreatedAt = 0;
@@ -32,9 +34,28 @@ public partial class InputManager : Node
 
             ulong newSeed = GD.Randi();
             GD.Seed(newSeed);
+            AddEvent(new InputRecord("seed", 0, new Dictionary<string, string>
+            {
+                {"seed", newSeed.ToString()}
+            }));
+        }
+        else
+        {
+            saveEvents = false;
+            SetProcessInput(false);
+            FileAccess loadFile = FileAccess.Open(LoadScenario, FileAccess.ModeFlags.Read);
+            
+            string line = loadFile.GetLine();
+            while (line != "")
+            {
+                events.Add(JsonSerializer.Deserialize<InputRecord>(line));
+                line = loadFile.GetLine();
+            }
+
+            GD.Seed(ulong.Parse(events[0].AdditionalData["seed"]));
+            eventIndex++;
         }
     }
-
     
     public override void _Input(InputEvent inputEvent)
     {
@@ -78,6 +99,7 @@ public partial class InputManager : Node
             }
 
             saveFile.StoreLine(JsonSerializer.Serialize(inputRecord));
+            saveFile.Flush();
 
         }
     }
@@ -93,8 +115,8 @@ public partial class InputManager : Node
             {
                 case "create_hole":
                     var inputMouseEvent = new InputEventMouseButton();
-                    int x = int.Parse(currentEvent.AdditionalData.GetValueOrDefault("x", ""));
-                    int y = int.Parse(currentEvent.AdditionalData.GetValueOrDefault("y", ""));
+                    float x = float.Parse(currentEvent.AdditionalData.GetValueOrDefault("x", ""));
+                    float y = float.Parse(currentEvent.AdditionalData.GetValueOrDefault("y", ""));
                     
                     
                     inputMouseEvent.Position = new Vector2(x, y);
