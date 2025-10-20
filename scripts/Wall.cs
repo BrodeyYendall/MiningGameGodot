@@ -154,7 +154,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
             for (int i = 1; i < cycle.Count; i++)
             {
                 long currentPoint = cycle[i];
-                if (!pointsUsed.Contains(i))
+                if (!pointsUsed.Contains(currentPoint))
                 {
                     containsUniquePoints = true;
                     pointsUsed.Add(currentPoint);
