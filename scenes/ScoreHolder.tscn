@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://cwk1m3cjvvvc4"]
+
+[ext_resource type="Texture2D" uid="uid://ciaa6llhbv5a6" path="res://sprites/border/ScoreBackground.png" id="1_w0uq7"]
+[ext_resource type="Script" uid="uid://v007r7pkqf3t" path="res://scripts/ScoreHolder.cs" id="2_4leoe"]
+[ext_resource type="Texture2D" uid="uid://c7fwi0m6wadm2" path="res://sprites/ore/gold/gold-tleset.png" id="2_gg6tv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_78awf"]
+font_size = 8
+
+[node name="ScoreHolder" type="TextureRect" node_paths=PackedStringArray("oreSprite", "label")]
+offset_right = 43.0
+offset_bottom = 13.0
+texture = ExtResource("1_w0uq7")
+script = ExtResource("2_4leoe")
+spriteTexture = ExtResource("2_gg6tv")
+spriteRegion = Rect2(0, 0, 32, 32)
+oreSprite = NodePath("ScoreSprite")
+label = NodePath("ScoreLabel")
+
+[node name="ScoreSprite" type="Sprite2D" parent="."]
+position = Vector2(7, 6)
+rotation = -3.1415925
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_gg6tv")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+metadata/_edit_lock_ = true
+
+[node name="ScoreLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 45.0
+offset_bottom = 12.0
+text = "000000"
+label_settings = SubResource("LabelSettings_78awf")
+metadata/_edit_lock_ = true

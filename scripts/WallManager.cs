@@ -16,6 +16,7 @@ public partial class WallManager : Node2D
     [Export] public int CutoutEdgeBuffer = 15;
     [Export] public Node2D FallingCutoutHolder;
     [Export] public Node2D WallContainer;
+    [Export] public Ui Ui;
     
     private int topWallNumber = 1;
 
@@ -60,6 +61,7 @@ public partial class WallManager : Node2D
     private Wall CreateNewWall(int wallCount)
     {
         Wall wall = Wall.Create(wallCount, FallingCutoutHolder);
+        wall.OreCutout += Ui.ProcessOreCutout;
         WallContainer.AddChild(wall);
         WallContainer.MoveChild(wall, 0); // Ensure the wall is at the back.
         return wall;

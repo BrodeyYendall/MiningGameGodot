@@ -6,7 +6,9 @@ namespace MiningGame.scripts.ores;
 
 public partial class OreGenerator : Node2D, ICollisionObjectCreator
 {
-    private static readonly int OreBorderBuffer = 50;
+    private static readonly int OreTopBorderBuffer = 60;
+    private static readonly int OreBottomBorderBuffer = 50;
+    private static readonly int OreSideBorderBuffer = 50;
     private static readonly int OreGenFailCount = 10;
     private static readonly int OreGenSuccessCount = 10;
 
@@ -22,8 +24,8 @@ public partial class OreGenerator : Node2D, ICollisionObjectCreator
 	    while (failCount <= OreGenFailCount && successCount < OreGenSuccessCount)
 	    {
 		    var randomLocation = new Vector2(
-			    GD.RandRange(OreBorderBuffer, Constants.ScreenWidth - OreBorderBuffer),
-			    GD.RandRange(OreBorderBuffer, Constants.ScreenHeight - OreBorderBuffer));
+			    GD.RandRange(OreSideBorderBuffer, Constants.ScreenWidth - OreSideBorderBuffer),
+			    GD.RandRange(OreTopBorderBuffer, Constants.ScreenHeight - OreBottomBorderBuffer));
 
 		    OreFactory<Ore> targetOreFactory = SelectOreFromTable(oreTable);
 		    

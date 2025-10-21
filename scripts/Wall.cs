@@ -7,6 +7,7 @@ using MiningGame.scripts.autoload;
 using MiningGame.scripts.crack;
 using MiningGame.scripts.cutout;
 using MiningGame.scripts.helper;
+using MiningGame.scripts.ores;
 
 namespace MiningGame.scripts;
 
@@ -25,7 +26,7 @@ public partial class Wall: Node2D, ICollisionObjectCreator
 
     [Signal] public delegate void GenerateBackgroundEventHandler(int wallCount);
     [Signal] public delegate void CycleFormedEventHandler(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall wall);
-    [Signal] public delegate void OreCutoutEventHandler(int wallReference);
+    [Signal] public delegate void OreCutoutEventHandler(Ore ores);
 
     private uint collisionLayer = 0;
     public uint CollisionLayer => collisionLayer;
@@ -227,9 +228,9 @@ public partial class Wall: Node2D, ICollisionObjectCreator
         return hole;
     }
 
-    private void EmitOreCutout()
+    private void EmitOreCutout(Ore ore)
     {
-        EmitSignalOreCutout(wallNumber);
+        EmitSignalOreCutout(ore);
     }
 
     public void Destroy()

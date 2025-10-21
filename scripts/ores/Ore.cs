@@ -8,6 +8,7 @@ namespace MiningGame.scripts.ores;
 public partial class Ore : Area2D
 {
     [Export] public Sprite2D Sprite;
+    [Export] public string Type;
     
     private Vector2[] oreVertices;
 

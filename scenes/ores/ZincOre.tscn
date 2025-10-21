@@ -9,6 +9,7 @@ size = Vector2(32, 32)
 [node name="Ore" type="Area2D" node_paths=PackedStringArray("Sprite")]
 script = ExtResource("1_p80xm")
 Sprite = NodePath("Sprite")
+Type = "Zinc"
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_7ef1v")
