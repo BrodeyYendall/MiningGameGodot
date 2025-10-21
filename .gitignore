@@ -2,4 +2,6 @@
 .godot/
 .idea/
 .vscode/
+reports/
+scenarios/most_recent.jsonl
 *.tmp

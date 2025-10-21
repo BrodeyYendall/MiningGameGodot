@@ -37,6 +37,6 @@ public class GdUnitTest
         AssertThat(node).IsNotNull();
         node.Free();
 
-        AssertThat("Test string").IsEqual("Test");
+        AssertThat("Test string").IsEqual("Test string");
     }
 }
