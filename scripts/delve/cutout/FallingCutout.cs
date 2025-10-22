@@ -8,7 +8,7 @@ namespace MiningGame.scripts.delve.cutout;
 
 public partial class FallingCutout : Sprite2D
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/FallingCutout.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/delve/cutout/FallingCutout.tscn");
 
     [Export] private FallingCutoutShadow fallingCutoutShadow;
 

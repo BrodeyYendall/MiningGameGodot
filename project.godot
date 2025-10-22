@@ -21,7 +21,7 @@ resources_spreadsheet_view/context_menu_on_leftclick=false
 [application]
 
 config/name="MiningGame"
-run/main_scene="res://scenes/DelveManager.tscn"
+run/main_scene="res://scenes/delve/DelveManager.tscn"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://sprites/icon.svg"
 

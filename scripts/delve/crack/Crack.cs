@@ -9,7 +9,7 @@ namespace MiningGame.scripts.delve.crack;
 
 public partial class Crack : Area2D
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/Crack.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/delve/Crack.tscn");
 
     [Export] private CollisionPolygon2D hitbox;
     

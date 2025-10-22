@@ -6,7 +6,7 @@ namespace MiningGame.scripts.delve;
 
 public partial class Hole : Area2D
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/Hole.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/delve/Hole.tscn");
     
     public static readonly int HoleSize = 5;
 

@@ -10,7 +10,7 @@ namespace MiningGame.scripts.delve.cutout;
 
 public partial class Cutout : Area2D
 {
-    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/cutout/Cutout.tscn");
+    private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/delve/cutout/Cutout.tscn");
     [Export] private CollisionPolygon2D hitbox;
     
     public Vector2[] cutoutVertices;

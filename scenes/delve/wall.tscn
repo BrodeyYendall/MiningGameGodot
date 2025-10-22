@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cplvrbaf3chhx"]
 
 [ext_resource type="Script" uid="uid://2yvu6q174vr1" path="res://scripts/delve/Wall.cs" id="1_gakk0"]
-[ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/background.tscn" id="2_rri1v"]
+[ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/delve/background.tscn" id="2_rri1v"]
 [ext_resource type="Script" uid="uid://cfrq14ca5gdbt" path="res://scripts/delve/ores/OreGenerator.cs" id="3_2w28i"]
 [ext_resource type="Script" uid="uid://bde61g6mkgsge" path="res://scripts/delve/cutout/CutoutManager.cs" id="4_03wr4"]
 
