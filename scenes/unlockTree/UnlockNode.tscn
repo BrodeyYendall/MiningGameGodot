@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfw7bqyvq3q0v"]
+
+[ext_resource type="Texture2D" uid="uid://b2kxoa4e2kdoq" path="res://sprites/icon.svg" id="1_8sy3v"]
+[ext_resource type="Script" uid="uid://68gok3tbh6ct" path="res://scripts/unlockTree/UnlockNode.cs" id="2_0spes"]
+[ext_resource type="PackedScene" uid="uid://vk7ypfl2lrp4" path="res://scenes/unlockTree/UnlockNodeTooltip.tscn" id="3_0spes"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pm5xo"]
+font_size = 32
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Button" type="TextureButton" node_paths=PackedStringArray("CountLabel", "Tooltip", "Dependencies")]
+offset_left = -32.0
+offset_top = -33.0
+offset_right = 104.0
+offset_bottom = 103.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("1_8sy3v")
+script = ExtResource("2_0spes")
+MaxCount = null
+Title = null
+Description = null
+CountLabel = NodePath("Count")
+Tooltip = NodePath("UnlockNodeTooltip")
+Dependencies = []
+
+[node name="Count" type="Label" parent="."]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 92.0
+offset_right = 147.0
+offset_bottom = 137.0
+text = "0/0"
+label_settings = SubResource("LabelSettings_pm5xo")
+
+[node name="UnlockNodeTooltip" parent="." instance=ExtResource("3_0spes")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[connection signal="mouse_entered" from="." to="." method="HandleMouseEntered"]
+[connection signal="mouse_exited" from="." to="." method="HandleMouseExited"]
+[connection signal="pressed" from="." to="." method="ProcessButtonPressed"]

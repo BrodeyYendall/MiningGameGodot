@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://cocjt1oijbk4o"]
+
+[ext_resource type="PackedScene" uid="uid://bfw7bqyvq3q0v" path="res://scenes/unlockTree/UnlockNode.tscn" id="1_5xsmi"]
+[ext_resource type="Script" uid="uid://b4318jnn4rebc" path="res://scripts/unlockTree/UnlockTree.cs" id="1_v52ii"]
+
+[node name="UnlockTree" type="Node2D"]
+script = ExtResource("1_v52ii")
+
+[node name="IncreaseTime1" parent="." instance=ExtResource("1_5xsmi")]
+offset_left = 92.0
+offset_top = 61.0
+offset_right = 228.0
+offset_bottom = 197.0
+MaxCount = 3
+Title = "More Time"
+Description = "+5s Delve Time"
+
+[node name="MultiplyGold1" parent="." node_paths=PackedStringArray("Dependencies") instance=ExtResource("1_5xsmi")]
+offset_left = 320.0
+offset_top = 61.0
+offset_right = 456.0
+offset_bottom = 197.0
+MaxCount = 1
+Title = "Multiply Gold"
+Description = "x2 All mined gold"
+Dependencies = [NodePath("../IncreaseTime1")]
+
+[node name="ZincMultiply1" parent="." node_paths=PackedStringArray("Dependencies") instance=ExtResource("1_5xsmi")]
+offset_left = 320.0
+offset_top = 208.0
+offset_right = 456.0
+offset_bottom = 344.0
+MaxCount = 1
+Title = "Multiply Zinc"
+Description = "x2 All Zinc Mined"
+Dependencies = [NodePath("../MultiplyGold1")]
+
+[node name="Smelting" parent="." node_paths=PackedStringArray("Dependencies") instance=ExtResource("1_5xsmi")]
+offset_left = 515.0
+offset_top = 61.0
+offset_right = 651.0
+offset_bottom = 197.0
+MaxCount = 1
+Title = "Smelting"
+Description = "Unlock the ability to smelt ores"
+Dependencies = [NodePath("../MultiplyGold1")]
+
+[connection signal="NodePurchased" from="IncreaseTime1" to="." method="HandleNodePurchase"]
+[connection signal="NodeUnlocked" from="IncreaseTime1" to="." method="HandleNodeUnlock"]
+[connection signal="NodePurchased" from="MultiplyGold1" to="." method="HandleNodePurchase"]
+[connection signal="NodeUnlocked" from="MultiplyGold1" to="." method="HandleNodeUnlock"]
+[connection signal="NodePurchased" from="ZincMultiply1" to="." method="HandleNodePurchase"]
+[connection signal="NodeUnlocked" from="ZincMultiply1" to="." method="HandleNodeUnlock"]
+[connection signal="NodePurchased" from="Smelting" to="." method="HandleNodePurchase"]
+[connection signal="NodeUnlocked" from="Smelting" to="." method="HandleNodeUnlock"]
