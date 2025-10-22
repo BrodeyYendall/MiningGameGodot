@@ -1,7 +1,7 @@
 using Godot;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.ores;
 
-namespace MiningGame.scripts.UI;
+namespace MiningGame.scripts.delve.UI;
 
 public partial class Ui : Control
 {

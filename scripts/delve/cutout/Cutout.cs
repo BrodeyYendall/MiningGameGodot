@@ -3,10 +3,10 @@ using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using Godot;
 using Godot.Collections;
-using MiningGame.scripts.crack;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.crack;
+using MiningGame.scripts.delve.ores;
 
-namespace MiningGame.scripts.cutout;
+namespace MiningGame.scripts.delve.cutout;
 
 public partial class Cutout : Area2D
 {

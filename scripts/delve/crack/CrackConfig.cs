@@ -1,6 +1,6 @@
 using Godot;
 
-namespace MiningGame.scripts.crack;
+namespace MiningGame.scripts.delve.crack;
 
 public partial class CrackConfig(
     int minWidth,

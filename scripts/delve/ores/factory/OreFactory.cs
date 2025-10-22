@@ -2,7 +2,7 @@
 using Godot;
 using MiningGame.scripts.helper;
 
-namespace MiningGame.scripts.ores;
+namespace MiningGame.scripts.delve.ores;
 
 public abstract partial class OreFactory<T>: Node2D
     where T : Ore

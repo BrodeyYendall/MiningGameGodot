@@ -1,6 +1,6 @@
 ﻿using GdUnit4;
 using Godot;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.ores;
 using Moq;
 using static GdUnit4.Assertions;
 

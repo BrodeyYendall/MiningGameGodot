@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=3 uid="uid://h5ydrs5ls1q2"]
 
-[ext_resource type="Script" uid="uid://wht418tua6wp" path="res://scripts/DelveManager.cs" id="1_cdpr4"]
-[ext_resource type="Script" uid="uid://dckve1x8jqn6e" path="res://scripts/WallManager.cs" id="1_ydd21"]
-[ext_resource type="Script" uid="uid://cp7iv1e3cjmcr" path="res://scripts/UI/Ui.cs" id="2_cdpr4"]
+[ext_resource type="Script" uid="uid://wht418tua6wp" path="res://scripts/delve/DelveManager.cs" id="1_cdpr4"]
+[ext_resource type="Script" uid="uid://dckve1x8jqn6e" path="res://scripts/delve/WallManager.cs" id="1_ydd21"]
+[ext_resource type="Script" uid="uid://cp7iv1e3cjmcr" path="res://scripts/delve/UI/Ui.cs" id="2_cdpr4"]
 [ext_resource type="Texture2D" uid="uid://5mvvnxw4olnn" path="res://sprites/UI/roof.png" id="3_n5hqi"]
 [ext_resource type="PackedScene" uid="uid://cwk1m3cjvvvc4" path="res://scenes/UI/ScoreHolder.tscn" id="4_ls6tr"]
 [ext_resource type="Texture2D" uid="uid://cqdi6qkw5l7xt" path="res://sprites/ore/zinc/tilemap.png" id="5_7bcp7"]
 [ext_resource type="PackedScene" uid="uid://bhegy8bffeb23" path="res://scenes/UI/Timer.tscn" id="6_80v1x"]
-[ext_resource type="Script" uid="uid://cyacbjfxvsupl" path="res://scripts/Countdown.cs" id="7_3xwkl"]
+[ext_resource type="Script" uid="uid://cyacbjfxvsupl" path="res://scripts/delve/Countdown.cs" id="7_3xwkl"]
 [ext_resource type="PackedScene" uid="uid://v1u1xmvj31b5" path="res://scenes/UI/GameOverDialogBox.tscn" id="8_eu0o8"]
 
 [node name="DelveManager" type="Node2D" node_paths=PackedStringArray("WallManager", "Ui", "Countdown", "GameOverDialogBox")]

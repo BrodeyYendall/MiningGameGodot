@@ -10,6 +10,7 @@ namespace MiningGame.scripts.helper;
 
 public partial class InputManager : Node
 {
+    public static readonly int DelayBetweenHoles = 200;
     private static readonly string SaveLocation = "res://scenarios/most_recent.jsonl";
     private static readonly string LoadScenario = "";
 
@@ -41,7 +42,7 @@ public partial class InputManager : Node
         
         if (inputEvent is InputEventMouseButton inputMouseEvent && inputEvent.IsPressed())
         {
-            if (currentTime - prevHoleCreatedAt >= (ulong) Constants.DelayBetweenHoles)
+            if (currentTime - prevHoleCreatedAt >= (ulong) DelayBetweenHoles)
             {
                 prevHoleCreatedAt = currentTime;
                 EmitSignalCreateHole(inputMouseEvent.Position);

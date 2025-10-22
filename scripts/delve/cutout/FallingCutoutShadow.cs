@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace MiningGame.scripts.cutout;
+namespace MiningGame.scripts.delve.cutout;
 
 public partial class FallingCutoutShadow : Node2D
 {

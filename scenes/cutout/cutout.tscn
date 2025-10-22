@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b36uw2ry80p7a"]
 
-[ext_resource type="Script" uid="uid://dfqfmy68pj1bb" path="res://scripts/cutout/Cutout.cs" id="1_bawd6"]
+[ext_resource type="Script" uid="uid://dfqfmy68pj1bb" path="res://scripts/delve/cutout/Cutout.cs" id="1_bawd6"]
 
 [node name="Cutout" type="Area2D" node_paths=PackedStringArray("hitbox")]
 script = ExtResource("1_bawd6")

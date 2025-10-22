@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://djfulbsxvku3o"]
 
-[ext_resource type="Script" uid="uid://bfx0ulkeq6fki" path="res://scripts/cutout/FallingCutout.cs" id="1_1i4ih"]
-[ext_resource type="Script" uid="uid://mapngt5g7s4e" path="res://scripts/cutout/FallingCutoutShadow.cs" id="2_tel2a"]
+[ext_resource type="Script" uid="uid://bfx0ulkeq6fki" path="res://scripts/delve/cutout/FallingCutout.cs" id="1_1i4ih"]
+[ext_resource type="Script" uid="uid://mapngt5g7s4e" path="res://scripts/delve/cutout/FallingCutoutShadow.cs" id="2_tel2a"]
 
 [node name="FallingCutout" type="Sprite2D" node_paths=PackedStringArray("fallingCutoutShadow")]
 script = ExtResource("1_1i4ih")

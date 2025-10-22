@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Godot;
+using MiningGame.scripts.helper;
 
-namespace MiningGame.scripts.ores;
+namespace MiningGame.scripts.delve.ores;
 
 public partial class OreGenerator : Node2D, ICollisionObjectCreator
 {

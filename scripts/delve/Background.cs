@@ -4,12 +4,15 @@ using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Godot;
 using Godot.Collections;
-using MiningGame.scripts.cutout;
+using MiningGame.scripts.delve.cutout;
 
-namespace MiningGame.scripts;
+namespace MiningGame.scripts.delve;
 
 public partial class Background : Sprite2D
 {
+    
+    public static readonly int BackgroundScale = 6;
+    
     [Signal] public delegate void ImageChangeEventHandler(Image newImage);
     [Signal] public delegate void BackgroundGenerationCompletedEventHandler(ImageTexture backgroundGenerated);
 

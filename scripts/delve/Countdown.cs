@@ -1,6 +1,6 @@
 using Godot;
 
-namespace MiningGame.scripts;
+namespace MiningGame.scripts.delve;
 
 public partial class Countdown : Timer
 {

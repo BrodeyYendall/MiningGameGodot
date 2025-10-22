@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d2bvw7tp5jk4l"]
 
-[ext_resource type="Script" uid="uid://uf5pp23efp3f" path="res://scripts/Background.cs" id="1_nou1y"]
+[ext_resource type="Script" uid="uid://uf5pp23efp3f" path="res://scripts/delve/Background.cs" id="1_nou1y"]
 [ext_resource type="Shader" uid="uid://deyv0sdqvh78d" path="res://shaders/wall_transparency_shader.gdshader" id="2_dnxxv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ki05r"]

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Godot;
 using MiningGame.scripts.helper;
-using MiningGame.scripts.UI;
+using MiningGame.scripts.delve.UI;
 
-namespace MiningGame.scripts;
+namespace MiningGame.scripts.delve;
 
 public partial class DelveManager : Node2D
 {

@@ -1,4 +1,4 @@
-﻿namespace MiningGame.scripts;
+﻿namespace MiningGame.scripts.helper;
 
 public interface ICollisionObjectCreator
 {

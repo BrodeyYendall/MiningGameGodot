@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using Godot;
-using MiningGame.scripts.cutout;
+using MiningGame.scripts.delve.cutout;
 
-namespace MiningGame.scripts;
+namespace MiningGame.scripts.delve;
 
 public partial class Hole : Area2D
 {
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/Hole.tscn");
+    
+    public static readonly int HoleSize = 5;
 
     [Export] private CollisionShape2D hitbox;
     
@@ -35,12 +37,12 @@ public partial class Hole : Area2D
     public override void _Ready()
     {
         CircleShape2D shape = (CircleShape2D) hitbox.Shape;
-        shape.Radius = Constants.HoleSize;
+        shape.Radius = HoleSize;
     }
 
     public override void _Draw()
     {
-        DrawCircle(new Vector2(0, 0), Constants.HoleSize, Colors.Black);
+        DrawCircle(new Vector2(0, 0), HoleSize, Colors.Black);
         DrawString(ThemeDB.FallbackFont, new Vector2(-2, 3), pointNumber.ToString(), 0, -1, 12);
     }
     
@@ -67,7 +69,7 @@ public partial class Hole : Area2D
     {
         if (squareWrapper == null)
         {
-            Vector2 holeSizeVector = new Vector2(Constants.HoleSize, Constants.HoleSize);
+            Vector2 holeSizeVector = new Vector2(HoleSize, HoleSize);
             
             Vector2 negative = Position - holeSizeVector;
             Vector2 positive = Position + holeSizeVector;

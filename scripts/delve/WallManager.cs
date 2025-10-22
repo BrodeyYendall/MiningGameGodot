@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using Godot.Collections;
-using MiningGame.scripts.crack;
-using MiningGame.scripts.cutout;
+using MiningGame.scripts.delve.crack;
+using MiningGame.scripts.delve.cutout;
 using MiningGame.scripts.helper;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.ores;
 
-namespace MiningGame.scripts;
+namespace MiningGame.scripts.delve;
 
 public partial class WallManager : Node2D
 {

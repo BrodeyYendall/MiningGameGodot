@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Godot;
+﻿using Godot;
+using MiningGame.scripts.delve;
 
-namespace MiningGame.scripts.autoload;
+namespace MiningGame.scripts.helper;
 
 public partial class CollisionLayerHelper : Node
 {

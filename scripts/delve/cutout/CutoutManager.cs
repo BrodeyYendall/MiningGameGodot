@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Godot;
-using MiningGame.scripts.autoload;
-using MiningGame.scripts.crack;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.crack;
+using MiningGame.scripts.helper;
+using MiningGame.scripts.delve.ores;
 
-namespace MiningGame.scripts.cutout;
+namespace MiningGame.scripts.delve.cutout;
 
 public partial class CutoutManager: Node2D, ICollisionObjectCreator
 {

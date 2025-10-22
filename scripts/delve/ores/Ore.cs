@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Godot;
-using MiningGame.scripts.cutout;
+using MiningGame.scripts.delve.cutout;
 using Vector2 = Godot.Vector2;
 
-namespace MiningGame.scripts.ores;
+namespace MiningGame.scripts.delve.ores;
 
 public partial class Ore : Area2D
 {

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.JavaScript;
 using Godot;
 using Vector2 = Godot.Vector2;
 
-namespace MiningGame.scripts.crack;
+namespace MiningGame.scripts.delve.crack;
 
 public partial class Crack : Area2D
 {

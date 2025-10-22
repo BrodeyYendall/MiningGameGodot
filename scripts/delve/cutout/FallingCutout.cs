@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.ores;
 
-namespace MiningGame.scripts.cutout;
+namespace MiningGame.scripts.delve.cutout;
 
 public partial class FallingCutout : Sprite2D
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using Godot;
-using MiningGame.scripts.ores.factory;
+using MiningGame.scripts.delve.ores.factory;
 
-namespace MiningGame.scripts.ores;
+namespace MiningGame.scripts.delve.ores;
 
 public partial class OreTable (
     int wallCountThreshold,

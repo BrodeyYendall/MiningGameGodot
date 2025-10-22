@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot;
-using MiningGame.scripts.autoload;
-using MiningGame.scripts.crack;
-using MiningGame.scripts.cutout;
+using MiningGame.scripts.delve.crack;
+using MiningGame.scripts.delve.cutout;
 using MiningGame.scripts.helper;
-using MiningGame.scripts.ores;
+using MiningGame.scripts.delve.ores;
+using CollisionLayerHelper = MiningGame.scripts.helper.CollisionLayerHelper;
 
-namespace MiningGame.scripts;
+namespace MiningGame.scripts.delve;
 
 public partial class Wall: Node2D, ICollisionObjectCreator
 {

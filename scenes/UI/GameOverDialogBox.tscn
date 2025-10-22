@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://v1u1xmvj31b5"]
 
 [ext_resource type="Texture2D" uid="uid://b60is8dv23vv0" path="res://sprites/UI/DialogBoxBackground.png" id="1_65c8v"]
-[ext_resource type="Script" uid="uid://bljg3367013h6" path="res://scripts/UI/GameOverDialogBox.cs" id="2_mwpxg"]
-[ext_resource type="Script" uid="uid://v007r7pkqf3t" path="res://scripts/UI/ScoreHolder.cs" id="2_wbe3r"]
+[ext_resource type="Script" uid="uid://bljg3367013h6" path="res://scripts/delve/UI/GameOverDialogBox.cs" id="2_mwpxg"]
+[ext_resource type="Script" uid="uid://v007r7pkqf3t" path="res://scripts/delve/UI/ScoreHolder.cs" id="2_wbe3r"]
 [ext_resource type="Texture2D" uid="uid://c7fwi0m6wadm2" path="res://sprites/ore/gold/gold-tleset.png" id="3_wbe3r"]
 [ext_resource type="Texture2D" uid="uid://cqdi6qkw5l7xt" path="res://sprites/ore/zinc/tilemap.png" id="4_j0qm0"]
 

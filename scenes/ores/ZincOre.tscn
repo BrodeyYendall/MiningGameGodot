@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bpsep63cmdjn1"]
 
-[ext_resource type="Script" uid="uid://dkia33kap8lk4" path="res://scripts/ores/Ore.cs" id="1_p80xm"]
+[ext_resource type="Script" uid="uid://dkia33kap8lk4" path="res://scripts/delve/ores/Ore.cs" id="1_p80xm"]
 [ext_resource type="Texture2D" uid="uid://cqdi6qkw5l7xt" path="res://sprites/ore/zinc/tilemap.png" id="2_p80xm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7ef1v"]

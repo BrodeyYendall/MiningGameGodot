@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace MiningGame.scripts.ores.factory;
+namespace MiningGame.scripts.delve.ores.factory;
 
 public partial class ZincOreFactory : OreFactory<Ore>
 {

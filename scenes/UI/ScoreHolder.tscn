@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cwk1m3cjvvvc4"]
 
 [ext_resource type="Texture2D" uid="uid://ciaa6llhbv5a6" path="res://sprites/UI/ScoreBackground.png" id="1_w0uq7"]
-[ext_resource type="Script" uid="uid://v007r7pkqf3t" path="res://scripts/UI/ScoreHolder.cs" id="2_4leoe"]
+[ext_resource type="Script" uid="uid://v007r7pkqf3t" path="res://scripts/delve/UI/ScoreHolder.cs" id="2_4leoe"]
 [ext_resource type="Texture2D" uid="uid://c7fwi0m6wadm2" path="res://sprites/ore/gold/gold-tleset.png" id="2_gg6tv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_78awf"]

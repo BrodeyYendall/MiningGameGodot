@@ -1,6 +1,6 @@
 using Godot;
 
-namespace MiningGame.scripts.UI;
+namespace MiningGame.scripts.delve.UI;
 
 public partial class GameOverDialogBox : Node2D
 {
