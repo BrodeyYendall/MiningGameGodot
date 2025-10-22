@@ -12,7 +12,6 @@ public partial class CutoutManager: Node2D, ICollisionObjectCreator
     [Export] public Node2D fallingCutoutHolder;
     [Export] public Wall parentWall;
     
-    [Signal] public delegate void OreCutoutEventHandler(Ore ore);
     [Signal] public delegate void RenderCutoutEventHandler(Vector2[] cutoutVertices);
     
 
@@ -98,7 +97,7 @@ public partial class CutoutManager: Node2D, ICollisionObjectCreator
     {
         foreach (Ore ore in ores)
         {
-            EmitSignalOreCutout(ore);
+            parentWall.OreCutout(ore);
         }
 
         if (shouldDestroy)

@@ -1,41 +1,28 @@
 using Godot;
-using MiningGame.scripts.delve.ores;
+using MiningGame.scripts.helper;
 
 namespace MiningGame.scripts.delve.UI;
 
 public partial class Ui : Control
 {
-
 	[Export] private ScoreHolder goldScoreHolder;
 	[Export] private ScoreHolder zincScoreHolder;
-	
-	public void ProcessOreCutout(Ore ore)
+
+	public override void _Ready()
 	{
-		switch (ore.Type)
+		SignalBus.Instance.UpdateOreCount += UpdateOreCount;
+	}
+
+	private void UpdateOreCount(string type, int oreCount)
+	{
+		switch (type)
 		{
 			case "Gold":
-				goldScoreHolder.IncrementScore();
+				goldScoreHolder.SetScore(oreCount);
 				break;
 			case "Zinc":
-				zincScoreHolder.IncrementScore();
+				zincScoreHolder.SetScore(oreCount);
 				break;
 		}
 	}
-
-	public void Restart()
-	{
-		goldScoreHolder.SetScore(0);
-		zincScoreHolder.SetScore(0);
-	}
-
-	public int GetGoldScore()
-	{
-		return goldScoreHolder.Score;
-	}
-
-	public int GetZincScore()
-	{
-		return zincScoreHolder.Score;
-	}
-	
 }

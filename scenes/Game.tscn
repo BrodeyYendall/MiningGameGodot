@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpq2glgs7wf66"]
+
+[ext_resource type="Script" uid="uid://bc55ln2wp10ef" path="res://scripts/Game.cs" id="1_qbsmt"]
+[ext_resource type="PackedScene" uid="uid://h5ydrs5ls1q2" path="res://scenes/delve/DelveManager.tscn" id="2_cpr0p"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_qbsmt")
+
+[node name="DelveManager" parent="." instance=ExtResource("2_cpr0p")]
+
+[connection signal="OreCutout" from="DelveManager" to="." method="HandleOreCutout"]

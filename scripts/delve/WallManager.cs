@@ -12,12 +12,10 @@ namespace MiningGame.scripts.delve;
 
 public partial class WallManager : Node2D
 {
-    [Signal]
-    public delegate void OreCutoutEventHandler(Ore ore);
-    
     [Export] public int WallQueueSize;
     [Export] public int InitialWallsRendered;
     [Export] public int CutoutEdgeBuffer;
+    [Export] public DelveManager DelveManager;
     [Export] public Node2D FallingCutoutHolder;
     [Export] public Node2D WallHolder;
 
@@ -83,8 +81,7 @@ public partial class WallManager : Node2D
 
     private Wall CreateNewWall(int wallCount)
     {
-        Wall wall = Wall.Create(wallCount, FallingCutoutHolder);
-        wall.OreCutout += AcceptOreCutoutSignal;
+        Wall wall = Wall.Create(wallCount, FallingCutoutHolder, this);
         WallHolder.AddChild(wall);
         WallHolder.MoveChild(wall, 0); // Ensure the wall is at the back.
         return wall;
@@ -117,9 +114,9 @@ public partial class WallManager : Node2D
         activeWalls[targetWall].CreateHole(point);
     }
     
-    public void AcceptOreCutoutSignal(Ore ore)
+    public void OreCutout(Ore ore)
     {
-        EmitSignalOreCutout(ore);
+        DelveManager.AcceptOreCutout(ore);
     }
 
     /// <summary>

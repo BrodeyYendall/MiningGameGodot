@@ -1,4 +1,5 @@
 using Godot;
+using MiningGame.scripts.helper;
 
 namespace MiningGame.scripts.delve.UI;
 
@@ -10,15 +11,31 @@ public partial class GameOverDialogBox : Node2D
 	[Export] private ScoreHolder zincScoreHolder;
 	[Export] private Label depthLabel;
 
+	public override void _Ready()
+	{
+		SignalBus.Instance.UpdateOreCount += UpdateOreCount;
+	}
+
 	public new void Hide()
 	{
 		Visible = false;
 	}
 	
-	public void Show(int goldScore, int zincScore, int depth)
+	private void UpdateOreCount(string type, int oreCount)
 	{
-		goldScoreHolder.SetScore(goldScore);
-		zincScoreHolder.SetScore(zincScore);
+		switch (type)
+		{
+			case "Gold":
+				goldScoreHolder.SetScore(oreCount);
+				break;
+			case "Zinc":
+				zincScoreHolder.SetScore(oreCount);
+				break;
+		}
+	}
+	
+	public void Show(int depth)
+	{
 		depthLabel.Text = depth.ToString();
 		Visible = true;
 	}

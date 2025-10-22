@@ -10,18 +10,18 @@
 [ext_resource type="Script" uid="uid://cyacbjfxvsupl" path="res://scripts/delve/Countdown.cs" id="7_3xwkl"]
 [ext_resource type="PackedScene" uid="uid://v1u1xmvj31b5" path="res://scenes/delve/UI/GameOverDialogBox.tscn" id="8_eu0o8"]
 
-[node name="DelveManager" type="Node2D" node_paths=PackedStringArray("WallManager", "Ui", "Countdown", "GameOverDialogBox")]
+[node name="DelveManager" type="Node2D" node_paths=PackedStringArray("WallManager", "Countdown", "GameOverDialogBox")]
 script = ExtResource("1_cdpr4")
 WallManager = NodePath("WallManager")
-Ui = NodePath("UI")
 Countdown = NodePath("Countdown")
 GameOverDialogBox = NodePath("GameOverDialogBox")
 
-[node name="WallManager" type="Node2D" parent="." node_paths=PackedStringArray("FallingCutoutHolder", "WallHolder")]
+[node name="WallManager" type="Node2D" parent="." node_paths=PackedStringArray("DelveManager", "FallingCutoutHolder", "WallHolder")]
 script = ExtResource("1_ydd21")
 WallQueueSize = 4
 InitialWallsRendered = 2
 CutoutEdgeBuffer = 15
+DelveManager = NodePath("..")
 FallingCutoutHolder = NodePath("FallingCutoutHolder")
 WallHolder = NodePath("WallHolder")
 
@@ -91,7 +91,6 @@ CountDownTime = 30
 [node name="GameOverDialogBox" parent="." instance=ExtResource("8_eu0o8")]
 position = Vector2(134, 52)
 
-[connection signal="OreCutout" from="WallManager" to="UI" method="ProcessOreCutout"]
 [connection signal="CountdownCompleted" from="Countdown" to="." method="CountdownCompleted"]
 [connection signal="CountdownIncremented" from="Countdown" to="UI/Timer" method="UpdateTime"]
 [connection signal="timeout" from="Countdown" to="Countdown" method="IncrementCountdown"]

@@ -39,5 +39,4 @@ parentWall = NodePath("..")
 [connection signal="CycleFormed" from="." to="CutoutManager" method="CreateCutout"]
 [connection signal="GenerateBackground" from="." to="Contents/OreGenerator" method="GenerateOres"]
 [connection signal="ImageChange" from="Contents/Background" to="CutoutManager" method="OnBackgroundImageChanged"]
-[connection signal="OreCutout" from="CutoutManager" to="." method="EmitOreCutout"]
 [connection signal="RenderCutout" from="CutoutManager" to="Contents/Background" method="RenderCutoutHandler"]

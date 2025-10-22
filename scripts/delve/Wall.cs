@@ -26,7 +26,6 @@ public partial class Wall: Node2D, ICollisionObjectCreator
 
     [Signal] public delegate void GenerateBackgroundEventHandler(int wallCount);
     [Signal] public delegate void CycleFormedEventHandler(Vector2[] cutoutVertices, Crack[] newCracks, Crack[] allCracks, Wall wall);
-    [Signal] public delegate void OreCutoutEventHandler(Ore ores);
 
     private uint collisionLayer = 0;
     public uint CollisionLayer => collisionLayer;
@@ -38,20 +37,23 @@ public partial class Wall: Node2D, ICollisionObjectCreator
     
     private int wallNumber = 1;
     public int WallNumber => wallNumber;
+
+    private WallManager wallManager;
     private Node2D fallingCutoutHolder;
 
-    public static Wall Create(int wallCount, Node2D fallingCutoutHolder)
+    public static Wall Create(int wallCount, Node2D fallingCutoutHolder, WallManager wallManager)
     {
         Wall wall = _attachedScene.Instantiate<Wall>();
         
-        wall.Initialize(wallCount, fallingCutoutHolder);
+        wall.Initialize(wallCount, fallingCutoutHolder, wallManager);
         return wall;
     }
     
-    public void Initialize(int wallCount, Node2D fallingCutoutHolder)
+    public void Initialize(int wallCount, Node2D fallingCutoutHolder, WallManager wallManager)
     {
-        this.wallNumber = wallCount;
+        wallNumber = wallCount;
         this.fallingCutoutHolder = fallingCutoutHolder;
+        this.wallManager = wallManager;
     }
     
     public override void _Ready()
@@ -228,9 +230,9 @@ public partial class Wall: Node2D, ICollisionObjectCreator
         return hole;
     }
 
-    private void EmitOreCutout(Ore ore)
+    public void OreCutout(Ore ore)
     {
-        EmitSignalOreCutout(ore);
+        wallManager.OreCutout(ore);
     }
 
     public void Destroy()

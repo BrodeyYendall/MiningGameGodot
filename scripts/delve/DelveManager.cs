@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Godot;
+using MiningGame.scripts.delve.ores;
 using MiningGame.scripts.helper;
 using MiningGame.scripts.delve.UI;
 
@@ -7,8 +8,9 @@ namespace MiningGame.scripts.delve;
 
 public partial class DelveManager : Node2D
 {
+    [Signal] public delegate void OreCutoutEventHandler(Ore ore);
+    
     [Export] public WallManager WallManager;
-    [Export] public Ui Ui;
     [Export] public Countdown Countdown;
     [Export] public GameOverDialogBox GameOverDialogBox;
 
@@ -21,7 +23,6 @@ public partial class DelveManager : Node2D
     public async Task Restart()
     {
         await WallManager.Start();
-        Ui.Restart();
         GameOverDialogBox.Hide();
 
         await WallManager.Restart();
@@ -36,6 +37,11 @@ public partial class DelveManager : Node2D
     {
         InputManager.Instance.NextWall -= WallManager.RemoveFrontWallHandler;
         InputManager.Instance.CreateHole -= WallManager.ProcessCreateHole;
-        GameOverDialogBox.Show(Ui.GetGoldScore(), Ui.GetZincScore(), WallManager.TopWallNumber); 
+        GameOverDialogBox.Show(WallManager.TopWallNumber); 
+    }
+
+    public void AcceptOreCutout(Ore ore)
+    {
+        EmitSignalOreCutout(ore);
     }
 }
