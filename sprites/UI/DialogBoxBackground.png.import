@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ciaa6llhbv5a6"
-path="res://.godot/imported/ScoreBackground.png-148126494ff5e12b51b11971951b1e8a.ctex"
+uid="uid://b60is8dv23vv0"
+path="res://.godot/imported/DialogBoxBackground.png-003feb687ed035e3ee94f7b182418e6a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/border/ScoreBackground.png"
-dest_files=["res://.godot/imported/ScoreBackground.png-148126494ff5e12b51b11971951b1e8a.ctex"]
+source_file="res://sprites/UI/DialogBoxBackground.png"
+dest_files=["res://.godot/imported/DialogBoxBackground.png-003feb687ed035e3ee94f7b182418e6a.ctex"]
 
 [params]
 

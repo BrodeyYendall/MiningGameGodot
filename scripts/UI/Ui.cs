@@ -1,7 +1,7 @@
 using Godot;
-using System;
-using Godot.Collections;
 using MiningGame.scripts.ores;
+
+namespace MiningGame.scripts.UI;
 
 public partial class Ui : Control
 {
@@ -20,6 +20,22 @@ public partial class Ui : Control
 				zincScoreHolder.IncrementScore();
 				break;
 		}
+	}
+
+	public void Restart()
+	{
+		goldScoreHolder.SetScore(0);
+		zincScoreHolder.SetScore(0);
+	}
+
+	public int GetGoldScore()
+	{
+		return goldScoreHolder.Score;
+	}
+
+	public int GetZincScore()
+	{
+		return zincScoreHolder.Score;
 	}
 	
 }

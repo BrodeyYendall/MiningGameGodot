@@ -6,6 +6,7 @@ using Godot.Collections;
 using MiningGame.scripts.crack;
 using MiningGame.scripts.cutout;
 using MiningGame.scripts.helper;
+using MiningGame.scripts.UI;
 
 namespace MiningGame.scripts;
 
@@ -17,6 +18,8 @@ public partial class WallManager : Node2D
     [Export] public Node2D FallingCutoutHolder;
     [Export] public Node2D WallContainer;
     [Export] public Ui Ui;
+    [Export] public Countdown Countdown;
+    [Export] public GameOverDialogBox GameOverDialogBox;
     
     private int topWallNumber = 1;
 
@@ -25,6 +28,27 @@ public partial class WallManager : Node2D
 
     public async override void _Ready()
     {
+        await Restart();
+    }
+
+    public void RestartHandler() { Restart(); }
+    public async Task Restart()
+    {
+        Ui.Restart();
+        GameOverDialogBox.Hide();
+        topWallNumber = 1;
+
+        for (int i = 0; i < activeWalls.Count;)
+        {
+            activeWalls[i].Destroy();
+            activeWalls.RemoveAt(i);
+        }
+
+        while (wallQueue.TryDequeue(out var wall))
+        {
+            wall.Destroy();   
+        }
+        
         for (var i = 0; i < WallQueueSize; i++)
         {
             wallQueue.Enqueue(CreateNewWall(i + 1));
@@ -35,8 +59,10 @@ public partial class WallManager : Node2D
             await ActivateNextWall();
         }
 
-        InputManager.Instance.NextWall += () => RemoveFrontWall();
+        InputManager.Instance.NextWall += RemoveFrontWallHandler;
         InputManager.Instance.CreateHole += ProcessCreateHole;
+        
+        Countdown.Start();
     }
 
     private async Task ActivateNextWall()
@@ -48,6 +74,7 @@ public partial class WallManager : Node2D
         wallQueue.Enqueue(CreateNewWall(wallQueue.Peek().WallNumber + 1));
     }
 
+    private void RemoveFrontWallHandler() { RemoveFrontWall(); }
     private async Task RemoveFrontWall()
     {
         Wall frontWall = activeWalls[0];
@@ -92,6 +119,13 @@ public partial class WallManager : Node2D
         }
         
         activeWalls[targetWall].CreateHole(point);
+    }
+
+    public void CountdownCompleted()
+    {
+        InputManager.Instance.NextWall -= RemoveFrontWallHandler;
+        InputManager.Instance.CreateHole -= ProcessCreateHole;
+        GameOverDialogBox.Show(Ui.GetGoldScore(), Ui.GetZincScore(), topWallNumber); 
     }
 
     /// <summary>

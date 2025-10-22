@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5mvvnxw4olnn"
-path="res://.godot/imported/roof.png-adac135a3362886d2cd2aff75f740fa7.ctex"
+uid="uid://cnwubs03lvh38"
+path="res://.godot/imported/LabelBoxColour.png-371df1fc9fab9685b72db571b9ba2042.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/border/roof.png"
-dest_files=["res://.godot/imported/roof.png-adac135a3362886d2cd2aff75f740fa7.ctex"]
+source_file="res://sprites/UI/LabelBoxColour.png"
+dest_files=["res://.godot/imported/LabelBoxColour.png-371df1fc9fab9685b72db571b9ba2042.ctex"]
 
 [params]
 

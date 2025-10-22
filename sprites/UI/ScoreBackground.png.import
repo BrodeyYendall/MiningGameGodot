@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnwubs03lvh38"
-path="res://.godot/imported/LabelBoxColour.png-163e675f736005e48a04efb8f7bde782.ctex"
+uid="uid://ciaa6llhbv5a6"
+path="res://.godot/imported/ScoreBackground.png-d4fc43e9069ad9e2056671573f1606ec.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/border/LabelBoxColour.png"
-dest_files=["res://.godot/imported/LabelBoxColour.png-163e675f736005e48a04efb8f7bde782.ctex"]
+source_file="res://sprites/UI/ScoreBackground.png"
+dest_files=["res://.godot/imported/ScoreBackground.png-d4fc43e9069ad9e2056671573f1606ec.ctex"]
 
 [params]
 

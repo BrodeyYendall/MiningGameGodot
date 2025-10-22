@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhegy8bffeb23"]
+
+[ext_resource type="Texture2D" uid="uid://ciaa6llhbv5a6" path="res://sprites/UI/ScoreBackground.png" id="1_jilhu"]
+[ext_resource type="Script" uid="uid://df5gnnobpkcms" path="res://scripts/UI/TimerDisplay.cs" id="2_t4qr8"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_78awf"]
+font_size = 12
+
+[node name="Timer" type="TextureRect" node_paths=PackedStringArray("timerLabel")]
+offset_right = 43.0
+offset_bottom = 13.0
+texture = ExtResource("1_jilhu")
+script = ExtResource("2_t4qr8")
+timerLabel = NodePath("TimerLabel")
+
+[node name="TimerLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = -2.0
+offset_right = 38.0
+offset_bottom = 15.0
+text = "00:00"
+label_settings = SubResource("LabelSettings_78awf")

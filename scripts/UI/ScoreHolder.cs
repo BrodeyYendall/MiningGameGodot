@@ -1,7 +1,8 @@
 using Godot;
-using System;
 
-public partial class ScoreHolder : TextureRect
+namespace MiningGame.scripts.UI;
+
+public partial class ScoreHolder : Node
 {
 
 	[Export] private Texture2D spriteTexture;
@@ -21,7 +22,12 @@ public partial class ScoreHolder : TextureRect
 
 	public void IncrementScore(int amount = 1)
 	{
-		score += amount;
+		SetScore(score + amount);
+	}
+
+	public void SetScore(int amount)
+	{
+		score = amount;
 		label.Text = score.ToString("D6");
 	}
 }
