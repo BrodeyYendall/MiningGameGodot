@@ -21,6 +21,9 @@ offset_bottom = 197.0
 MaxCount = 3
 Title = "More Time"
 Description = "+5s Delve Time"
+Costs = Dictionary[int, int]({
+0: 10
+})
 
 [node name="MultiplyGold1" parent="." node_paths=PackedStringArray("Dependencies") instance=ExtResource("1_5xsmi")]
 offset_left = 320.0
@@ -30,6 +33,9 @@ offset_bottom = 197.0
 MaxCount = 1
 Title = "Multiply Gold"
 Description = "x2 All mined gold"
+Costs = Dictionary[int, int]({
+0: 50
+})
 Dependencies = [NodePath("../IncreaseTime1")]
 
 [node name="ZincMultiply1" parent="." node_paths=PackedStringArray("Dependencies") instance=ExtResource("1_5xsmi")]

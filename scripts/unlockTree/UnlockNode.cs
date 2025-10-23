@@ -13,6 +13,7 @@ public partial class UnlockNode : Control
 	[Export] public int MaxCount;
 	[Export] public string Title;
 	[Export] public string Description;
+	[Export] public Godot.Collections.Dictionary<OreTypes, int> Costs = new();
 	[Export] public Array<UnlockNode> Dependencies;
 
 	[Export] public BaseButton Button;
@@ -28,7 +29,7 @@ public partial class UnlockNode : Control
 
 	public override void _Ready()
 	{
-		Tooltip.Initialize(Title, Description, MaxCount);
+		Tooltip.Initialize(Title, Description, MaxCount, Costs);
 
 		Visible = CheckDependencies();
 	}

@@ -30,6 +30,7 @@ config/icon="res://sprites/icon.svg"
 RaycastHelper="*res://scripts/helper/RaycastHelper.cs"
 InputManager="*res://scripts/helper/InputManager.cs"
 SignalBus="*res://scripts/helper/SignalBus.cs"
+OreType="*res://scripts/OreType.cs"
 
 [display]
 

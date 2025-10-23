@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://baslw3g6jpomk"]
+
+[ext_resource type="Script" uid="uid://bocjxyrloiiqy" path="res://scripts/unlockTree/CostRow.cs" id="1_ecu5l"]
+
+[node name="CostRow" type="HBoxContainer" node_paths=PackedStringArray("IconTextureRect", "CostLabel")]
+alignment = 1
+script = ExtResource("1_ecu5l")
+IconTextureRect = NodePath("TextureRect")
+CostLabel = NodePath("Label")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+expand_mode = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "100"
