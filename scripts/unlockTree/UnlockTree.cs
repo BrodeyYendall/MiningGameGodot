@@ -1,13 +1,22 @@
 using Godot;
-using Godot.Collections;
 using System.Collections.Generic;
+using MiningGame.scripts.delve;
+using MiningGame.scripts.delve.crack;
+using MiningGame.scripts.helper;
 
 namespace MiningGame.scripts.unlockTree;
 
 public partial class UnlockTree : Node2D
 {
-	private List<(Vector2, Vector2)> linesToDraw = [];
-	
+	[Export] private Background background;
+	[Export] private Node2D crackHolder;
+
+	public async override void _Ready()
+	{
+		background.Initialize();
+		await background.WaitForRender();
+	}
+
 	public void HandleNodePurchase(UnlockNode node)
 	{
 		GD.Print($"Purchased {node.Title}, {node.Description}");
@@ -17,16 +26,15 @@ public partial class UnlockTree : Node2D
 	{
 		foreach (var dependency in node.FulfilledDependencies)
 		{
-			linesToDraw.Add((node.Position + new Vector2(32, 32), dependency.Position + new Vector2(32, 32)));
+			Crack crack = Crack.Create(dependency.Position, node.Position,
+				CollisionLayerHelper.UnlockTreeCollisionLayer, [], CrackConfig.UnlockTreeCrackConfig);
+			crack.CrackComplete += (_) => HandleCrackCompleted(node);
+			crackHolder.AddChild(crack);
 		}
-		QueueRedraw();
 	}
 
-	public override void _Draw()
+	private void HandleCrackCompleted(UnlockNode destination)
 	{
-		foreach (var line in linesToDraw)
-		{
-			DrawLine(line.Item1, line.Item2, Colors.White, 8);
-		}
+		destination.DisplayNode();
 	}
 }

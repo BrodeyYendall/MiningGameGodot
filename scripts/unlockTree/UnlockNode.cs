@@ -4,7 +4,7 @@ using Godot.Collections;
 
 namespace MiningGame.scripts.unlockTree;
 
-public partial class UnlockNode : TextureButton
+public partial class UnlockNode : Control
 {
 	[Signal] public delegate void NodePurchasedEventHandler(UnlockNode unlockNode);
 	[Signal] public delegate void NodeUnlockedEventHandler(UnlockNode node);
@@ -13,10 +13,11 @@ public partial class UnlockNode : TextureButton
 	[Export] public int MaxCount;
 	[Export] public string Title;
 	[Export] public string Description;
-
-	[Export] public Label CountLabel;
-	[Export] public UnlockNodeTooltip Tooltip;
 	[Export] public Array<UnlockNode> Dependencies;
+
+	[Export] public BaseButton Button;
+	[Export] public UnlockNodeTooltip Tooltip;
+	
 
 	public int Count => count;
 	private int count;
@@ -27,8 +28,7 @@ public partial class UnlockNode : TextureButton
 
 	public override void _Ready()
 	{
-		UpdateCount();
-		Tooltip.Initialize(Title, Description);
+		Tooltip.Initialize(Title, Description, MaxCount);
 
 		Visible = CheckDependencies();
 	}
@@ -59,10 +59,13 @@ public partial class UnlockNode : TextureButton
 
 		if (pendingDependencies.Count == 0)
 		{
-			Visible = true;
 			EmitSignalNodeUnlocked(this);
 		}
-		QueueRedraw();
+	}
+
+	public void DisplayNode()
+	{
+		Visible = true;
 	}
 
 	public void ProcessButtonPressed()
@@ -77,10 +80,10 @@ public partial class UnlockNode : TextureButton
 
 	private void UpdateCount()
 	{
-		CountLabel.Text = $"{count}/{MaxCount}";
+		Tooltip.IncrementCount();
 		if (count == MaxCount)
 		{
-			Disabled = true;
+			Button.Disabled = true;
 			Modulate = Colors.DimGray;
 		}
 	}
@@ -93,5 +96,10 @@ public partial class UnlockNode : TextureButton
 	public void HandleMouseExited()
 	{
 		Tooltip.Disable();
+	}
+
+	public Vector2 GetButtonSize()
+	{
+		return Button.Size;
 	}
 }

@@ -1,10 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://cocjt1oijbk4o"]
+[gd_scene load_steps=4 format=3 uid="uid://cocjt1oijbk4o"]
 
 [ext_resource type="PackedScene" uid="uid://bfw7bqyvq3q0v" path="res://scenes/unlockTree/UnlockNode.tscn" id="1_5xsmi"]
 [ext_resource type="Script" uid="uid://b4318jnn4rebc" path="res://scripts/unlockTree/UnlockTree.cs" id="1_v52ii"]
+[ext_resource type="PackedScene" uid="uid://d2bvw7tp5jk4l" path="res://scenes/delve/background.tscn" id="3_44j0c"]
 
-[node name="UnlockTree" type="Node2D"]
+[node name="UnlockTree" type="Node2D" node_paths=PackedStringArray("background", "crackHolder")]
 script = ExtResource("1_v52ii")
+background = NodePath("Background")
+crackHolder = NodePath("CrackHolder")
+
+[node name="Background" parent="." instance=ExtResource("3_44j0c")]
+
+[node name="CrackHolder" type="Node2D" parent="."]
 
 [node name="IncreaseTime1" parent="." instance=ExtResource("1_5xsmi")]
 offset_left = 92.0

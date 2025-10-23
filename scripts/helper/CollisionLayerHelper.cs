@@ -5,6 +5,8 @@ namespace MiningGame.scripts.helper;
 
 public partial class CollisionLayerHelper : Node
 {
+    public static readonly uint UnlockTreeCollisionLayer = 9;
+    
     public static void SetAndPropagateCollisionLayer(Node caller, uint collisionLayer)
     {
         switch (caller)

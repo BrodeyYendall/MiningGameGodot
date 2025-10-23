@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -12,8 +13,6 @@ public partial class Crack : Area2D
     private static readonly PackedScene _attachedScene = ResourceLoader.Load<PackedScene>("res://scenes/delve/Crack.tscn");
 
     [Export] private CollisionPolygon2D hitbox;
-    
-    private static readonly CrackConfig CutoutCrackConfig = new(3, 8, 2, 1, 4, 0.04f, 10); 
     
     [Signal] public delegate void CrackCompleteEventHandler(int parent);
     
@@ -31,21 +30,22 @@ public partial class Crack : Area2D
     private readonly List<Vector2> outerLine = [];
     private readonly List<int> parentCutouts = [];
     
-    public static Crack Create(Vector2 start, Vector2 end, uint collisionLayer, int[] crackPointReferences)
+    public static Crack Create(Vector2 start, Vector2 end, uint collisionLayer, int[] crackPointReferences, CrackConfig crackConfig = null)
     {
+        crackConfig ??= CrackConfig.DefaultCrackConfig;
         Crack crack = _attachedScene.Instantiate<Crack>();
         
-        crack.Initialize(start, end, collisionLayer, crackPointReferences);
+        crack.Initialize(start, end, collisionLayer, crackPointReferences, crackConfig);
         return crack;
     }
     
-    public void Initialize(Vector2 start, Vector2 end, uint collisionLayer, int[] crackPointReferences)
+    private void Initialize(Vector2 start, Vector2 end, uint collisionLayer, int[] crackPointReferences, CrackConfig crackConfig)
     {
         this.start = start;
         this.end = end;
         CrackPointReferences = crackPointReferences;
         direction = start.DirectionTo(end);
-        config = CutoutCrackConfig;
+        config = crackConfig;
         
         GenerateCrackVertices(start.DistanceTo(end));
         
@@ -74,7 +74,12 @@ public partial class Crack : Area2D
                 
                 foreach (var parent in parentCutouts)
                 {
-                    EmitSignal(SignalName.CrackComplete, parent);
+                    EmitSignalCrackComplete(parent);
+                }
+
+                if (!parentCutouts.Any())
+                {
+                    EmitSignalCrackComplete(Int32.MinValue);
                 }
             }
         }

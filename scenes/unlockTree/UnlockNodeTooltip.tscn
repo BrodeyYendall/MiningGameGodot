@@ -3,48 +3,54 @@
 [ext_resource type="Script" uid="uid://2hmvh62ud650" path="res://scripts/unlockTree/UnlockNodeTooltip.cs" id="1_wdv0s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wdv0s"]
-bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.05882353, 0.078431375, 0.101960786, 0.62352943)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.05882353, 0.078431375, 0.101960786, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="LabelSettings" id="LabelSettings_wdv0s"]
-font_size = 32
+font_size = 18
 
 [sub_resource type="LabelSettings" id="LabelSettings_d5kvd"]
+font_size = 12
 
-[node name="UnlockNodeTooltip" type="Panel" node_paths=PackedStringArray("Title", "Description")]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -456.0
-offset_bottom = -272.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Panel" type="PanelContainer" node_paths=PackedStringArray("Title", "Description")]
+offset_right = 107.0
+offset_bottom = 67.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wdv0s")
 script = ExtResource("1_wdv0s")
-Title = NodePath("Title")
-Description = NodePath("Description")
+Title = NodePath("UnlockNodeTooltip/Title")
+Description = NodePath("UnlockNodeTooltip/Description")
 
-[node name="Title" type="Label" parent="."]
-layout_mode = 0
-offset_left = 46.0
-offset_top = -3.0
-offset_right = 134.0
-offset_bottom = 42.0
-text = "Title"
+[node name="UnlockNodeTooltip" type="GridContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="UnlockNodeTooltip"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+text = "Title (0/10)"
 label_settings = SubResource("LabelSettings_wdv0s")
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="."]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 36.0
-offset_right = 174.0
-offset_bottom = 85.0
-text = "Description Test Test Test Test Test Tset"
+[node name="Description" type="Label" parent="UnlockNodeTooltip"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Description Test Test 
+Test Test Test"
 label_settings = SubResource("LabelSettings_d5kvd")
 horizontal_alignment = 1
-autowrap_mode = 2
